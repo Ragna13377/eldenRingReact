@@ -93,8 +93,9 @@ const config: JestConfigWithTsJest  = {
   moduleNameMapper: {
     '^@/(.*)': '<rootDir>/src/$1',
     '^@shared/(.*)': '<rootDir>/src/shared/$1',
+    '^@images/(.*)': '<rootDir>/src/shared/assets/images/$1',
     '^@entities/(.*)': '<rootDir>/src/entities/$1',
-    '^@features/(.*)': '<rootDir>/src/features/$1',
+    '^@features/(.*)': '<rootDir>/src/images/$1',
     '^@widgets/(.*)': '<rootDir>/src/widgets/$1',
     '^@pages/(.*)': '<rootDir>/src/pages/$1',
     '^@process/(.*)': '<rootDir>/src/process/$1',

@@ -1,0 +1,11 @@
+.main {
+	display: flex;
+	justify-content: center;
+	width: 100dvw;
+	height: 100dvh;
+	background-image: url('@images/bg.webp');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	overflow: hidden;
+}

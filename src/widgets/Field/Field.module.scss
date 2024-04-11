@@ -1,0 +1,42 @@
+.fieldContainer {
+	display: flex;
+	height: 100%;
+	position: relative;
+}
+.field {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.hand, .arena {
+	border: 1px solid red;
+}
+$handHeight: 25%;
+.hand {
+	width: 120%;
+	height: $handHeight;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-evenly;
+	position: relative;
+}
+.arena {
+	width: 100%;
+	height: calc(100% - $handHeight * 2);
+}
+.enemyHand {
+
+}
+.playerHand {
+
+}
+
+.fieldLayout {
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+	box-shadow: 0 0 10px 5px black;
+}

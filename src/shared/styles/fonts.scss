@@ -1,0 +1,43 @@
+@font-face {
+	font-weight: 700;
+	font-family: "Oswald";
+	font-style: normal;
+	font-display: swap;
+	src:
+			url('../assets/fonts/oswald/Oswald-Bold.woff2') format('woff2'),
+			url('../assets/fonts/oswald/Oswald-Bold.woff') format('woff'),
+			url('../assets/fonts/oswald/Oswald-Bold.ttf') format('truetype');
+}
+
+@font-face {
+	font-weight: 400;
+	font-family: "Oswald";
+	font-style: normal;
+	font-display: swap;
+	src:
+			url('../assets/fonts/oswald/Oswald-Regular.woff2') format('woff2'),
+			url('../assets/fonts/oswald/Oswald-Regular.woff') format('woff'),
+			url('../assets/fonts/oswald/Oswald-Regular.ttf') format('truetype');
+}
+
+@font-face {
+	font-weight: 700;
+	font-family: "RobotoSlab";
+	font-style: normal;
+	font-display: swap;
+	src:
+			url('../assets/fonts/roboto-slab/RobotoSlab-Bold.woff2') format('woff2'),
+			url('../assets/fonts/roboto-slab/RobotoSlab-Bold.woff') format('woff'),
+			url('../assets/fonts/roboto-slab/RobotoSlab-Bold.ttf') format('truetype');
+}
+
+@font-face {
+	font-weight: 400;
+	font-family: "RobotoSlab";
+	font-style: normal;
+	font-display: swap;
+	src:
+			url('../assets/fonts/roboto-slab/RobotoSlab-Regular.woff2') format('woff2'),
+			url('../assets/fonts/roboto-slab/RobotoSlab-Regular.woff') format('woff'),
+			url('../assets/fonts/roboto-slab/RobotoSlab-Regular.ttf') format('truetype');
+}
