@@ -6,7 +6,7 @@ export function getDevServer({paths}: WebpackOptions): DevServerConfiguration {
   return {
     static: path.resolve(__dirname, '../..', paths.output),
     compress: true,
-    port: 3000,
+    port: 8000,
     open: true,
     hot: true,
     watchFiles: path.resolve(__dirname, '../..', paths.html)

@@ -27,6 +27,11 @@ $handHeight: 25%;
 	width: 100%;
 	height: calc(100% - $handHeight * 2);
 }
+.enemyArena, .playerArena {
+	width: 100%;
+	height: 50%;
+	border: 1px solid blue;
+}
 .enemyHand {
 
 }
