@@ -8,6 +8,14 @@ $accent-color-beast: rgb(178, 66, 22);
 $accent-color-plant: rgb(123, 166, 19);
 $accent-color-magical: rgb(43, 85, 192);
 $accent-color-undead: rgb(47, 133, 140);
+.hoverEffect {
+	&:hover {
+		z-index: 40;
+		.card{
+			transform: scale(1.9) translate(0, -50px);
+		}
+	}
+}
 .card {
 	position: relative;
 	inline-size: $card-width;
@@ -26,13 +34,6 @@ $accent-color-undead: rgb(47, 133, 140);
 			transition: transform 0.8s ease;
 		}
 	} */
-}
-.card_hover {
-	transition: transform 0.5s ease;
-	&:hover {
-		transform: scale(1.9) translate(0, -50px);
-		z-index: 40;
-	}
 }
 
 .front, .back {

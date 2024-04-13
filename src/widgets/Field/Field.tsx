@@ -5,6 +5,7 @@ import field from '@shared/assets/images/field.webp';
 import clsx from 'clsx';
 import {DndProvider, useDrop} from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { v4 as uuidv4 } from 'uuid';
 import {cardSubType} from '@shared/types';
 
 const Field = () => {
@@ -23,8 +24,10 @@ const Field = () => {
 					</div>
 					<div className={clsx(styles.hand, styles.playerHand)}>
 						{creatures.map((card, index) => {
-							if (index > 30 && index < 36)
-								return <Card {...card} key={card.title} />;
+							if (index > 30 && index < 36) {
+								const key: string = uuidv4();
+								return <Card card={card} key={key} cardKey={key} />;
+							}
 						})}
 					</div>
 				</div>
