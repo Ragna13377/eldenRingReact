@@ -1,3 +1,5 @@
+$card-width: 162px;
+$field-offset: 40px;
 .fieldContainer {
 	display: flex;
 	height: 100%;
@@ -9,37 +11,39 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	padding: 0 $field-offset;
 }
 .hand, .arena {
 	border: 1px solid red;
 }
 $handHeight: 25%;
-.hand {
-	width: 120%;
-	height: $handHeight;
+.hand, .playerArena, .enemyArena {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-evenly;
 	position: relative;
 }
+.hand {
+	width: 120%;
+	height: $handHeight;
+}
 .arena {
 	width: 100%;
 	height: calc(100% - $handHeight * 2);
 }
+
 .enemyArena, .playerArena {
 	width: 100%;
 	height: 50%;
 	border: 1px solid blue;
 }
-.enemyHand {
-
-}
-.playerHand {
-
+.dragOverArena {
+	box-shadow: inset 0 0 20px 5px #7f8f36;
 }
 
 .fieldLayout {
+	width: $card-width * 5 + $field-offset * 2;
 	height: 100%;
 	object-fit: cover;
 	object-position: center;

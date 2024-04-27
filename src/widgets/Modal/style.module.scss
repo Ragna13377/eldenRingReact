@@ -1,0 +1,21 @@
+.modal {
+	position: absolute;
+	inset-block-start: 50%;
+	inset-inline-start: 5%;
+	translate: 0 -50%;
+	background-image: url('@shared/assets/images/card/modal.webp');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	width: 300px;
+	aspect-ratio: 1/1;
+	transition: scale 0.3s ease, opacity 0.2s ease;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	opacity: 1;
+	scale: 1 0;
+}
+.modalOpen {
+	scale: 1 1;
+}

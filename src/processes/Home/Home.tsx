@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from './Home.module.scss';
-import Field from '@widgets/Field/Field';
+import Field from '@pages/Field';
 
 const Home = () => (
-	<div className={styles.main}>
+	<main className={styles.main}>
 		<Field />
-	</div>
+	</main>
 );
 
 export default Home;

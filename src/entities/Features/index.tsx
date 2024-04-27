@@ -1,8 +1,8 @@
+import clsx from 'clsx';
 import React from 'react';
-import styles from './Features.module.scss';
 import { TCard } from '@shared/types';
 import { isCreatureCard, isEquipmentCard } from '@shared/utils/typeGuard';
-import clsx from 'clsx';
+import styles from './style.module.scss';
 
 const Features = (card: TCard) => {
 	switch (true) {

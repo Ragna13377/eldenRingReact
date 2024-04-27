@@ -4,9 +4,12 @@ import {
 	useDispatch as dispatchHook,
 	useSelector as selectorHook,
 } from 'react-redux';
+import playerHandReducer from '@shared/services/PlayerHand/slice';
+import playerArenaReducer from '@shared/services/PlayerArena/slice';
 
 const rootReducer = combineReducers({
-
+	playerHand: playerHandReducer,
+	playerArena: playerArenaReducer,
 });
 export const store = configureStore({
 	reducer: rootReducer,

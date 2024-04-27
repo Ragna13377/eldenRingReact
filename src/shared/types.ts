@@ -1,3 +1,5 @@
+import { XYCoord } from 'react-dnd';
+
 export type cardType = 'adventures' | 'treasures';
 export enum cardSubType {
 	creature = 'Существо',
@@ -96,3 +98,16 @@ export type TEquipmentCard = TBaseCard &
 	TAdditionalCardFields<cardSubType.equipment>;
 export type TSpellCard = TBaseCard & TAdditionalCardFields<cardSubType.spell>;
 export type TCard = TCreatureCard | TEquipmentCard | TSpellCard;
+export type TKey = string;
+export type TCardWithParams = {
+	card: TCard;
+	cardKey: TKey;
+};
+export type TChangeModalParams = {
+	isOpen: boolean;
+	key: TKey;
+};
+export type TDropParams = {
+	isDrop: boolean;
+	getClientOffset: XYCoord | null;
+};
