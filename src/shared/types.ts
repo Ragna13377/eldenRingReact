@@ -22,7 +22,7 @@ export enum equipmentType {
 	helmet = 'Шлем',
 	armor = 'Доспех',
 	boots = 'Обувь',
-	talisman = 'Талисман',
+	amulet = 'Амулет',
 	weapon = 'Оружие',
 }
 export type onlyCharacteristic = 'level' | 'buff';
@@ -69,6 +69,14 @@ export type Punishment =
 	| { type: punishmentEffect.discard; value: number | discardPunishment }
 	| { type: punishmentEffect.discardEnemy; value: number }
 	| { type: punishmentEffect.removeClass };
+export type equipmentStats = {
+	strength: number;
+	escape?: boolean;
+	targetClass?: {
+		classes: playerClass[];
+		except?: boolean;
+	};
+}
 
 export type TBaseCard = {
 	type: cardType;
@@ -87,7 +95,12 @@ export type TAdditionalCardFields<T extends cardSubType> =
 				punishment: Punishment[] | null;
 			}
 		: T extends cardSubType.equipment
-			? { weight: number }
+			? {
+					equipmentType: equipmentType;
+					primaryStats: equipmentStats;
+					bonus?: equipmentStats;
+					exceptAll?: boolean;
+				}
 			: T extends cardSubType.spell
 				? { weight: number }
 				: never;
@@ -97,7 +110,12 @@ export type TCreatureCard = TBaseCard &
 export type TEquipmentCard = TBaseCard &
 	TAdditionalCardFields<cardSubType.equipment>;
 export type TSpellCard = TBaseCard & TAdditionalCardFields<cardSubType.spell>;
-export type TCard = TCreatureCard | TEquipmentCard | TSpellCard;
+export type TWeaponCard = TEquipmentCard & {
+	hands: number;
+	weight: boolean;
+};
+export type TCard = TCreatureCard | TWeaponCard | TEquipmentCard | TSpellCard;
+
 export type TKey = string;
 export type TCardWithParams = {
 	card: TCard;

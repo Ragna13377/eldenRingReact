@@ -279,7 +279,7 @@ export const creatures: TCreatureCard[] = [
 		loot: 2,
 		ability: null,
 		punishment: [
-			{ type: punishmentEffect.removeClothes, value: equipmentType.talisman },
+			{ type: punishmentEffect.removeClothes, value: equipmentType.amulet },
 			{ type: punishmentEffect.changeLevel, value: -2 },
 		],
 		race: creatureRace.undead,
