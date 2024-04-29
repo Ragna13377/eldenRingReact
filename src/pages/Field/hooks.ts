@@ -31,7 +31,6 @@ export const useDropField = ({
 	drop(playerArenaRef);
 	useEffect(() => {
 		if (dropParam.isDrop && currentCardData) {
-			console.log(dropParam.isDrop, currentCardData);
 			const dropTargetRect =
 				playerArenaRef.current?.getBoundingClientRect() as DOMRect;
 			dispatch(removePlayerHandCard(draggableCard));

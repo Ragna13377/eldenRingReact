@@ -1,0 +1,14 @@
+.inventory {
+	padding: 15px 10px;
+	background-image: url('@images/inventory/inventory.webp');
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	width: 100%;
+	aspect-ratio: 1/1;
+	display: grid;
+	grid-template-columns: 29% 42% 29%;
+	grid-template-rows: 29% 39% 32%;
+}
+
+

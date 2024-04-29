@@ -105,7 +105,7 @@ export type TCardWithParams = {
 };
 export type TChangeModalParams = {
 	isOpen: boolean;
-	key: TKey;
+	hoverCardKey: TKey;
 };
 export type TDropParams = {
 	isDrop: boolean;

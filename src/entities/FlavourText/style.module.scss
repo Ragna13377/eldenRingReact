@@ -1,4 +1,4 @@
-.flavour_text {
+.flavourText {
 	grid-area: flavour_text;
 	display: flex;
 	flex-direction: column;
@@ -6,11 +6,19 @@
 	justify-content: space-around;
 	text-align: center;
 	color: #e3d49e;
-	font-size: 6px;
 	font-weight: 400;
 	padding: 0 21px 5px;
 }
 .flavourText_title {
 	color: #ffc200;
 	font-weight: 700;
+}
+.ability, .punishment {
+	margin: 0;
+}
+.baseFont {
+	font-size: 6px;
+}
+.compressedFont {
+	font-size: 5.5px;
 }

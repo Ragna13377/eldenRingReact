@@ -10,6 +10,7 @@ import adventuresBackface from '@images/card/card_backface/adventure.webp';
 import treasuresBackface from '@images/card/card_backface/treasure.webp';
 import layout from '@images/card/cardTemplate.webp';
 import styles from './style.module.scss';
+import CardTitle from '@entities/CardTitle';
 
 const Card = ({ dragHandler, cardKey, card }: TCardProps) => {
 	const { type, subtype, title, image } = card;
@@ -74,16 +75,8 @@ const Card = ({ dragHandler, cardKey, card }: TCardProps) => {
 						imageExtraClass={styles.image}
 					/>
 					<CardContent card={card} extraContentStyle={styles.content}>
-						<>
-							<div
-								className={clsx(styles.title, {
-									[styles.titleCompressed]: title.length > 24,
-								})}
-							>
-								{title}
-							</div>
-							<FlavourText card={card} />
-						</>
+						<CardTitle title={title} />
+						<FlavourText card={card} />
 					</CardContent>
 				</div>
 				<div

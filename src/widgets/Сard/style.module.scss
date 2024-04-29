@@ -67,23 +67,3 @@ $accent-color-undead: rgb(47, 133, 140);
 	grid-template-areas: 'strength' '.' 'title' 'flavour_text' 'special';
 	grid-template-rows: 10% 58% 8% 15% 5%;
 }
-$title-height: 33px;
-$title-width: 0.9;
-.title {
-	grid-area: title;
-	font-family: 'Oswald', 'Arial', serif;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	color: black;
-	font-weight: 700;
-	font-size: 10px;
-	background-image: url('@images/card/textCanvas.png');
-	background-repeat: no-repeat;
-	background-position: center;
-	background-size: contain;
-}
-
-.titleCompressed {
-	font-size: 7px;
-}

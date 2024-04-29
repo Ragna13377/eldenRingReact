@@ -1,6 +1,9 @@
 import clsx from 'clsx';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { useDispatch, useSelector } from '@/app/store';
+import { setHand, getPlayerHandCard } from '@shared/services/PlayerHand/slice';
+import { getPlayerArenaCard } from '@shared/services/PlayerArena/slice';
 import { TChangeModalParams, TKey } from '@shared/types';
 import { creatures } from '@shared/storage/creatures';
 import Card from '@widgets/Сard';
@@ -9,9 +12,7 @@ import Modal from '@widgets/Modal';
 import { useDropField } from '@pages/Field/hooks';
 import field from '@images/field.webp';
 import styles from './style.module.scss';
-import { setHand, getPlayerHandCard } from '@shared/services/PlayerHand/slice';
-import { useDispatch, useSelector } from '@/app/store';
-import { getPlayerArenaCard } from '@shared/services/PlayerArena/slice';
+
 
 const Field = () => {
 	const dispatch = useDispatch();
@@ -19,7 +20,7 @@ const Field = () => {
 	const [draggableCard, setDraggableCard] = useState<TKey>('');
 	const [modalParams, setIsModalOpen] = useState<TChangeModalParams>({
 		isOpen: false,
-		key: '',
+		hoverCardKey: '',
 	});
 	const playerHand = useSelector(getPlayerHandCard);
 	const playerArena = useSelector(getPlayerArenaCard);
@@ -69,10 +70,7 @@ const Field = () => {
 						))}
 				</section>
 			</div>
-			{/*<Modal*/}
-			{/*	isOpen={isModalOpen.isOpen}*/}
-			{/*	{...playerHand.find((item) => item.cardKey === isModalOpen.key)!}*/}
-			{/*/>*/}
+			<Modal {...modalParams} />
 		</div>
 	);
 };

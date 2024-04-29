@@ -9,8 +9,8 @@ const MiniCard = ({ card, cardKey, setIsModalOpen }: TMiniCardProps) => {
 	return (
 		<article
 			className={styles.card}
-			onMouseEnter={() => setIsModalOpen({ isOpen: true, key: cardKey })}
-			onMouseLeave={() => setIsModalOpen({ isOpen: false, key: '' })}
+			onMouseEnter={() => setIsModalOpen({ isOpen: true, hoverCardKey: cardKey })}
+			onMouseLeave={() => setIsModalOpen({ isOpen: false, hoverCardKey: '' })}
 		>
 			<CardLayout
 				image={image}
