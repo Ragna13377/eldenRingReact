@@ -1,24 +1,31 @@
 .flavourText {
-	grid-area: flavour_text;
 	display: flex;
+	grid-area: flavour_text;
 	flex-direction: column;
+	justify-content: center;
 	align-items: center;
-	justify-content: space-around;
-	text-align: center;
+	padding: 0 21px 5px;
 	color: #e3d49e;
 	font-weight: 400;
-	padding: 0 21px 5px;
+	text-align: center;
 }
+.flavourTextAround {
+	justify-content: space-around;
+}
+
 .flavourText_title {
 	color: #ffc200;
 	font-weight: 700;
 }
-.ability, .punishment {
+
+.ability, .punishment, .equipmentText {
 	margin: 0;
 }
+
 .baseFont {
 	font-size: 6px;
 }
+
 .compressedFont {
 	font-size: 5.5px;
 }

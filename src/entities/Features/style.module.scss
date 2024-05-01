@@ -1,52 +1,62 @@
 $accent-color: #ead861;
+
 .features {
-	font-family: 'Oswald', 'Arial', serif;
-	width: 100%;
 	position: absolute;
 	inset-block-end: 22px;
 	inset-inline-end: 0;
 	display: flex;
 	flex-direction: row;
-	align-items: center;
 	justify-content: space-between;
-	color: $accent-color;
+	align-items: center;
+	width: 100%;
 	padding: 0 12px;
+	color: $accent-color;
+	font-family: 'Oswald', 'Arial', serif;
 }
+
 .feature {
 	position: relative;
 	font-size: 13px;
+
 	$pseudo-offset: 5px;
-	&:before {
+
+	&::before {
 		inset-inline-start: $pseudo-offset;
 	}
-	&:after {
+
+	&::after {
 		inset-inline-end: $pseudo-offset;
 	}
-	&:after, &:before {
+
+	&::after, &::before {
 		position: absolute;
+		inset-block-start: 1px;
 		display: block;
 		width: 9px;
 		aspect-ratio: 1/1;
-		inset-block-start: 1px;
 	}
 }
+
 .featureLevel {
-	&:before {
+	&::before {
 		content: url("./images/level.svg");
 	}
 }
+
 .featureLoot {
-	&:after {
+	&::after {
 		content: url("./images/loot.svg");
 	}
 }
+
 .featureHands {
-	&:before {
+	&::before {
 		content: url("./images/hands.svg");
 	}
 }
+
 .featureWeight {
-	&:after {
+	&::after {
 		content: url("./images/weight.svg");
 	}
 }

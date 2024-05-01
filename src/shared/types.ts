@@ -76,7 +76,7 @@ export type equipmentStats = {
 		classes: playerClass[];
 		except?: boolean;
 	};
-}
+};
 
 export type TBaseCard = {
 	type: cardType;
@@ -102,7 +102,7 @@ export type TAdditionalCardFields<T extends cardSubType> =
 					exceptAll?: boolean;
 				}
 			: T extends cardSubType.spell
-				? { weight: number }
+				? { weight?: number }
 				: never;
 
 export type TCreatureCard = TBaseCard &

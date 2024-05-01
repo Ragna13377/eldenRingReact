@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 import { TCard } from '@shared/types';
-import { isCreatureCard, isEquipmentCard } from '@shared/utils/typeGuard';
+import { isCreatureCard, isEquipmentCard, isWeaponCard } from '@shared/utils/typeGuard';
 import styles from './style.module.scss';
 
 const Features = (card: TCard) => {
@@ -17,15 +17,15 @@ const Features = (card: TCard) => {
 					</div>
 				</div>
 			);
-		case isEquipmentCard(card):
+		case isWeaponCard(card):
 			return (
 				<div className={styles.features}>
 					<div className={clsx(styles.feature, styles.featureHands)}>
-						{card.weight}
+						{card.hands}
 					</div>
-					<div className={clsx(styles.feature, styles.featureWeight)}>
-						{card.weight}
-					</div>
+					{card.weight && (
+						<div className={clsx(styles.feature, styles.featureWeight)} />
+					)}
 				</div>
 			);
 		default:

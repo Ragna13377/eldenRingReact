@@ -4,38 +4,42 @@ $card-height: 237px;
 $card-border-radius: 10px;
 $card-offset: 5px;
 $accent-color: #cbbb30;
-$accent-color-basic: rgb(136, 135, 135);
-$accent-color-beast: rgb(178, 66, 22);
-$accent-color-plant: rgb(123, 166, 19);
-$accent-color-magical: rgb(43, 85, 192);
-$accent-color-undead: rgb(47, 133, 140);
-.hoverEffect {
-	&:hover {
-		z-index: 40;
-		.card{
-			transition: transform 0.3s linear;
-			transform: scale(1.9) translate(0, -50px);
-		}
-	}
-}
+$accent-color-basic: rgb(136 135 135);
+$accent-color-beast: rgb(178 66 22);
+$accent-color-plant: rgb(123 166 19);
+$accent-color-magical: rgb(43 85 192);
+$accent-color-undead: rgb(47 133 140);
+
 .card {
 	position: relative;
 	inline-size: $card-width;
 	block-size: $card-height;
+	overflow: hidden;
+	border-radius: $card-border-radius;
 	transform-style: preserve-3d;
 	user-select: none;
-	border-radius: $card-border-radius;
-	overflow: hidden;
-	// &:hover {
-	//	.front {
-	//		transform: perspective(1000px) rotateY(-180deg);
-	//		transition: transform 0.5s ease;
-	//	}
-	//	.back {
-	//		transform: perspective(1000px) rotateY(0deg);
-	//		transition: transform 0.5s ease;
-	//	}
-	//}
+
+	/* &:hover {
+		.front {
+			transform: perspective(1000px) rotateY(-180deg);
+			transition: transform 0.5s ease;
+		}
+		.back {
+			transform: perspective(1000px) rotateY(0deg);
+			transition: transform 0.5s ease;
+		}
+	} */
+}
+
+.hoverEffect {
+	&:hover {
+		z-index: 40;
+
+		.card{
+			transform: scale(1.9) translate(0, -50px);
+			transition: transform 0.3s linear;
+		}
+	}
 }
 
 .front, .back {
@@ -51,19 +55,21 @@ $accent-color-undead: rgb(47, 133, 140);
 	z-index: 1;
 	transform: perspective(1000px) rotateY(0deg);
 	perspective: 1000px;
+	background-color: #1e1e1e;
 }
 
 .back {
-	transform: perspective(1000px) rotateY(180deg);
+	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
-	background-repeat: no-repeat;
+	transform: perspective(1000px) rotateY(180deg);
 }
 
 .image {
 	padding: 8% 5% 45%;
 }
+
 .content {
-	grid-template-areas: 'strength' '.' 'title' 'flavour_text' 'special';
 	grid-template-rows: 10% 58% 8% 15% 5%;
+	grid-template-areas: 'strength' '.' 'title' 'flavour_text' 'special';
 }

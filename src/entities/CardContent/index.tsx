@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 import { TCardContentProps } from '@entities/CardContent/types';
-import { isCreatureCard } from '@shared/utils/typeGuard';
+import { isCreatureCard, isEquipmentCard } from '@shared/utils/typeGuard';
 import Features from '@entities/Features';
 import { getRaceKey } from '@shared/utils/utils';
 import styles from './style.module.scss';
@@ -24,7 +24,11 @@ const CardContent = ({
 					styles[`special_${getRaceKey(card.race)}`]
 			)}
 		>
-			{isCreatureCard(card) ? card.race : card.subtype}
+			{isCreatureCard(card)
+				? card.race
+				: isEquipmentCard(card)
+					? card.equipmentType
+					: card.subtype}
 		</div>
 	</div>
 );

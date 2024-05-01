@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import React, { useEffect, useRef } from 'react';
 import { TCardProps } from '@widgets/Сard/types';
 import { useCardDrag } from '@widgets/Сard/hooks';
@@ -6,11 +5,11 @@ import { addHoverEffect, removeHoverEffect } from '@shared/utils/utils';
 import CardLayout from '@entities/CardLayout';
 import CardContent from '@entities/CardContent';
 import FlavourText from '@entities/FlavourText';
+import CardTitle from '@entities/CardTitle';
 import adventuresBackface from '@images/card/card_backface/adventure.webp';
 import treasuresBackface from '@images/card/card_backface/treasure.webp';
 import layout from '@images/card/cardTemplate.webp';
 import styles from './style.module.scss';
-import CardTitle from '@entities/CardTitle';
 
 const Card = ({ dragHandler, cardKey, card }: TCardProps) => {
 	const { type, subtype, title, image } = card;

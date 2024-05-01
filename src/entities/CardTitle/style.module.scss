@@ -1,14 +1,15 @@
 $title-height: 33px;
 $title-width: 0.9;
+
 .title {
-	grid-area: title;
-	font-family: 'Oswald', 'Arial', serif;
 	display: flex;
+	grid-area: title;
 	justify-content: center;
 	align-items: center;
 	color: black;
 	font-weight: 700;
 	font-size: 10px;
+	font-family: 'Oswald', 'Arial', serif;
 	background-image: url('@images/card/textCanvas.png');
 	background-repeat: no-repeat;
 	background-position: center;

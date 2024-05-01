@@ -2,25 +2,28 @@ $card-width: 162px;
 $card-height: 237px;
 $card-border-radius: 10px;
 $accent-color: #cbbb30;
-$accent-color-basic: rgb(136, 135, 135);
-$accent-color-beast: rgb(178, 66, 22);
-$accent-color-plant: rgb(123, 166, 19);
-$accent-color-magical: rgb(43, 85, 192);
-$accent-color-undead: rgb(47, 133, 140);
+$accent-color-basic: rgb(136 135 135);
+$accent-color-beast: rgb(178 66 22);
+$accent-color-plant: rgb(123 166 19);
+$accent-color-magical: rgb(43 85 192);
+$accent-color-undead: rgb(47 133 140);
+
 .card {
 	position: relative;
 	inline-size: $card-width;
 	block-size: $card-height;
-	user-select: none;
-	border-radius: $card-border-radius;
 	overflow: hidden;
+	border-radius: $card-border-radius;
+	user-select: none;
 }
+
 .image {
 	padding: 8% 5% 22%;
 }
+
 .content {
-	grid-template-areas: 'strength' '.' 'special';
 	grid-template-rows: 11% 74% 12%;
+	grid-template-areas: 'strength' '.' 'special';
 }
 
 

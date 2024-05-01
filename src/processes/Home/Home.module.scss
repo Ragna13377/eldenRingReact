@@ -1,25 +1,28 @@
 $field-size: 50%;
+
 .main {
 	display: grid;
 	grid-template-rows: 100dvh;
-	grid-template-columns: calc((100% - $field-size)/2) $field-size calc((100% - $field-size)/2);
-	justify-items: center;
-	align-items: end;
+	grid-template-columns: calc((100% - $field-size) / 2) $field-size calc((100% - $field-size) / 2);
+	place-items: end center;
+	overflow: hidden;
 	background-image: url('@images/bg.webp');
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
-	overflow: hidden;
 }
+
 .sidePanel {
-	width: 100%;
-	height: 100%;
 	display: flex;
 	flex-direction: column;
+	width: 100%;
+	height: 100%;
 }
+
 .leftPanel {
 	justify-content: start;
 }
+
 .rightPanel {
 	justify-content: end;
 }

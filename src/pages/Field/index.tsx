@@ -5,14 +5,13 @@ import { useDispatch, useSelector } from '@/app/store';
 import { setHand, getPlayerHandCard } from '@shared/services/PlayerHand/slice';
 import { getPlayerArenaCard } from '@shared/services/PlayerArena/slice';
 import { TChangeModalParams, TKey } from '@shared/types';
-import { creatures } from '@shared/storage/creatures';
+import { equipments } from '@shared/storage/equipments';
 import Card from '@widgets/Сard';
 import MiniCard from '@widgets/MiniCard';
 import Modal from '@widgets/Modal';
 import { useDropField } from '@pages/Field/hooks';
 import field from '@images/field.webp';
 import styles from './style.module.scss';
-
 
 const Field = () => {
 	const dispatch = useDispatch();
@@ -27,7 +26,7 @@ const Field = () => {
 	const { isOver } = useDropField({ playerArenaRef, draggableCard });
 	const creaturesData = useMemo(
 		() =>
-			creatures.slice(31, 36).map((card) => {
+			equipments.slice(15, 20).map((card) => {
 				const key: TKey = uuidv4();
 				return { card: card, cardKey: key };
 			}),
