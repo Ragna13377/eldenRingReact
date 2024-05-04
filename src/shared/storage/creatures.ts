@@ -1,9 +1,9 @@
 import {
 	abilityEffect,
-	cardSubType,
-	creatureRace,
-	equipmentType,
-	playerClass,
+	CardSubType,
+	CreatureRace,
+	EquipmentType,
+	PlayerClass,
 	punishmentEffect,
 	TCreatureCard,
 } from '@shared/types';
@@ -49,7 +49,7 @@ import godrick_the_grafted from '@images/creatures/godrick_the_grafted.webp';
 export const creatures: TCreatureCard[] = [
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Земляной брызгун',
 		image: land_squirt,
 		strength: 1,
@@ -66,7 +66,7 @@ export const creatures: TCreatureCard[] = [
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Росток Миранды',
 		image: miranda_sprout,
 		strength: 1,
@@ -75,16 +75,16 @@ export const creatures: TCreatureCard[] = [
 		ability: [
 			{
 				type: abilityEffect.changeStrength,
-				targetClass: [playerClass.thief],
+				targetClass: [PlayerClass.thief],
 				value: 1,
 			},
 		],
 		punishment: null,
-		race: creatureRace.plant,
+		race: CreatureRace.plant,
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Живая масса',
 		image: skeletal_slime,
 		strength: 1,
@@ -92,13 +92,13 @@ export const creatures: TCreatureCard[] = [
 		loot: 1,
 		ability: [{ type: abilityEffect.changeEscape, value: -Infinity }],
 		punishment: [
-			{ type: punishmentEffect.removeClothes, value: equipmentType.helmet },
+			{ type: punishmentEffect.removeClothes, value: EquipmentType.helmet },
 		],
 		race: null,
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Гниющий бродячий пес',
 		image: rotten_stray,
 		strength: 1,
@@ -107,19 +107,19 @@ export const creatures: TCreatureCard[] = [
 		ability: [
 			{
 				type: abilityEffect.changeStrength,
-				targetClass: [playerClass.mage],
+				targetClass: [PlayerClass.mage],
 				value: 4,
 			},
 		],
 		punishment: [
-			{ type: punishmentEffect.removeClothes, value: equipmentType.boots },
+			{ type: punishmentEffect.removeClothes, value: EquipmentType.boots },
 			{ type: punishmentEffect.changeLevel, value: -1 },
 		],
-		race: creatureRace.beast,
+		race: CreatureRace.beast,
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Получеловек',
 		image: demi_human,
 		strength: 1,
@@ -128,7 +128,7 @@ export const creatures: TCreatureCard[] = [
 		ability: [
 			{
 				type: abilityEffect.changeStrength,
-				targetClass: [playerClass.priest],
+				targetClass: [PlayerClass.priest],
 				value: 3,
 			},
 		],
@@ -137,7 +137,7 @@ export const creatures: TCreatureCard[] = [
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Скелет',
 		image: skelet,
 		strength: 2,
@@ -145,11 +145,11 @@ export const creatures: TCreatureCard[] = [
 		loot: 1,
 		ability: [{ type: abilityEffect.absolutePunishment, value: 2 }],
 		punishment: [{ type: punishmentEffect.changeLevel, value: -2 }],
-		race: creatureRace.undead,
+		race: CreatureRace.undead,
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Чудовищная ворона',
 		image: monstrous_crow,
 		strength: 2,
@@ -157,13 +157,13 @@ export const creatures: TCreatureCard[] = [
 		loot: 1,
 		ability: [{ type: abilityEffect.changeEscape, value: 2 }],
 		punishment: [
-			{ type: punishmentEffect.removeClothes, value: equipmentType.weapon },
+			{ type: punishmentEffect.removeClothes, value: EquipmentType.weapon },
 		],
-		race: creatureRace.beast,
+		race: CreatureRace.beast,
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Страж',
 		image: guardian,
 		strength: 2,
@@ -172,7 +172,7 @@ export const creatures: TCreatureCard[] = [
 		ability: [
 			{
 				type: abilityEffect.changeStrength,
-				targetClass: [playerClass.priest, playerClass.mage],
+				targetClass: [PlayerClass.priest, PlayerClass.mage],
 				value: -1,
 			},
 		],
@@ -181,7 +181,7 @@ export const creatures: TCreatureCard[] = [
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Многоликая сфера мудрецов',
 		image: school_of_graven_mages,
 		strength: 2,
@@ -189,11 +189,11 @@ export const creatures: TCreatureCard[] = [
 		loot: 1,
 		ability: [{ type: abilityEffect.changeEscape, value: 1 }],
 		punishment: [{ type: punishmentEffect.changeLevel, value: -1 }],
-		race: creatureRace.magical,
+		race: CreatureRace.magical,
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Штормовой ястреб',
 		image: warhawk,
 		strength: 2,
@@ -201,11 +201,11 @@ export const creatures: TCreatureCard[] = [
 		loot: 1,
 		ability: [{ type: abilityEffect.changeEscape, value: -1 }],
 		punishment: [{ type: punishmentEffect.changeLevel, value: -2 }],
-		race: creatureRace.beast,
+		race: CreatureRace.beast,
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Беспощадное ополчение',
 		image: vulgar_milita,
 		strength: 4,
@@ -217,7 +217,7 @@ export const creatures: TCreatureCard[] = [
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Почитатель предков',
 		image: ancestor_follower,
 		strength: 4,
@@ -226,7 +226,7 @@ export const creatures: TCreatureCard[] = [
 		ability: [
 			{
 				type: abilityEffect.changeStrength,
-				targetClass: [playerClass.priest, playerClass.mage],
+				targetClass: [PlayerClass.priest, PlayerClass.mage],
 				value: 5,
 			},
 		],
@@ -235,7 +235,7 @@ export const creatures: TCreatureCard[] = [
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Убийца огров',
 		image: omenkiler,
 		strength: 4,
@@ -244,7 +244,7 @@ export const creatures: TCreatureCard[] = [
 		ability: [
 			{
 				type: abilityEffect.changeStrength,
-				targetClass: [playerClass.thief],
+				targetClass: [PlayerClass.thief],
 				value: 5,
 			},
 		],
@@ -253,7 +253,7 @@ export const creatures: TCreatureCard[] = [
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Наемник из Кайдена',
 		image: kaiden_sellsword,
 		strength: 4,
@@ -262,7 +262,7 @@ export const creatures: TCreatureCard[] = [
 		ability: [
 			{
 				type: abilityEffect.changeStrength,
-				targetClass: [playerClass.warrior],
+				targetClass: [PlayerClass.warrior],
 				value: 5,
 			},
 		],
@@ -271,7 +271,7 @@ export const creatures: TCreatureCard[] = [
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Рыцарь чистой гнили',
 		image: cleanrot_knight,
 		strength: 6,
@@ -279,14 +279,14 @@ export const creatures: TCreatureCard[] = [
 		loot: 2,
 		ability: null,
 		punishment: [
-			{ type: punishmentEffect.removeClothes, value: equipmentType.amulet },
+			{ type: punishmentEffect.removeClothes, value: EquipmentType.amulet },
 			{ type: punishmentEffect.changeLevel, value: -2 },
 		],
-		race: creatureRace.undead,
+		race: CreatureRace.undead,
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Королевский призрак',
 		image: royal_revenant,
 		strength: 6,
@@ -295,7 +295,7 @@ export const creatures: TCreatureCard[] = [
 		ability: [
 			{
 				type: abilityEffect.changeStrength,
-				targetClass: [playerClass.warrior],
+				targetClass: [PlayerClass.warrior],
 				value: 6,
 			},
 		],
@@ -304,7 +304,7 @@ export const creatures: TCreatureCard[] = [
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Ассасин из Черных Ножей',
 		image: black_knife_assassin,
 		strength: 6,
@@ -313,7 +313,7 @@ export const creatures: TCreatureCard[] = [
 		ability: [
 			{
 				type: abilityEffect.changeStrength,
-				targetClass: [playerClass.thief],
+				targetClass: [PlayerClass.thief],
 				value: -Infinity,
 			},
 		],
@@ -322,7 +322,7 @@ export const creatures: TCreatureCard[] = [
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Зачарованная рука',
 		image: fingercreeper,
 		strength: 6,
@@ -331,16 +331,16 @@ export const creatures: TCreatureCard[] = [
 		ability: [
 			{
 				type: abilityEffect.changeStrength,
-				targetClass: [playerClass.mage],
+				targetClass: [PlayerClass.mage],
 				value: 6,
 			},
 		],
 		punishment: [{ type: punishmentEffect.discard, value: 'all' }],
-		race: creatureRace.magical,
+		race: CreatureRace.magical,
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Зверь падающей звезды',
 		image: fallingstar_beast,
 		strength: 8,
@@ -349,7 +349,7 @@ export const creatures: TCreatureCard[] = [
 		ability: [
 			{
 				type: abilityEffect.changeStrength,
-				targetClass: [playerClass.priest],
+				targetClass: [PlayerClass.priest],
 				value: 2,
 			},
 		],
@@ -357,11 +357,11 @@ export const creatures: TCreatureCard[] = [
 			{ type: punishmentEffect.changeLevel, value: -3 },
 			{ type: punishmentEffect.removeClass },
 		],
-		race: creatureRace.beast,
+		race: CreatureRace.beast,
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Блуждающий мавзолей',
 		image: wandering_mausoleum,
 		strength: 8,
@@ -369,11 +369,11 @@ export const creatures: TCreatureCard[] = [
 		loot: 2,
 		ability: null,
 		punishment: [{ type: punishmentEffect.changeLevel, value: -3 }],
-		race: creatureRace.magical,
+		race: CreatureRace.magical,
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Миранда',
 		image: miranda,
 		strength: 8,
@@ -382,19 +382,19 @@ export const creatures: TCreatureCard[] = [
 		ability: [
 			{
 				type: abilityEffect.changeStrength,
-				targetClass: [playerClass.thief],
+				targetClass: [PlayerClass.thief],
 				value: 6,
 			},
 		],
 		punishment: [
-			{ type: punishmentEffect.removeClothes, value: equipmentType.helmet },
+			{ type: punishmentEffect.removeClothes, value: EquipmentType.helmet },
 			{ type: punishmentEffect.changeLevel, value: -1 },
 		],
-		race: creatureRace.plant,
+		race: CreatureRace.plant,
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Рыцарь Горнила',
 		image: crucible_knight,
 		strength: 8,
@@ -416,7 +416,7 @@ export const creatures: TCreatureCard[] = [
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Ночной всадник',
 		image: nights_cavalry,
 		strength: 10,
@@ -428,7 +428,7 @@ export const creatures: TCreatureCard[] = [
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Тролль рыцарь',
 		image: troll_knight,
 		strength: 10,
@@ -440,7 +440,7 @@ export const creatures: TCreatureCard[] = [
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Кристалиец',
 		image: crystalian,
 		strength: 10,
@@ -449,16 +449,16 @@ export const creatures: TCreatureCard[] = [
 		ability: [
 			{
 				type: abilityEffect.changeStrength,
-				targetClass: [playerClass.mage],
+				targetClass: [PlayerClass.mage],
 				value: 6,
 			},
 		],
 		punishment: [{ type: punishmentEffect.changeLevel, value: 'D6' }],
-		race: creatureRace.magical,
+		race: CreatureRace.magical,
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Погребальная птица',
 		image: deathbird,
 		strength: 12,
@@ -467,16 +467,16 @@ export const creatures: TCreatureCard[] = [
 		ability: [
 			{
 				type: abilityEffect.changeStrength,
-				targetClass: [playerClass.priest],
+				targetClass: [PlayerClass.priest],
 				value: -Infinity,
 			},
 		],
 		punishment: [{ type: punishmentEffect.changeLevel, value: -3 }],
-		race: creatureRace.undead,
+		race: CreatureRace.undead,
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Железная дева',
 		image: abductor_virgin,
 		strength: 12,
@@ -485,18 +485,18 @@ export const creatures: TCreatureCard[] = [
 		ability: [
 			{
 				type: abilityEffect.changeStrength,
-				targetClass: [playerClass.priest],
+				targetClass: [PlayerClass.priest],
 				value: 4,
 			},
 		],
 		punishment: [
-			{ type: punishmentEffect.removeClothes, value: equipmentType.armor },
+			{ type: punishmentEffect.removeClothes, value: EquipmentType.armor },
 		],
 		race: null,
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Охотник за колокольными сферами',
 		image: bell_bearing_hunter,
 		strength: 12,
@@ -505,7 +505,7 @@ export const creatures: TCreatureCard[] = [
 		ability: [
 			{
 				type: abilityEffect.changeStrength,
-				targetClass: [playerClass.warrior, playerClass.thief],
+				targetClass: [PlayerClass.warrior, PlayerClass.thief],
 				value: 3,
 			},
 		],
@@ -513,14 +513,14 @@ export const creatures: TCreatureCard[] = [
 			{
 				type: punishmentEffect.changeLevel,
 				value: -2,
-				optional: { value: -3, targetClass: playerClass.thief },
+				optional: { value: -3, targetClass: PlayerClass.thief },
 			},
 		],
 		race: null,
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Алый волк',
 		image: red_wolf,
 		strength: 14,
@@ -538,15 +538,15 @@ export const creatures: TCreatureCard[] = [
 				value: 'death',
 				optional: {
 					value: 'D6',
-					targetClass: playerClass.mage,
+					targetClass: PlayerClass.mage,
 				},
 			},
 		],
-		race: creatureRace.beast,
+		race: CreatureRace.beast,
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Страж-голем',
 		image: golem,
 		strength: 14,
@@ -554,11 +554,11 @@ export const creatures: TCreatureCard[] = [
 		loot: 4,
 		ability: [{ type: abilityEffect.changeEscape, value: Infinity }],
 		punishment: [{ type: punishmentEffect.discard, value: 'all' }],
-		race: creatureRace.magical,
+		race: CreatureRace.magical,
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Изъязвленный древесный дух',
 		image: ulcerated_spirit,
 		strength: 14,
@@ -567,7 +567,7 @@ export const creatures: TCreatureCard[] = [
 		ability: [
 			{
 				type: abilityEffect.changeStrength,
-				targetClass: [playerClass.warrior],
+				targetClass: [PlayerClass.warrior],
 				value: 4,
 			},
 		],
@@ -577,11 +577,11 @@ export const creatures: TCreatureCard[] = [
 				value: 'death',
 			},
 		],
-		race: creatureRace.plant,
+		race: CreatureRace.plant,
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Огненная колесница',
 		image: flame_chariot,
 		strength: 16,
@@ -589,14 +589,14 @@ export const creatures: TCreatureCard[] = [
 		loot: 4,
 		ability: [{ type: abilityEffect.pursuit, value: 3 }],
 		punishment: [
-			{ type: punishmentEffect.removeClothes, value: equipmentType.armor },
+			{ type: punishmentEffect.removeClothes, value: EquipmentType.armor },
 			{ type: punishmentEffect.discard, value: 'all' },
 		],
 		race: null,
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Воплощение Древа Эрд',
 		image: erdtree_avatar,
 		strength: 16,
@@ -607,11 +607,11 @@ export const creatures: TCreatureCard[] = [
 			{ type: abilityEffect.absolutePunishment, value: 2 },
 		],
 		punishment: [{ type: punishmentEffect.discard, value: 2 }],
-		race: creatureRace.plant,
+		race: CreatureRace.plant,
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Сцион',
 		image: grafted_scion,
 		strength: 16,
@@ -631,7 +631,7 @@ export const creatures: TCreatureCard[] = [
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Страж древа',
 		image: tree_sentinel,
 		strength: 18,
@@ -643,7 +643,7 @@ export const creatures: TCreatureCard[] = [
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Адула, дракон блестящих камней',
 		image: adula,
 		strength: 18,
@@ -653,7 +653,7 @@ export const creatures: TCreatureCard[] = [
 			{ type: abilityEffect.pursuit, value: 4 },
 			{
 				type: abilityEffect.changeStrength,
-				targetClass: [playerClass.mage],
+				targetClass: [PlayerClass.mage],
 				value: 4,
 			},
 		],
@@ -662,7 +662,7 @@ export const creatures: TCreatureCard[] = [
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Маргит, Ужасное Знамение',
 		image: margit,
 		strength: 20,
@@ -674,7 +674,7 @@ export const creatures: TCreatureCard[] = [
 	},
 	{
 		type: 'adventures',
-		subtype: cardSubType.creature,
+		subtype: CardSubType.creature,
 		title: 'Годрик, сторукий',
 		image: godrick_the_grafted,
 		strength: 21,

@@ -1,4 +1,4 @@
-import {combineReducers, configureStore} from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
 	TypedUseSelectorHook,
 	useDispatch as dispatchHook,
@@ -6,10 +6,14 @@ import {
 } from 'react-redux';
 import playerHandReducer from '@shared/services/PlayerHand/slice';
 import playerArenaReducer from '@shared/services/PlayerArena/slice';
+import draggableCardReducer from '@shared/services/DraggableCard/slice';
+import inventoryReducer from '@shared/services/Inventory/slice';
 
 const rootReducer = combineReducers({
 	playerHand: playerHandReducer,
 	playerArena: playerArenaReducer,
+	draggableCard: draggableCardReducer,
+	inventory: inventoryReducer,
 });
 export const store = configureStore({
 	reducer: rootReducer,

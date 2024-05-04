@@ -1,11 +1,13 @@
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from '@/app/store';
 import { setHand, getPlayerHandCard } from '@shared/services/PlayerHand/slice';
 import { getPlayerArenaCard } from '@shared/services/PlayerArena/slice';
 import { TChangeModalParams, TKey } from '@shared/types';
+import { creatures } from '@shared/storage/creatures';
 import { equipments } from '@shared/storage/equipments';
+import { weapons } from '@shared/storage/weapons';
 import Card from '@widgets/Сard';
 import MiniCard from '@widgets/MiniCard';
 import Modal from '@widgets/Modal';
@@ -16,17 +18,16 @@ import styles from './style.module.scss';
 const Field = () => {
 	const dispatch = useDispatch();
 	const playerArenaRef = useRef<HTMLDivElement>(null);
-	const [draggableCard, setDraggableCard] = useState<TKey>('');
 	const [modalParams, setIsModalOpen] = useState<TChangeModalParams>({
 		isOpen: false,
 		hoverCardKey: '',
 	});
 	const playerHand = useSelector(getPlayerHandCard);
 	const playerArena = useSelector(getPlayerArenaCard);
-	const { isOver } = useDropField({ playerArenaRef, draggableCard });
+	const { isOver } = useDropField({ playerArenaRef });
 	const creaturesData = useMemo(
 		() =>
-			equipments.slice(15, 20).map((card) => {
+			equipments.slice(10, 15).map((card) => {
 				const key: TKey = uuidv4();
 				return { card: card, cardKey: key };
 			}),
@@ -60,13 +61,7 @@ const Field = () => {
 				</section>
 				<section className={clsx(styles.hand, styles.playerHand)}>
 					{playerHand.length > 0 &&
-						playerHand.map((item) => (
-							<Card
-								key={item.cardKey}
-								dragHandler={setDraggableCard}
-								{...item}
-							/>
-						))}
+						playerHand.map((item) => <Card key={item.cardKey} {...item} />)}
 				</section>
 			</div>
 			<Modal {...modalParams} />

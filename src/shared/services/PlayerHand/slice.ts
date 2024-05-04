@@ -9,7 +9,7 @@ const playerHandSlice = createSlice({
 		setHand: (state, action) => [...action.payload],
 		addPlayerHandCard: (state, action) => [...state, action.payload],
 		removePlayerHandCard: (state, action) =>
-			state.filter((card) => card.cardKey !== action.payload),
+			state.filter((card) => card.cardKey !== action.payload.cardKey),
 	},
 	selectors: {
 		getPlayerHandCard: (state) => state,

@@ -1,14 +1,11 @@
-import { cardSubType, TCardWithParams, TKey } from '@shared/types';
-import { Dispatch, RefObject, SetStateAction } from 'react';
-import { baseTransition } from '@widgets/Сard/constants';
+import { RefObject } from 'react';
 import { XYCoord } from 'react-dnd';
+import { CardSubType } from '@shared/types';
+import { baseTransition } from '@widgets/Сard/constants';
 
-export type TCardProps = TCardWithParams & {
-	dragHandler: Dispatch<SetStateAction<TKey>>;
-};
 export type TCardDragHookProps = {
 	cardRef: RefObject<HTMLDivElement>;
-	subtype: cardSubType;
+	subtype: CardSubType;
 };
 export type TSmoothShift = {
 	transition: TTransition;

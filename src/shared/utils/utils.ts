@@ -1,5 +1,4 @@
 import { RefObject } from 'react';
-import { creatureRace } from '@shared/types';
 
 export function setValueSign(value: number): string {
 	return value > 0 ? `+${value}` : `${value}`;
@@ -43,18 +42,23 @@ export const addHoverEffect = <T extends HTMLElement>(
 ) => {
 	ref.current?.classList.add(style);
 };
-
-export const getRaceKey = (race: creatureRace): string => {
-	switch (race) {
-		case creatureRace.beast:
-			return 'beast';
-		case creatureRace.plant:
-			return 'plant';
-		case creatureRace.magical:
-			return 'magical';
-		case creatureRace.undead:
-			return 'undead';
-		default:
-			return '';
-	}
+export const getEnumKeyByValue = <T extends string>(
+	enumObj: Record<string, T>,
+	value: T
+): string =>
+	Object.keys(enumObj).find((key) => enumObj[key] === value) as string;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const throttle = <T extends (...args: any[]) => any>(
+	callee: T,
+	timeout: number
+) => {
+	let timer: NodeJS.Timeout | null = null;
+	return function perform(...args: Parameters<T>) {
+		if (!timer) {
+			timer = setTimeout(() => {
+				timer = null;
+				callee(...args);
+			}, timeout);
+		}
+	};
 };

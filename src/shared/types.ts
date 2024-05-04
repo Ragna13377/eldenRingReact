@@ -1,33 +1,33 @@
 import { XYCoord } from 'react-dnd';
 
-export type cardType = 'adventures' | 'treasures';
-export enum cardSubType {
+export type CardType = 'adventures' | 'treasures';
+export enum CardSubType {
 	creature = 'Существо',
 	equipment = 'Снаряжение',
 	spell = 'Заклинание',
 }
-export enum creatureRace {
+export enum CreatureRace {
 	plant = 'Растение',
 	beast = 'Зверь',
 	magical = 'Магическое существо',
 	undead = 'Нежить',
 }
-export enum playerClass {
+export enum PlayerClass {
 	mage = 'Маг',
 	warrior = 'Воин',
 	thief = 'Бандит',
 	priest = 'Духовник',
 }
-export enum equipmentType {
+export enum EquipmentType {
 	helmet = 'Шлем',
 	armor = 'Доспех',
 	boots = 'Обувь',
 	amulet = 'Амулет',
 	weapon = 'Оружие',
 }
-export type onlyCharacteristic = 'level' | 'buff';
-export type changeLevelPunishment = 'firstLevel' | 'death' | 'D6';
-export type discardPunishment = 'all' | 'D6';
+export type OnlyCharacteristic = 'level' | 'buff';
+export type ChangeLevelPunishment = 'firstLevel' | 'death' | 'D6';
+export type DiscardPunishment = 'all' | 'D6';
 export enum abilityEffect {
 	changeEscape = 'changeEscape',
 	changeStrength = 'changeStrength',
@@ -46,9 +46,9 @@ export type Ability =
 	| {
 			type: abilityEffect.changeStrength;
 			value: number;
-			targetClass: playerClass[];
+			targetClass: PlayerClass[];
 	  }
-	| { type: abilityEffect.onlyCharacteristic; value: onlyCharacteristic };
+	| { type: abilityEffect.onlyCharacteristic; value: OnlyCharacteristic };
 export enum punishmentEffect {
 	changeLevel = 'changeLevel',
 	removeClothes = 'removeClothes',
@@ -59,57 +59,57 @@ export enum punishmentEffect {
 export type Punishment =
 	| {
 			type: punishmentEffect.changeLevel;
-			value: number | changeLevelPunishment;
+			value: number | ChangeLevelPunishment;
 			optional?: {
-				value: number | changeLevelPunishment;
-				targetClass: playerClass;
+				value: number | ChangeLevelPunishment;
+				targetClass: PlayerClass;
 			};
 	  }
-	| { type: punishmentEffect.removeClothes; value: equipmentType }
-	| { type: punishmentEffect.discard; value: number | discardPunishment }
+	| { type: punishmentEffect.removeClothes; value: EquipmentType }
+	| { type: punishmentEffect.discard; value: number | DiscardPunishment }
 	| { type: punishmentEffect.discardEnemy; value: number }
 	| { type: punishmentEffect.removeClass };
 export type equipmentStats = {
 	strength: number;
 	escape?: boolean;
 	targetClass?: {
-		classes: playerClass[];
+		classes: PlayerClass[];
 		except?: boolean;
 	};
 };
 
 export type TBaseCard = {
-	type: cardType;
-	subtype: cardSubType;
+	type: CardType;
+	subtype: CardSubType;
 	title: string;
 	image: string;
 };
-export type TAdditionalCardFields<T extends cardSubType> =
-	T extends cardSubType.creature
+export type TAdditionalCardFields<T extends CardSubType> =
+	T extends CardSubType.creature
 		? {
-				race: creatureRace | null;
+				race: CreatureRace | null;
 				strength: number;
 				level: number;
 				loot: number;
 				ability: Ability[] | null;
 				punishment: Punishment[] | null;
 			}
-		: T extends cardSubType.equipment
+		: T extends CardSubType.equipment
 			? {
-					equipmentType: equipmentType;
+					equipmentType: EquipmentType;
 					primaryStats: equipmentStats;
 					bonus?: equipmentStats;
 					exceptAll?: boolean;
 				}
-			: T extends cardSubType.spell
+			: T extends CardSubType.spell
 				? { weight?: number }
 				: never;
 
 export type TCreatureCard = TBaseCard &
-	TAdditionalCardFields<cardSubType.creature>;
+	TAdditionalCardFields<CardSubType.creature>;
 export type TEquipmentCard = TBaseCard &
-	TAdditionalCardFields<cardSubType.equipment>;
-export type TSpellCard = TBaseCard & TAdditionalCardFields<cardSubType.spell>;
+	TAdditionalCardFields<CardSubType.equipment>;
+export type TSpellCard = TBaseCard & TAdditionalCardFields<CardSubType.spell>;
 export type TWeaponCard = TEquipmentCard & {
 	hands: number;
 	weight: boolean;
@@ -128,4 +128,12 @@ export type TChangeModalParams = {
 export type TDropParams = {
 	isDrop: boolean;
 	getClientOffset: XYCoord | null;
+};
+export type TInventory<T> = {
+	helmet: T;
+	amulet: T;
+	leftWeapon: T;
+	rightWeapon: T;
+	armor: T;
+	boots: T;
 };

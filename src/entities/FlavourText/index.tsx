@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { useEffect, useRef, useState } from 'react';
 import { isCreatureCard, isEquipmentCard } from '@shared/utils/typeGuard';
 import { AbilityAction, PunishmentAction } from '@shared/utils/effects';
@@ -23,7 +23,7 @@ const FlavourText = ({ card, fontExtraClass }: TFlavourTextProps) => {
 			className={clsx(
 				styles.flavourText,
 				isCompressed ? styles.compressedFont : styles.baseFont,
-				{[styles.flavourTextAround]: isCreatureCard(card)},
+				{ [styles.flavourTextAround]: isCreatureCard(card) },
 				fontExtraClass
 			)}
 			ref={fontRef}

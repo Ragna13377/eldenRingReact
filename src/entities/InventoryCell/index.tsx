@@ -1,10 +1,14 @@
+import { clsx } from 'clsx';
 import React from 'react';
-import clsx from 'clsx';
-import styles from './style.module.scss';
 import { TInventoryCellProps } from '@entities/InventoryCell/types';
+import styles from './style.module.scss';
 
-const InventoryCell = ({ extraClass }: TInventoryCellProps) => (
-	<div className={clsx(styles.inventoryCell, extraClass)} />
+const InventoryCell = ({ extraClass, isAvailable }: TInventoryCellProps) => (
+	<div
+		className={clsx(styles.inventoryCell, extraClass, {
+			[styles.inventoryCellHover]: isAvailable,
+		})}
+	/>
 );
 
 export default InventoryCell;

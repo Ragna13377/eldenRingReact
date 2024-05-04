@@ -1,7 +1,10 @@
 import React, { useEffect, useRef } from 'react';
-import { TCardProps } from '@widgets/Сard/types';
-import { useCardDrag } from '@widgets/Сard/hooks';
+import { TCardWithParams } from '@shared/types';
 import { addHoverEffect, removeHoverEffect } from '@shared/utils/utils';
+import { optimizedOutsideBorderListener } from '@widgets/Сard/utils';
+import { useCardDrag } from '@widgets/Сard/hooks';
+import { useDispatch } from '@/app/store';
+import { setDraggableCard } from '@shared/services/DraggableCard/slice';
 import CardLayout from '@entities/CardLayout';
 import CardContent from '@entities/CardContent';
 import FlavourText from '@entities/FlavourText';
@@ -11,7 +14,8 @@ import treasuresBackface from '@images/card/card_backface/treasure.webp';
 import layout from '@images/card/cardTemplate.webp';
 import styles from './style.module.scss';
 
-const Card = ({ dragHandler, cardKey, card }: TCardProps) => {
+const Card = ({ card, cardKey }: TCardWithParams) => {
+	const dispatch = useDispatch();
 	const { type, subtype, title, image } = card;
 	const cardRef = useRef<HTMLDivElement>(null);
 	const { isDrag, smoothShift } = useCardDrag({
@@ -19,26 +23,8 @@ const Card = ({ dragHandler, cardKey, card }: TCardProps) => {
 		subtype,
 	});
 	useEffect(() => {
-		if (isDrag) dragHandler(cardKey);
-	}, [isDrag, dragHandler, cardKey]);
-	const outsideBorderListener = (e: React.MouseEvent<HTMLDivElement>) => {
-		const X = e.clientX;
-		const Y = e.clientY;
-		const cardRect = cardRef.current?.getBoundingClientRect();
-		if (cardRect) {
-			if (
-				X < cardRect.left ||
-				X > cardRect.right ||
-				Y < cardRect.top ||
-				Y > cardRect.bottom
-			) {
-				removeHoverEffect<HTMLDivElement>(cardRef, styles.hoverEffect);
-				setTimeout(() => {
-					addHoverEffect<HTMLDivElement>(cardRef, styles.hoverEffect);
-				}, 100);
-			}
-		}
-	};
+		if (isDrag) dispatch(setDraggableCard({ card, cardKey }));
+	}, [isDrag, dispatch, card, cardKey]);
 	return (
 		<div
 			role='presentation'
@@ -54,7 +40,7 @@ const Card = ({ dragHandler, cardKey, card }: TCardProps) => {
 			onMouseEnter={() =>
 				addHoverEffect<HTMLDivElement>(cardRef, styles.hoverEffect)
 			}
-			onMouseMove={outsideBorderListener}
+			onMouseMove={(e) => optimizedOutsideBorderListener(e, cardRef)}
 			style={{
 				translate: `${smoothShift.position.x}px ${smoothShift.position.y}px`,
 				transition: smoothShift.transition,

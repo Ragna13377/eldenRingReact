@@ -1,9 +1,6 @@
-import { useDrag, XYCoord } from 'react-dnd';
+import { useDrag } from 'react-dnd';
 import { useState } from 'react';
-import {
-	TCardDragHookProps,
-	TSmoothShift,
-} from '@widgets/Сard/types';
+import { TCardDragHookProps, TSmoothShift } from '@widgets/Сard/types';
 import { baseTransition } from '@widgets/Сard/constants';
 
 export const useCardDrag = ({ cardRef, subtype }: TCardDragHookProps) => {

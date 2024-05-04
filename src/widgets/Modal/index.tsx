@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import React from 'react';
 import { createPortal } from 'react-dom';
 import FlavourText from '@entities/FlavourText';
