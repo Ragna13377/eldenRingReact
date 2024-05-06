@@ -7,7 +7,7 @@ export type TUseDropInventoryProps = {
 };
 export type TSetAvailableCellProps = TUseDropInventoryProps & {
 	monitor: DropTargetMonitor<unknown, unknown>;
-	currentCardData: TCardWithParams | null;
+	currentDraggableCard: TCardWithParams | null;
 	availableCell: TInventory<boolean>;
 	setAvailableCell: Dispatch<SetStateAction<TInventory<boolean>>>;
 };

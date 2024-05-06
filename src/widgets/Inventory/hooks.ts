@@ -1,44 +1,49 @@
 import { useEffect, useState } from 'react';
-import { useDrop } from 'react-dnd';
-import { useDispatch, useSelector } from '@/app/store';
-import { clearDraggableCard, getDraggableCard } from '@shared/services/DraggableCard/slice';
-import { removePlayerHandCard } from '@shared/services/PlayerHand/slice';
+import { useSelector } from '@/app/store';
+import { getDraggableCard } from '@shared/services/DraggableCard/slice';
+import { addInventoryCard } from '@shared/services/Inventory/slice';
 import { initialAvailableCellState } from '@widgets/Inventory/constants';
-import { CardSubType, TInventory } from '@shared/types';
+import { CardSubType, TDropParams, TInventory } from '@shared/types';
 import { TUseDropInventoryProps } from '@widgets/Inventory/types';
 import { optimizedSetAvailableCellHover } from '@widgets/Inventory/utils';
-import { addInventoryCard } from '@shared/services/Inventory/slice';
+import { useCustomDrop } from '@shared/hooks/useCustomDrop';
+import { useDropReplaceCard } from '@shared/hooks/useDropReplaceCard';
 
 export const useDropInventory = ({ inventoryRef }: TUseDropInventoryProps) => {
-	const dispatch = useDispatch();
-	const currentCardData = useSelector(getDraggableCard);
+	const currentDraggableCard = useSelector(getDraggableCard);
+	const [inventoryDropResult, setInventoryDropResult] = useState<TDropParams>({
+		isDrop: false,
+		getClientOffset: null,
+	});
 	const [availableCell, setAvailableCell] = useState<TInventory<boolean>>(
 		initialAvailableCellState
 	);
-	const [{ isOver, didDrop }, drop] = useDrop({
+	const { isOver } = useCustomDrop({
 		accept: CardSubType.equipment,
-		collect: (monitor) => ({
-			isOver: monitor.isOver(),
-			didDrop: monitor.didDrop(),
-		}),
-		hover: (_, monitor) => {
+		dropHandler: setInventoryDropResult,
+		dropRef: inventoryRef,
+		hoverHandler: (monitor) => {
 			optimizedSetAvailableCellHover({
 				monitor,
-				currentCardData,
+				currentDraggableCard,
 				availableCell,
 				setAvailableCell,
 				inventoryRef,
 			});
 		},
 	});
-	drop(inventoryRef);
-	useEffect(() => {
-		if (didDrop && currentCardData) {
-			dispatch(removePlayerHandCard(currentCardData));
-			dispatch(addInventoryCard(currentCardData));
-			dispatch(clearDraggableCard());
+	useDropReplaceCard(
+		{
+			dropParams: inventoryDropResult,
+			setDropParams: setInventoryDropResult,
+			refObject: inventoryRef,
+			currentDraggableCard,
+			addCardAction: addInventoryCard,
+		},
+		() => {
+			setAvailableCell(initialAvailableCellState);
 		}
-	}, [didDrop, dispatch, currentCardData]);
+	);
 	return {
 		availableCell,
 		setAvailableCell,

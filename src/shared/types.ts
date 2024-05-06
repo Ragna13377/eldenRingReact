@@ -1,4 +1,5 @@
-import { XYCoord } from 'react-dnd';
+import { DropTargetMonitor, XYCoord } from 'react-dnd';
+import { Dispatch, RefObject, SetStateAction } from 'react';
 
 export type CardType = 'adventures' | 'treasures';
 export enum CardSubType {
@@ -123,11 +124,17 @@ export type TCardWithParams = {
 };
 export type TChangeModalParams = {
 	isOpen: boolean;
-	hoverCardKey: TKey;
+	hoveredCardKey: TKey;
 };
 export type TDropParams = {
 	isDrop: boolean;
 	getClientOffset: XYCoord | null;
+};
+export type TCustomDrop = {
+	accept: string;
+	dropRef: RefObject<HTMLDivElement>;
+	dropHandler: Dispatch<SetStateAction<TDropParams>>;
+	hoverHandler?: (monitor: DropTargetMonitor<unknown, unknown>) => void;
 };
 export type TInventory<T> = {
 	helmet: T;
@@ -136,4 +143,9 @@ export type TInventory<T> = {
 	rightWeapon: T;
 	armor: T;
 	boots: T;
+};
+export type TAddCardPayload = {
+	currentDraggableCard: TCardWithParams | null;
+	dropTargetRect: DOMRectReadOnly;
+	cursorPosition: XYCoord;
 };

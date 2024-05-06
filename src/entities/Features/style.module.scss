@@ -2,21 +2,26 @@ $accent-color: #ead861;
 
 .features {
 	position: absolute;
-	inset-block-end: 22px;
+	inset-block-end: 23px;
 	inset-inline-end: 0;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
-	padding: 0 12px;
+	padding: 0 11px;
 	color: $accent-color;
 	font-family: 'Oswald', 'Arial', serif;
 }
 
 .feature {
+	min-width: 14px;
+	aspect-ratio: 1/1;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 	position: relative;
-	font-size: 13px;
+	font-size: 12px;
 
 	$pseudo-offset: 5px;
 
@@ -29,8 +34,6 @@ $accent-color: #ead861;
 	}
 
 	&::after, &::before {
-		position: absolute;
-		inset-block-start: 1px;
 		display: block;
 		width: 9px;
 		aspect-ratio: 1/1;
@@ -38,25 +41,26 @@ $accent-color: #ead861;
 }
 
 .featureLevel {
-	&::before {
+	&::after {
 		content: url("./images/level.svg");
 	}
 }
 
 .featureLoot {
-	&::after {
+	&::before {
 		content: url("./images/loot.svg");
 	}
 }
 
 .featureHands {
-	&::before {
+	&::after {
 		content: url("./images/hands.svg");
 	}
 }
 
 .featureWeight {
-	&::after {
+	justify-content: center;
+	&::before {
 		content: url("./images/weight.svg");
 	}
 }

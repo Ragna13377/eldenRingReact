@@ -1,52 +1,30 @@
-import { useDrop, XYCoord } from 'react-dnd';
 import { CardSubType, TDropParams } from '@shared/types';
 import { TFieldDropHookProps } from '@pages/Field/types';
-import { useDispatch, useSelector } from '@/app/store';
-import { useEffect, useState } from 'react';
-import { removePlayerHandCard } from '@shared/services/PlayerHand/slice';
+import { useSelector } from '@/app/store';
+import { useState } from 'react';
 import { addPlayerArenaCard } from '@shared/services/PlayerArena/slice';
-import { clearDraggableCard, getDraggableCard } from '@shared/services/DraggableCard/slice';
+import { getDraggableCard } from '@shared/services/DraggableCard/slice';
+import { useCustomDrop } from '@shared/hooks/useCustomDrop';
+import { useDropReplaceCard } from '@shared/hooks/useDropReplaceCard';
 
 export const useDropField = ({ playerArenaRef }: TFieldDropHookProps) => {
-	const dispatch = useDispatch();
-	const currentCardData = useSelector(getDraggableCard);
-	const [dropParam, setDropParam] = useState<TDropParams>({
+	const currentDraggableCard = useSelector(getDraggableCard);
+	const [arenaDropResult, setArenaDropResult] = useState<TDropParams>({
 		isDrop: false,
 		getClientOffset: null,
 	});
-	const [{ isOver }, drop] = useDrop({
+	const { isOver } = useCustomDrop({
 		accept: CardSubType.creature,
-		drop: (_, monitor) => {
-			const getClientOffset = monitor.getClientOffset();
-			setDropParam((prev) => ({
-				...prev,
-				isDrop: true,
-				getClientOffset,
-			}));
-		},
-		collect: (monitor) => ({ isOver: monitor.isOver() }),
+		dropHandler: setArenaDropResult,
+		dropRef: playerArenaRef,
 	});
-	drop(playerArenaRef);
-	useEffect(() => {
-		if (dropParam.isDrop && currentCardData) {
-			const dropTargetRect =
-				playerArenaRef.current?.getBoundingClientRect() as DOMRect;
-			dispatch(removePlayerHandCard(currentCardData));
-			dispatch(
-				addPlayerArenaCard({
-					currentCardData,
-					dropTargetRect: dropTargetRect.toJSON(),
-					cursorPosition: dropParam.getClientOffset as XYCoord,
-				})
-			);
-			dispatch(clearDraggableCard());
-			setDropParam((prev) => ({
-				...prev,
-				isDrop: false,
-				getClientOffset: null,
-			}));
-		}
-	}, [dropParam, dispatch, playerArenaRef, currentCardData]);
+	useDropReplaceCard({
+		dropParams: arenaDropResult,
+		setDropParams: setArenaDropResult,
+		refObject: playerArenaRef,
+		currentDraggableCard,
+		addCardAction: addPlayerArenaCard,
+	});
 	return {
 		isOver,
 	};

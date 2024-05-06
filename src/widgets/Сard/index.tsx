@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import { TCardWithParams } from '@shared/types';
 import { addHoverEffect, removeHoverEffect } from '@shared/utils/utils';
 import { optimizedOutsideBorderListener } from '@widgets/Сard/utils';
@@ -74,4 +74,5 @@ const Card = ({ card, cardKey }: TCardWithParams) => {
 		</div>
 	);
 };
-export default Card;
+
+export default memo(Card);

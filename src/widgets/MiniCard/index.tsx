@@ -3,6 +3,7 @@ import CardLayout from '@entities/CardLayout';
 import CardContent from '@entities/CardContent';
 import layout from '@images/card/baseCardTemplate.webp';
 import styles from '@widgets/MiniCard/style.module.scss';
+import { memo } from 'react';
 
 const MiniCard = ({ card, cardKey, setIsModalOpen }: TMiniCardProps) => {
 	const { title, image } = card;
@@ -10,9 +11,9 @@ const MiniCard = ({ card, cardKey, setIsModalOpen }: TMiniCardProps) => {
 		<article
 			className={styles.card}
 			onMouseEnter={() =>
-				setIsModalOpen({ isOpen: true, hoverCardKey: cardKey })
+				setIsModalOpen({ isOpen: true, hoveredCardKey: cardKey })
 			}
-			onMouseLeave={() => setIsModalOpen({ isOpen: false, hoverCardKey: '' })}
+			onMouseLeave={() => setIsModalOpen({ isOpen: false, hoveredCardKey: '' })}
 		>
 			<CardLayout
 				image={image}
@@ -25,4 +26,4 @@ const MiniCard = ({ card, cardKey, setIsModalOpen }: TMiniCardProps) => {
 	);
 };
 
-export default MiniCard;
+export default memo(MiniCard);

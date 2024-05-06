@@ -1,11 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
-	EquipmentType,
+	TAddCardPayload,
 	TCardWithParams,
-	TEquipmentCard,
 	TInventory,
 } from '@shared/types';
-import { getEnumKeyByValue } from '@shared/utils/utils';
 
 const initialState: TInventory<TCardWithParams | null> = {
 	helmet: null,
@@ -19,13 +17,18 @@ const InventorySlice = createSlice({
 	name: 'inventory',
 	initialState,
 	reducers: {
-		addInventoryCard: (state, action) => {
-			const { card } = action.payload;
-			const { equipmentType } = card as TEquipmentCard;
-			return {
-				...state,
-				[getEnumKeyByValue(EquipmentType, equipmentType)]: action.payload,
-			};
+		addInventoryCard: (state, action: PayloadAction<TAddCardPayload>) => {
+			const { currentDraggableCard, dropTargetRect, cursorPosition } =
+				action.payload;
+			if (currentDraggableCard) {
+
+			}
+			// if (currentAvailableCell) {
+			// 	return {
+			// 		...state,
+			// 		[currentAvailableCell]: currentDraggableCard,
+			// 	};
+			// }
 		},
 		removeInventoryCard: (state, action) => ({
 			...state,

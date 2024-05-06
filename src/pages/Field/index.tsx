@@ -20,22 +20,22 @@ const Field = () => {
 	const playerArenaRef = useRef<HTMLDivElement>(null);
 	const [modalParams, setIsModalOpen] = useState<TChangeModalParams>({
 		isOpen: false,
-		hoverCardKey: '',
+		hoveredCardKey: '',
 	});
 	const playerHand = useSelector(getPlayerHandCard);
 	const playerArena = useSelector(getPlayerArenaCard);
 	const { isOver } = useDropField({ playerArenaRef });
-	const creaturesData = useMemo(
+	const cardData = useMemo(
 		() =>
-			equipments.slice(10, 15).map((card) => {
+			weapons.slice(5, 10).map((card) => {
 				const key: TKey = uuidv4();
 				return { card: card, cardKey: key };
 			}),
 		[]
 	);
 	useEffect(() => {
-		dispatch(setHand(creaturesData));
-	}, [dispatch, creaturesData]);
+		dispatch(setHand(cardData));
+	}, [dispatch, cardData]);
 	return (
 		<div className={styles.fieldContainer}>
 			<img className={styles.fieldLayout} src={field} alt='Игровое поле' />

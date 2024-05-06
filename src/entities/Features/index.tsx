@@ -1,5 +1,4 @@
 import { clsx } from 'clsx';
-import React from 'react';
 import { TCard } from '@shared/types';
 import { isCreatureCard, isWeaponCard } from '@shared/utils/typeGuard';
 import styles from './style.module.scss';

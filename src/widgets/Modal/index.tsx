@@ -8,9 +8,9 @@ import { getPlayerArenaCardById } from '@shared/services/PlayerArena/selectors';
 import CardTitle from '@entities/CardTitle';
 import styles from './style.module.scss';
 
-const Modal = ({ isOpen, hoverCardKey }: TChangeModalParams) => {
+const Modal = ({ isOpen, hoveredCardKey }: TChangeModalParams) => {
 	const modal = document.getElementById('root');
-	const hoverCard = useSelector(getPlayerArenaCardById(hoverCardKey));
+	const hoveredCard = useSelector(getPlayerArenaCardById(hoveredCardKey));
 	return createPortal(
 		<div
 			className={clsx(styles.modal, {
@@ -18,14 +18,14 @@ const Modal = ({ isOpen, hoverCardKey }: TChangeModalParams) => {
 			})}
 		>
 			<div className={styles.content}>
-				{hoverCard && (
+				{hoveredCard && (
 					<>
 						<FlavourText
 							fontExtraClass={styles.modalFont}
-							card={hoverCard.card}
+							card={hoveredCard.card}
 						/>
 						<CardTitle
-							title={hoverCard.card.title}
+							title={hoveredCard.card.title}
 							extraClass={styles.modalTitle}
 						/>
 					</>

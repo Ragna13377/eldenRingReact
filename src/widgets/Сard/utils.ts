@@ -4,6 +4,7 @@ import {
 	removeHoverEffect,
 	throttle,
 } from '@shared/utils/utils';
+import { TInventory } from '@shared/types';
 import styles from '@widgets/Сard/style.module.scss';
 
 const outsideBorderListener = (
@@ -31,3 +32,6 @@ export const optimizedOutsideBorderListener = throttle(
 	outsideBorderListener,
 	10
 );
+
+export const didInventoryUpdated = (inventory: TInventory<boolean>) =>
+	Object.values(inventory).some((cell) => cell);
