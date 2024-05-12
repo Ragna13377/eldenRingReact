@@ -1,9 +1,9 @@
+import { TEquipmentCard } from '@shared/types/cardTypes';
 import {
 	CardSubType,
 	EquipmentType,
 	PlayerClass,
-	TEquipmentCard,
-} from '@shared/types';
+} from '@shared/types/commonTypes';
 import leather_armor from '@images/equipment/leather_armor.webp';
 import scale_armor from '@images/equipment/scale_armor.webp';
 import fire_monk_armor from '@images/equipment/fire_monk_armor.webp';

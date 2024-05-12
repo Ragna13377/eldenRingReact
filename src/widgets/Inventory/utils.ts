@@ -1,9 +1,9 @@
 import { XYCoord } from 'react-dnd';
-import { EquipmentType, TInventory } from '@shared/types';
+import { TInventory } from '@shared/types/utilityTypes';
+import { EquipmentType } from '@shared/types/commonTypes';
 import { TSetAvailableCellProps } from '@widgets/Inventory/types';
-import { isEquipmentCard } from '@shared/utils/typeGuard';
+import { isEquipmentCard, isWeaponCard } from '@shared/utils/typeGuard';
 import { getEnumKeyByValue, throttle } from '@shared/utils/utils';
-import { initialAvailableCellState } from '@widgets/Inventory/constants';
 
 const setAvailableCellHover = ({
 	monitor,
@@ -20,7 +20,7 @@ const setAvailableCellHover = ({
 		return;
 	const { card } = currentDraggableCard;
 	const updateState: Partial<TInventory<boolean>> = {};
-	if (card.equipmentType !== EquipmentType.weapon) {
+	if (isWeaponCard(card)) {
 		const key = getEnumKeyByValue(
 			EquipmentType,
 			card.equipmentType

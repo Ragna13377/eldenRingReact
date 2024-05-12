@@ -1,17 +1,21 @@
 import { Dispatch, RefObject, SetStateAction, useEffect } from 'react';
-import { removePlayerHandCard } from '@shared/services/PlayerHand/slice';
 import { XYCoord } from 'react-dnd';
-import { clearDraggableCard } from '@shared/services/DraggableCard/slice';
 import { useDispatch } from '@/app/store';
-import { TAddCardPayload, TCardWithParams, TDropParams } from '@shared/types';
+import { removePlayerHandCard } from '@shared/services/PlayerHand/slice';
+import { clearDraggableCard } from '@shared/services/DraggableCard/slice';
+import {
+	TAddCardPayload,
+	TCardWithParams,
+	TDropParams,
+} from '@shared/types/utilityTypes';
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
 
 export type TDropReplaceCard = {
 	dropParams: TDropParams;
 	setDropParams: Dispatch<SetStateAction<TDropParams>>;
 	refObject: RefObject<HTMLDivElement>;
 	currentDraggableCard: TCardWithParams | null;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	addCardAction: (action: TAddCardPayload) => any;
+	addCardAction: ActionCreatorWithPayload<TAddCardPayload>;
 };
 
 export const useDropReplaceCard = (

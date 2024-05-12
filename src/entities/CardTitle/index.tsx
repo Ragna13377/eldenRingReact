@@ -1,5 +1,4 @@
 import { clsx } from 'clsx';
-import React from 'react';
 import { TCardTitleProps } from '@entities/CardTitle/types';
 import styles from './style.module.scss';
 

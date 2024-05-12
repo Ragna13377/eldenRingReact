@@ -1,3 +1,4 @@
+import { TCreatureCard } from '@shared/types/cardTypes';
 import {
 	abilityEffect,
 	CardSubType,
@@ -5,8 +6,7 @@ import {
 	EquipmentType,
 	PlayerClass,
 	punishmentEffect,
-	TCreatureCard,
-} from '@shared/types';
+} from '@shared/types/commonTypes';
 import land_squirt from '@images/creatures/land_squirt.webp';
 import miranda_sprout from '@images/creatures/miranda_sprout.webp';
 import skeletal_slime from '@images/creatures/skeletal_slime.webp';

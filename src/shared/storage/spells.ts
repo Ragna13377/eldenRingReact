@@ -1,4 +1,5 @@
-import { CardSubType, TSpellCard } from '@shared/types';
+import { TSpellCard } from '@shared/types/cardTypes';
+import { CardSubType } from '@shared/types/commonTypes';
 import briars_of_punishment from '@images/spells/briars_of_punishment.webp';
 import explosive_ghostflame from '@images/spells/explosive_ghostflame.webp';
 import fias_mist from '@images/spells/fias_mist.webp';

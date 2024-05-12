@@ -1,11 +1,10 @@
 import { clsx } from 'clsx';
-import React from 'react';
 import { createPortal } from 'react-dom';
-import FlavourText from '@entities/FlavourText';
-import { TChangeModalParams } from '@shared/types';
 import { useSelector } from '@/app/store';
 import { getPlayerArenaCardById } from '@shared/services/PlayerArena/selectors';
+import { TChangeModalParams } from '@shared/types/utilityTypes';
 import CardTitle from '@entities/CardTitle';
+import FlavourText from '@entities/FlavourText';
 import styles from './style.module.scss';
 
 const Modal = ({ isOpen, hoveredCardKey }: TChangeModalParams) => {

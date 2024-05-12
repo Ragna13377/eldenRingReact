@@ -1,7 +1,9 @@
-import { CardSubType, TDropParams } from '@shared/types';
+
 import { TFieldDropHookProps } from '@pages/Field/types';
 import { useSelector } from '@/app/store';
 import { useState } from 'react';
+import { CardSubType } from '@shared/types/commonTypes';
+import { TDropParams } from '@shared/types/utilityTypes';
 import { addPlayerArenaCard } from '@shared/services/PlayerArena/slice';
 import { getDraggableCard } from '@shared/services/DraggableCard/slice';
 import { useCustomDrop } from '@shared/hooks/useCustomDrop';

@@ -1,4 +1,6 @@
 import { RefObject } from 'react';
+import { TCardWithParams, TChangeAction } from '@shared/types/utilityTypes';
+import { TWeaponCard } from '@shared/types/cardTypes';
 
 export function setValueSign(value: number): string {
 	return value > 0 ? `+${value}` : `${value}`;
@@ -29,36 +31,37 @@ export function setTargetClassSpelling(
 		return targetClass.map((classType) => classType + 'ов').join(' и ');
 	else return targetClass.join(' или ');
 }
-
-export const removeHoverEffect = <T extends HTMLElement>(
+export function changeHoverEffect<T extends HTMLElement>(
 	ref: RefObject<T>,
-	style: string
-) => {
-	ref.current?.classList.remove(style);
-};
-export const addHoverEffect = <T extends HTMLElement>(
-	ref: RefObject<T>,
-	style: string
-) => {
-	ref.current?.classList.add(style);
-};
-export const getEnumKeyByValue = <T extends string>(
-	enumObj: Record<string, T>,
-	value: T
-): string =>
-	Object.keys(enumObj).find((key) => enumObj[key] === value) as string;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const throttle = <T extends (...args: any[]) => any>(
+	style: string,
+	changeAction: TChangeAction
+) {
+	ref.current?.classList[changeAction](style);
+}
+export const getEnumKeyByValue = <T extends Record<string, string>>(
+	enumObj: T,
+	value: T[keyof T]
+): keyof T =>
+	Object.keys(enumObj).find((key) => enumObj[key] === value) as T[keyof T];
+export const throttle = <T extends (...args: Parameters<T>) => ReturnType<T>>(
 	callee: T,
-	timeout: number
-) => {
-	let timer: NodeJS.Timeout | null = null;
+	delay: number
+): ((...args: Parameters<T>) => void) => {
+	let timeout: ReturnType<typeof setTimeout> | undefined = undefined;
 	return function perform(...args: Parameters<T>) {
-		if (!timer) {
-			timer = setTimeout(() => {
-				timer = null;
+		if (!timeout) {
+			timeout = setTimeout(() => {
 				callee(...args);
-			}, timeout);
+				clearTimeout(timeout);
+				timeout = undefined;
+			}, delay);
 		}
 	};
+};
+export const isTwoHandedWeapon = (weapon: TCardWithParams | null) => {
+	if (weapon) {
+		const { hands } = weapon.card as TWeaponCard;
+		return hands === 2;
+	}
+	return false;
 };

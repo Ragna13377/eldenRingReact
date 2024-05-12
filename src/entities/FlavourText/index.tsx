@@ -1,8 +1,8 @@
 import { clsx } from 'clsx';
 import { useEffect, useRef, useState } from 'react';
+import { maxLineLength } from '@widgets/Сard/constants';
 import { isCreatureCard, isEquipmentCard } from '@shared/utils/typeGuard';
 import { AbilityAction, PunishmentAction } from '@shared/utils/effects';
-import { maxLineLength } from '@widgets/Сard/constants';
 import { TFlavourTextProps } from '@entities/FlavourText/types';
 import { getFlavourText } from '@entities/FlavourText/utils';
 import styles from './style.module.scss';

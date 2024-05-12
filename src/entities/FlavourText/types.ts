@@ -1,4 +1,4 @@
-import { TCard } from '@shared/types';
+import { TCard } from '@shared/types/cardTypes';
 
 export type TFlavourTextProps = {
 	card: TCard;

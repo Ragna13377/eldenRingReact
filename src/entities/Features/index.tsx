@@ -1,6 +1,6 @@
 import { clsx } from 'clsx';
-import { TCard } from '@shared/types';
 import { isCreatureCard, isWeaponCard } from '@shared/utils/typeGuard';
+import { TCard } from '@shared/types/cardTypes';
 import styles from './style.module.scss';
 
 const Features = (card: TCard) => {

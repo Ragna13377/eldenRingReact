@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from '@/app/store';
 import { setHand, getPlayerHandCard } from '@shared/services/PlayerHand/slice';
 import { getPlayerArenaCard } from '@shared/services/PlayerArena/slice';
-import { TChangeModalParams, TKey } from '@shared/types';
+import { TChangeModalParams, TKey } from '@shared/types/utilityTypes';
 import { creatures } from '@shared/storage/creatures';
 import { equipments } from '@shared/storage/equipments';
 import { weapons } from '@shared/storage/weapons';

@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from '@/app/store';
 import { getDraggableCard } from '@shared/services/DraggableCard/slice';
 import { addInventoryCard } from '@shared/services/Inventory/slice';
 import { initialAvailableCellState } from '@widgets/Inventory/constants';
-import { CardSubType, TDropParams, TInventory } from '@shared/types';
+import { CardSubType } from '@shared/types/commonTypes';
+import { TDropParams, TInventory } from '@shared/types/utilityTypes';
 import { TUseDropInventoryProps } from '@widgets/Inventory/types';
 import { optimizedSetAvailableCellHover } from '@widgets/Inventory/utils';
 import { useCustomDrop } from '@shared/hooks/useCustomDrop';

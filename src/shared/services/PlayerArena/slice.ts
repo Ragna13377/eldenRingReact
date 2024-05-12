@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TAddCardPayload, TCardWithParams } from '@shared/types';
 import {
 	cardWidth,
 	maxCardCount,
 } from '@shared/services/PlayerArena/constants';
+import { TAddCardPayload, TCardWithParams } from '@shared/types/utilityTypes';
 
 const initialState: TCardWithParams[] = [];
 const playerArenaSlice = createSlice({
@@ -37,8 +37,8 @@ const playerArenaSlice = createSlice({
 				}
 			}
 		},
-		removePlayerArenaCard(state, action) {
-			return state.filter((card) => card.cardKey !== action.payload);
+		removePlayerArenaCard(state, action: PayloadAction<TCardWithParams>) {
+			return state.filter((card) => card.cardKey !== action.payload.cardKey);
 		},
 	},
 	selectors: {

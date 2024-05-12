@@ -1,5 +1,5 @@
 import { setValueSign } from '@shared/utils/utils';
-import { equipmentStats } from '@shared/types';
+import { equipmentStats } from '@shared/types/commonTypes';
 
 export const getFlavourText = (stats: equipmentStats) => {
 	let flavourText = setValueSign(stats.strength);

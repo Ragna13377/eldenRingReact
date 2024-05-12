@@ -1,4 +1,4 @@
-import { TCardWithParams } from '@shared/types';
+import { TCardWithParams } from '@shared/types/utilityTypes';
 
 export type TInventoryCellProps = {
 	isAvailable?: boolean;

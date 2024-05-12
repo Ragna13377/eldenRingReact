@@ -1,12 +1,11 @@
 import {
-	CardSubType,
-	EquipmentType,
 	TCard,
 	TCreatureCard,
 	TEquipmentCard,
 	TSpellCard,
 	TWeaponCard,
-} from '@shared/types';
+} from '@shared/types/cardTypes';
+import { CardSubType, EquipmentType } from '@shared/types/commonTypes';
 
 export const isCreatureCard = (card: TCard): card is TCreatureCard =>
 	card.subtype === CardSubType.creature;

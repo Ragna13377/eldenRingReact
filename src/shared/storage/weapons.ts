@@ -1,9 +1,9 @@
+import { TWeaponCard } from '@shared/types/cardTypes';
 import {
 	CardSubType,
 	EquipmentType,
 	PlayerClass,
-	TWeaponCard,
-} from '@shared/types';
+} from '@shared/types/commonTypes';
 import envoys_horn from '@images/weapon/envoys_horn.webp';
 import pike from '@images/weapon/pike.webp';
 import grossmesser from '@images/weapon/grossmesser.webp';
@@ -21,6 +21,7 @@ import golem_greatbow from '@images/weapon/golem_greatbow.webp';
 import greathorn_hammer from '@images/weapon/greathorn_hammer.webp';
 import golden_halberd from '@images/weapon/golden_halberd.webp';
 import meteorite_staff from '@images/weapon/meteorite_staff.webp';
+
 export const weapons: TWeaponCard[] = [
 	{
 		type: 'treasures',

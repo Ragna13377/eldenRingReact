@@ -1,10 +1,6 @@
 import React, { RefObject } from 'react';
-import {
-	addHoverEffect,
-	removeHoverEffect,
-	throttle,
-} from '@shared/utils/utils';
-import { TInventory } from '@shared/types';
+import { changeHoverEffect, throttle } from '@shared/utils/utils';
+import { TInventory } from '@shared/types/utilityTypes';
 import styles from '@widgets/Сard/style.module.scss';
 
 const outsideBorderListener = (
@@ -21,9 +17,9 @@ const outsideBorderListener = (
 			Y < cardRect.top ||
 			Y > cardRect.bottom
 		) {
-			removeHoverEffect<HTMLDivElement>(cardRef, styles.hoverEffect);
+			changeHoverEffect<HTMLDivElement>(cardRef, styles.hoverEffect, 'remove');
 			setTimeout(() => {
-				addHoverEffect<HTMLDivElement>(cardRef, styles.hoverEffect);
+				changeHoverEffect<HTMLDivElement>(cardRef, styles.hoverEffect, 'add');
 			}, 100);
 		}
 	}

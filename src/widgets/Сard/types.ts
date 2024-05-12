@@ -1,6 +1,6 @@
 import { RefObject } from 'react';
 import { XYCoord } from 'react-dnd';
-import { CardSubType } from '@shared/types';
+import { CardSubType } from '@shared/types/commonTypes';
 import { baseTransition } from '@widgets/Сard/constants';
 
 export type TCardDragHookProps = {

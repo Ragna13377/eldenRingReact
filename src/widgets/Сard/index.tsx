@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useRef } from 'react';
-import { TCardWithParams } from '@shared/types';
-import { addHoverEffect, removeHoverEffect } from '@shared/utils/utils';
+import { TCardWithParams } from '@shared/types/utilityTypes';
+import { changeHoverEffect } from '@shared/utils/utils';
 import { optimizedOutsideBorderListener } from '@widgets/Сard/utils';
 import { useCardDrag } from '@widgets/Сard/hooks';
 import { useDispatch } from '@/app/store';
@@ -32,13 +32,13 @@ const Card = ({ card, cardKey }: TCardWithParams) => {
 			className={styles.hoverEffect}
 			ref={cardRef}
 			onMouseUp={() =>
-				addHoverEffect<HTMLDivElement>(cardRef, styles.hoverEffect)
+				changeHoverEffect<HTMLDivElement>(cardRef, styles.hoverEffect, 'add')
 			}
 			onMouseDown={() =>
-				removeHoverEffect<HTMLDivElement>(cardRef, styles.hoverEffect)
+				changeHoverEffect<HTMLDivElement>(cardRef, styles.hoverEffect, 'remove')
 			}
 			onMouseEnter={() =>
-				addHoverEffect<HTMLDivElement>(cardRef, styles.hoverEffect)
+				changeHoverEffect<HTMLDivElement>(cardRef, styles.hoverEffect, 'add')
 			}
 			onMouseMove={(e) => optimizedOutsideBorderListener(e, cardRef)}
 			style={{

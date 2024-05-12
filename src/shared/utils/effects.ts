@@ -1,14 +1,14 @@
 import {
-	Ability,
-	abilityEffect,
-	Punishment,
-	punishmentEffect,
-} from '@shared/types';
-import {
 	setLevelTextSpelling,
 	setTargetClassSpelling,
 	setValueSign,
 } from '@shared/utils/utils';
+import {
+	Ability,
+	abilityEffect,
+	Punishment,
+	punishmentEffect,
+} from '@shared/types/commonTypes';
 
 export const AbilityAction = {
 	changeEscape: {

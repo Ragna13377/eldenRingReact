@@ -1,5 +1,5 @@
 import { useDrop } from 'react-dnd';
-import { TCustomDrop } from '@shared/types';
+import { TCustomDrop } from '@shared/types/utilityTypes';
 
 export const useCustomDrop = ({
 	accept,

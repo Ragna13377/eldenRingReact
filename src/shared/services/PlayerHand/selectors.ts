@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '@/app/store';
-import { TCardWithParams } from '@shared/types';
+import { TCardWithParams } from '@shared/types/utilityTypes';
 
 export const getPlayerHandCardById = (id: string) =>
 	createSelector(
