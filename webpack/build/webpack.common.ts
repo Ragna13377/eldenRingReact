@@ -14,7 +14,7 @@ export function getCommonWebpack({mode, paths}: WebpackOptions): webpack.Configu
       filename: isProd
         ? 'static/scripts/[name].[contenthash].js'
         : 'static/scripts/[name].js',
-      publicPath: "/"
+      publicPath: isProd ? "./" : "/"
     },
     module: {
       rules: getLoaders(mode),

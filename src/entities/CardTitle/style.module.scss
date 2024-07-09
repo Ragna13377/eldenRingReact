@@ -14,8 +14,10 @@ $title-width: 0.9;
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: contain;
+	padding-block-end: 2px;
 }
 
 .titleCompressed {
 	font-size: 7px;
+	padding: 0;
 }

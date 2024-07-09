@@ -14,6 +14,7 @@ export function getPlugins(mode: ProjectMode, paths: WebpackPaths): Configuratio
       template: path.resolve(__dirname, '../..', paths.html),
     }),
     new CleanWebpackPlugin(),
+    //TODO добавить CopyPlugin
     new MiniCssExtractPlugin({
       filename: isProd
         ? 'static/styles/[name].[contenthash].css'

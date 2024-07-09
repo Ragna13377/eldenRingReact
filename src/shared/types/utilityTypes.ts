@@ -22,7 +22,7 @@ export type TCustomDrop = {
 	dropHandler: Dispatch<SetStateAction<TDropParams>>;
 	hoverHandler?: (monitor: DropTargetMonitor<unknown, unknown>) => void;
 };
-export type TInventory<T> = {
+export type TInventory<T = null> = {
 	helmet: T;
 	amulet: T;
 	leftWeapon: T;

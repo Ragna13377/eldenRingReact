@@ -106,4 +106,4 @@ export const spells: TSpellCard[] = [
 		title: 'Осколок засады',
 		image: ambush_shard,
 	},
-]
+];

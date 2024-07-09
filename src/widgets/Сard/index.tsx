@@ -22,6 +22,7 @@ const Card = ({ card, cardKey }: TCardWithParams) => {
 		cardRef,
 		subtype,
 	});
+	//TODO вынести в onDragStart?
 	useEffect(() => {
 		if (isDrag) dispatch(setDraggableCard({ card, cardKey }));
 	}, [isDrag, dispatch, card, cardKey]);

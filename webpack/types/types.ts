@@ -1,14 +1,15 @@
-export type ProjectMode = 'prod' | 'dev'
+export type ProjectMode = 'prod' | 'dev';
 export interface EnvVariables {
-  mode?: ProjectMode
+	mode?: ProjectMode;
 }
 export interface WebpackPaths {
-  src: string,
-  entry: string,
-  output: string,
-  html: string
+	src: string;
+	entry: string;
+	output: string;
+	html: string;
+	port: number;
 }
-export interface WebpackOptions{
-  paths: WebpackPaths
-  mode: ProjectMode
+export interface WebpackOptions {
+	paths: WebpackPaths;
+	mode: ProjectMode;
 }
