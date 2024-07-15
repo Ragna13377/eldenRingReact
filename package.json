@@ -1,4 +1,5 @@
 {
+  "homepage": "https//Ragna13377.github.io/eldenRingReact",
   "name": "react-webpack",
   "version": "1.0.1",
   "description": "",
@@ -6,6 +7,8 @@
   "scripts": {
     "start": "webpack serve --config webpack/webpack.config.ts --env mode=dev",
     "build": "webpack --config webpack/webpack.config.ts --env mode=prod",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "format": "prettier --write \"./src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\" --ignore-path ./.prettierignore",
     "stylelint": "stylelint \"src/**/*.{css,scss}\"",
     "stylelint:fix": "stylelint \"src/**/*.{css,scss}\" --fix",
@@ -30,6 +33,7 @@
     "@typescript-eslint/parser": "^7.5.0",
     "autoprefixer": "^10.4.17",
     "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^12.0.2",
     "cross-env": "^7.0.3",
     "css-loader": "^6.10.0",
     "cssnano": "^6.0.3",
@@ -46,6 +50,7 @@
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "fork-ts-checker-webpack-plugin": "^9.0.2",
+    "gh-pages": "^6.1.1",
     "html-webpack-plugin": "^5.6.0",
     "jest": "^29.7.0",
     "merge": "^2.1.1",
