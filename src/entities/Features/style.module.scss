@@ -1,5 +1,3 @@
-$accent-color: #ead861;
-
 .features {
 	position: absolute;
 	inset-block-end: 23px;
@@ -10,7 +8,7 @@ $accent-color: #ead861;
 	align-items: center;
 	width: 100%;
 	padding: 0 11px;
-	color: $accent-color;
+	color: var(--feature-color-text);
 	font-family: 'Oswald', 'Arial', serif;
 }
 

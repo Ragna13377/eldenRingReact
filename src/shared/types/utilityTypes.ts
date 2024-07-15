@@ -32,7 +32,7 @@ export type TInventory<T = null> = {
 	effect: string;
 	equipments: TInventoryEquipment<T>;
 };
-export type TAddCardPayload = {
+export type TCardPayload = {
 	currentDraggableCard: TCardWithParams | null;
 	dropTargetRect: DOMRectReadOnly;
 	cursorPosition: XYCoord;

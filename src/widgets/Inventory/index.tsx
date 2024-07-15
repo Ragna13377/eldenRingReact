@@ -9,7 +9,7 @@ import styles from './style.module.scss';
 
 const Inventory = () => {
 	const inventoryRef = useRef<HTMLDivElement>(null);
-	const {score, effect, equipments} = useSelector(getInventory);
+	const { score, effect, equipments } = useSelector(getInventory);
 	const { availableCell, setAvailableCell, isOver } = useDropInventory({
 		inventoryRef,
 	});

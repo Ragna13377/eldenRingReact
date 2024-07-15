@@ -1,6 +1,9 @@
 import { DropTargetMonitor } from 'react-dnd';
 import { Dispatch, RefObject, SetStateAction } from 'react';
-import { TCardWithParams, TInventoryEquipment } from '@shared/types/utilityTypes';
+import {
+	TCardWithParams,
+	TInventoryEquipment,
+} from '@shared/types/utilityTypes';
 
 export type TUseDropInventoryProps = {
 	inventoryRef: RefObject<HTMLDivElement>;

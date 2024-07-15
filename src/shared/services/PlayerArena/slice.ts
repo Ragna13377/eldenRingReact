@@ -3,14 +3,14 @@ import {
 	cardWidth,
 	maxCardCount,
 } from '@shared/services/PlayerArena/constants';
-import { TAddCardPayload, TCardWithParams } from '@shared/types/utilityTypes';
+import { TCardPayload, TCardWithParams } from '@shared/types/utilityTypes';
 
 const initialState: TCardWithParams[] = [];
 const playerArenaSlice = createSlice({
 	name: 'playerArena',
 	initialState,
 	reducers: {
-		addPlayerArenaCard(state, action: PayloadAction<TAddCardPayload>) {
+		addPlayerArenaCard(state, action: PayloadAction<TCardPayload>) {
 			const { currentDraggableCard, dropTargetRect, cursorPosition } =
 				action.payload;
 			if (currentDraggableCard) {

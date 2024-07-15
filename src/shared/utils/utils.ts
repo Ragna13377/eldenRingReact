@@ -1,9 +1,5 @@
 import { RefObject } from 'react';
-import {
-	TCardWithParams,
-	TChangeAction,
-	TInventory,
-} from '@shared/types/utilityTypes';
+import { TCardWithParams, TChangeAction } from '@shared/types/utilityTypes';
 import { TEquipmentCard, TWeaponCard } from '@shared/types/cardTypes';
 import { isWeaponCard } from '@shared/utils/typeGuard';
 import { EquipmentType } from '@shared/types/commonTypes';

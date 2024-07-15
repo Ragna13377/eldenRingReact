@@ -1,6 +1,6 @@
 import React, { RefObject } from 'react';
 import { changeHoverEffect, throttle } from '@shared/utils/utils';
-import { TInventory, TInventoryEquipment } from '@shared/types/utilityTypes';
+import { TInventoryEquipment } from '@shared/types/utilityTypes';
 import styles from '@widgets/Сard/style.module.scss';
 
 const outsideBorderListener = (

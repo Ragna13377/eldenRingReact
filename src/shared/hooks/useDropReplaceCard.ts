@@ -4,7 +4,7 @@ import { useDispatch } from '@/app/store';
 import { removePlayerHandCard } from '@shared/services/PlayerHand/slice';
 import { clearDraggableCard } from '@shared/services/DraggableCard/slice';
 import {
-	TAddCardPayload,
+	TCardPayload,
 	TCardWithParams,
 	TDropParams,
 } from '@shared/types/utilityTypes';
@@ -15,7 +15,7 @@ export type TDropReplaceCard = {
 	setDropParams: Dispatch<SetStateAction<TDropParams>>;
 	refObject: RefObject<HTMLDivElement>;
 	currentDraggableCard: TCardWithParams | null;
-	addCardAction: ActionCreatorWithPayload<TAddCardPayload>;
+	addCardAction: ActionCreatorWithPayload<TCardPayload>;
 };
 
 export const useDropReplaceCard = (

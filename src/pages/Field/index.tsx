@@ -5,7 +5,9 @@ import { useDispatch, useSelector } from '@/app/store';
 import { setHand, getPlayerHandCard } from '@shared/services/PlayerHand/slice';
 import { getPlayerArenaCard } from '@shared/services/PlayerArena/slice';
 import { TChangeModalParams, TKey } from '@shared/types/utilityTypes';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { creatures } from '@shared/storage/creatures';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { equipments } from '@shared/storage/equipments';
 import { weapons } from '@shared/storage/weapons';
 import Card from '@widgets/Сard';
