@@ -1,6 +1,6 @@
-import { TInventory } from '@shared/types/utilityTypes';
+import { TInventoryEquipment } from '@shared/types/utilityTypes';
 
-export const initialAvailableCellState: TInventory<boolean> = {
+export const initialAvailableCellState: TInventoryEquipment = {
 	helmet: false,
 	amulet: false,
 	leftWeapon: false,

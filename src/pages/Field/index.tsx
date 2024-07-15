@@ -27,7 +27,7 @@ const Field = () => {
 	const { isOver } = useDropField({ playerArenaRef });
 	const cardData = useMemo(
 		() =>
-			equipments.slice(5, 10).map((card) => {
+			weapons.slice(5, 10).map((card) => {
 				const key: TKey = uuidv4();
 				return { card: card, cardKey: key };
 			}),

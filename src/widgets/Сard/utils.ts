@@ -1,6 +1,6 @@
 import React, { RefObject } from 'react';
 import { changeHoverEffect, throttle } from '@shared/utils/utils';
-import { TInventory } from '@shared/types/utilityTypes';
+import { TInventory, TInventoryEquipment } from '@shared/types/utilityTypes';
 import styles from '@widgets/Сard/style.module.scss';
 
 const outsideBorderListener = (
@@ -29,5 +29,5 @@ export const optimizedOutsideBorderListener = throttle(
 	10
 );
 
-export const didInventoryUpdated = (inventory: TInventory<boolean>) =>
+export const didInventoryUpdated = (inventory: TInventoryEquipment) =>
 	Object.values(inventory).some((cell) => cell);

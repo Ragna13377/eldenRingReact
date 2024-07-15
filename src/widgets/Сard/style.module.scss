@@ -3,12 +3,6 @@ $card-width: 162px;
 $card-height: 237px;
 $card-border-radius: 10px;
 $card-offset: 5px;
-$accent-color: #cbbb30;
-$accent-color-basic: rgb(136 135 135);
-$accent-color-beast: rgb(178 66 22);
-$accent-color-plant: rgb(123 166 19);
-$accent-color-magical: rgb(43 85 192);
-$accent-color-undead: rgb(47 133 140);
 
 .card {
 	position: relative;
@@ -36,6 +30,7 @@ $accent-color-undead: rgb(47 133 140);
 		z-index: 40;
 
 		.card{
+			//TODO: change scale to 1.6 and translate?
 			transform: scale(1.9) translate(0, -50px);
 			transition: transform 0.3s linear;
 		}

@@ -9,7 +9,7 @@ import styles from './style.module.scss';
 
 const Inventory = () => {
 	const inventoryRef = useRef<HTMLDivElement>(null);
-	const inventoryData = useSelector(getInventory);
+	const {score, effect, equipments} = useSelector(getInventory);
 	const { availableCell, setAvailableCell, isOver } = useDropInventory({
 		inventoryRef,
 	});
@@ -23,35 +23,35 @@ const Inventory = () => {
 			<InventoryCell
 				extraClass={styles.helmet}
 				isAvailable={availableCell.helmet}
-				data={inventoryData.helmet}
+				data={equipments.helmet}
 			/>
-			<InventoryCell extraClass={styles.status} />
+			<InventoryCell extraClass={styles.status}>{score}</InventoryCell>
 			<InventoryCell
 				extraClass={styles.amulet}
 				isAvailable={availableCell.amulet}
-				data={inventoryData.amulet}
+				data={equipments.amulet}
 			/>
 			<InventoryCell
 				extraClass={styles.leftWeapon}
 				isAvailable={availableCell.leftWeapon}
-				data={inventoryData.leftWeapon}
+				data={equipments.leftWeapon}
 			/>
 			<InventoryCell extraClass={styles.playerClass} />
 			<InventoryCell
 				extraClass={styles.rightWeapon}
 				isAvailable={availableCell.rightWeapon}
-				data={inventoryData.rightWeapon}
+				data={equipments.rightWeapon}
 			/>
 			<InventoryCell
 				extraClass={styles.armor}
 				isAvailable={availableCell.armor}
-				data={inventoryData.armor}
+				data={equipments.armor}
 			/>
 			<InventoryCell extraClass={styles.flavourText} />
 			<InventoryCell
 				extraClass={styles.boots}
 				isAvailable={availableCell.boots}
-				data={inventoryData.boots}
+				data={equipments.boots}
 			/>
 		</article>
 	);

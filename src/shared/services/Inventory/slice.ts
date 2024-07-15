@@ -4,18 +4,22 @@ import { isWeaponCard } from '@shared/utils/typeGuard';
 import {
 	TAddCardPayload,
 	TCardWithParams,
-	TInventory,
+	TInventory, TInventoryEquipment,
 } from '@shared/types/utilityTypes';
 import { EquipmentType } from '@shared/types/commonTypes';
 import { TEquipmentCard } from '@shared/types/cardTypes';
 
 const initialState: TInventory<TCardWithParams | null> = {
-	helmet: null,
-	amulet: null,
-	leftWeapon: null,
-	rightWeapon: null,
-	armor: null,
-	boots: null,
+	score: 0,
+	effect: '',
+	equipments: {
+		helmet: null,
+		amulet: null,
+		leftWeapon: null,
+		rightWeapon: null,
+		armor: null,
+		boots: null,
+	},
 };
 const InventorySlice = createSlice({
 	name: 'inventory',
@@ -26,23 +30,27 @@ const InventorySlice = createSlice({
 				action.payload;
 			if (!currentDraggableCard) return;
 			const { card } = currentDraggableCard as { card: TEquipmentCard };
+			const { equipments } = state;
+			state.score += card.primaryStats.strength;
 			if (!isWeaponCard(card)) {
 				const key = getEnumKeyByValue(
 					EquipmentType,
 					card.equipmentType
-				) as keyof TInventory<TCardWithParams | null>;
-				state[key] = currentDraggableCard;
+				) as keyof TInventoryEquipment;
+				equipments[key] = currentDraggableCard;
 			} else {
-				if (card.hands === 2) {
-					state.leftWeapon = state.rightWeapon = currentDraggableCard;
+				if (isTwoHandedWeapon(currentDraggableCard)) {
+					equipments.leftWeapon = equipments.rightWeapon = currentDraggableCard;
 				} else {
 					const middle = dropTargetRect.left + dropTargetRect.width / 2;
 					if (cursorPosition.x < middle) {
-						state.leftWeapon = currentDraggableCard;
-						if (isTwoHandedWeapon(state.rightWeapon)) state.rightWeapon = null;
+						equipments.leftWeapon = currentDraggableCard;
+						if (isTwoHandedWeapon(equipments.rightWeapon))
+							equipments.rightWeapon = null;
 					} else {
-						state.rightWeapon = currentDraggableCard;
-						if (isTwoHandedWeapon(state.leftWeapon)) state.leftWeapon = null;
+						equipments.rightWeapon = currentDraggableCard;
+						if (isTwoHandedWeapon(equipments.leftWeapon))
+							equipments.leftWeapon = null;
 					}
 				}
 			}

@@ -1,5 +1,9 @@
 import { RefObject } from 'react';
-import { TCardWithParams, TChangeAction, TInventory } from '@shared/types/utilityTypes';
+import {
+	TCardWithParams,
+	TChangeAction,
+	TInventory,
+} from '@shared/types/utilityTypes';
 import { TEquipmentCard, TWeaponCard } from '@shared/types/cardTypes';
 import { isWeaponCard } from '@shared/utils/typeGuard';
 import { EquipmentType } from '@shared/types/commonTypes';
@@ -45,7 +49,7 @@ export const getEnumKeyByValue = <T extends Record<string, string>>(
 	value: T[keyof T]
 ): keyof T =>
 	Object.keys(enumObj).find((key) => enumObj[key] === value) as T[keyof T];
-	
+
 export const throttle = <F extends (...args: Parameters<F>) => ReturnType<F>>(
 	fn: F,
 	delay: number
@@ -74,7 +78,6 @@ export const getInventoryKeys = (card: TEquipmentCard) => {
 	if (!isWeaponCard(card))
 		keys.push(getEnumKeyByValue(EquipmentType, card.equipmentType));
 	else {
-		
 	}
 	return keys;
 };

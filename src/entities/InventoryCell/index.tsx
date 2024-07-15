@@ -7,6 +7,7 @@ const InventoryCell = ({
 	extraClass,
 	isAvailable,
 	data,
+	children,
 }: TInventoryCellProps) => (
 	<div
 		className={clsx(styles.inventoryCell, extraClass, {
@@ -20,6 +21,7 @@ const InventoryCell = ({
 				alt={data.card.title}
 			/>
 		)}
+		{children}
 	</div>
 );
 

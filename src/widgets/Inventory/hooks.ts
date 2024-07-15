@@ -4,7 +4,7 @@ import { getDraggableCard } from '@shared/services/DraggableCard/slice';
 import { addInventoryCard } from '@shared/services/Inventory/slice';
 import { initialAvailableCellState } from '@widgets/Inventory/constants';
 import { CardSubType } from '@shared/types/commonTypes';
-import { TDropParams, TInventory } from '@shared/types/utilityTypes';
+import { TDropParams, TInventoryEquipment } from '@shared/types/utilityTypes';
 import { TUseDropInventoryProps } from '@widgets/Inventory/types';
 import { optimizedSetAvailableCellHover } from '@widgets/Inventory/utils';
 import { useCustomDrop } from '@shared/hooks/useCustomDrop';
@@ -16,7 +16,7 @@ export const useDropInventory = ({ inventoryRef }: TUseDropInventoryProps) => {
 		isDrop: false,
 		getClientOffset: null,
 	});
-	const [availableCell, setAvailableCell] = useState<TInventory<boolean>>(
+	const [availableCell, setAvailableCell] = useState<TInventoryEquipment>(
 		initialAvailableCellState
 	);
 	const { isOver } = useCustomDrop({

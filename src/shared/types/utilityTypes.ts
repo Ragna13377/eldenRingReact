@@ -1,6 +1,7 @@
 import { DropTargetMonitor, XYCoord } from 'react-dnd';
 import { Dispatch, RefObject, SetStateAction } from 'react';
 import { TCard } from '@shared/types/cardTypes';
+import { EquipmentType } from '@shared/types/commonTypes';
 
 export type TChangeAction = 'add' | 'remove';
 export type TKey = string;
@@ -22,13 +23,14 @@ export type TCustomDrop = {
 	dropHandler: Dispatch<SetStateAction<TDropParams>>;
 	hoverHandler?: (monitor: DropTargetMonitor<unknown, unknown>) => void;
 };
+export type TInventoryEquipment<T = boolean> = Record<
+	Exclude<keyof typeof EquipmentType, 'weapon'> | 'leftWeapon' | 'rightWeapon',
+	T
+>;
 export type TInventory<T = null> = {
-	helmet: T;
-	amulet: T;
-	leftWeapon: T;
-	rightWeapon: T;
-	armor: T;
-	boots: T;
+	score: number;
+	effect: string;
+	equipments: TInventoryEquipment<T>;
 };
 export type TAddCardPayload = {
 	currentDraggableCard: TCardWithParams | null;
