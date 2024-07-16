@@ -15,12 +15,12 @@ export function getPlugins(mode: ProjectMode, paths: WebpackPaths): Configuratio
       template: path.resolve(__dirname, '../..', paths.html),
     }),
     new CleanWebpackPlugin(),
-    // new CopyPlugin({
-    //   patterns: [{
-        // from: path.resolve(__dirname, '../../', paths.src, 'shared/files'),
+    new CopyPlugin({
+      patterns: [{
+        from: path.resolve(__dirname, '../../', paths.src, 'shared/assets/images/favicon'),
         // to: path.resolve(__dirname, '../..', paths.output, 'files'),
-    //   }]
-    // }),
+      }]
+    }),
     new MiniCssExtractPlugin({
       filename: isProd
         ? 'static/styles/[name].[contenthash].css'
