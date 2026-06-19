@@ -26,14 +26,30 @@ $card-offset: 5px;
 }
 
 .hoverEffect {
+	padding: 0;
+	border: 0;
+	color: inherit;
+	font: inherit;
+	background: transparent;
+	cursor: default;
+
 	&:hover {
 		z-index: 40;
 
 		.card{
-			//TODO: change scale to 1.6 and translate?
-			transform: scale(1.9) translate(0, -50px);
-			transition: transform 0.3s linear;
+			transform: scale(1.55) translate(0, -42px);
+			transition: transform 0.22s ease-out;
 		}
+	}
+}
+
+.actionable {
+	filter: drop-shadow(0 0 12px rgba(238, 202, 111, 0.95));
+
+	.card {
+		box-shadow:
+			0 0 0 2px rgba(238, 202, 111, 0.9),
+			0 0 24px rgba(238, 202, 111, 0.48);
 	}
 }
 

@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import { useSelector } from '@/app/store';
-import { getDraggableCard } from '@shared/services/DraggableCard/slice';
-import { addInventoryCard } from '@shared/services/Inventory/slice';
-import { initialAvailableCellState } from '@widgets/Inventory/constants';
-import { CardSubType } from '@shared/types/commonTypes';
-import { TDropParams, TInventoryEquipment } from '@shared/types/utilityTypes';
-import { TUseDropInventoryProps } from '@widgets/Inventory/types';
-import { optimizedSetAvailableCellHover } from '@widgets/Inventory/utils';
 import { useCustomDrop } from '@shared/hooks/useCustomDrop';
 import { useDropReplaceCard } from '@shared/hooks/useDropReplaceCard';
+import { getDraggableCard } from '@shared/services/DraggableCard/slice';
+import { addInventoryCard } from '@shared/services/Inventory/slice';
+import { CardSubType } from '@shared/types/commonTypes';
+import type { TDropParams, TInventoryEquipment } from '@shared/types/utilityTypes';
+import { initialAvailableCellState } from '@widgets/Inventory/constants';
+import type { TUseDropInventoryProps } from '@widgets/Inventory/types';
+import { optimizedSetAvailableCellHover } from '@widgets/Inventory/utils';
+import { useState } from 'react';
+import { useSelector } from '@/app/store';
 
 export const useDropInventory = ({ inventoryRef }: TUseDropInventoryProps) => {
 	const currentDraggableCard = useSelector(getDraggableCard);

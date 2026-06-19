@@ -1,14 +1,14 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { isTwoHandedWeapon, getEnumKeyByValue } from '@shared/utils/utils';
-import { isWeaponCard } from '@shared/utils/typeGuard';
-import {
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import type { TEquipmentCard, TWeaponCard } from '@shared/types/cardTypes';
+import { EquipmentType } from '@shared/types/commonTypes';
+import type {
 	TCardPayload,
 	TCardWithParams,
 	TInventory,
 	TInventoryEquipment,
 } from '@shared/types/utilityTypes';
-import { EquipmentType } from '@shared/types/commonTypes';
-import { TEquipmentCard, TWeaponCard } from '@shared/types/cardTypes';
+import { isWeaponCard } from '@shared/utils/typeGuard';
+import { getEnumKeyByValue, isTwoHandedWeapon } from '@shared/utils/utils';
 
 const initialState: TInventory<TCardWithParams | null> = {
 	score: 0,
@@ -27,8 +27,7 @@ const InventorySlice = createSlice({
 	initialState,
 	reducers: {
 		addInventoryCard: (state, action: PayloadAction<TCardPayload>) => {
-			const { currentDraggableCard, dropTargetRect, cursorPosition } =
-				action.payload;
+			const { currentDraggableCard, dropTargetRect, cursorPosition } = action.payload;
 			if (!currentDraggableCard) return;
 			const { card } = currentDraggableCard as { card: TEquipmentCard };
 			const { equipments } = state;
@@ -45,12 +44,10 @@ const InventorySlice = createSlice({
 					const middle = dropTargetRect.left + dropTargetRect.width / 2;
 					if (cursorPosition.x < middle) {
 						equipments.leftWeapon = currentDraggableCard;
-						if (isTwoHandedWeapon(equipments.rightWeapon))
-							equipments.rightWeapon = null;
+						if (isTwoHandedWeapon(equipments.rightWeapon)) equipments.rightWeapon = null;
 					} else {
 						equipments.rightWeapon = currentDraggableCard;
-						if (isTwoHandedWeapon(equipments.leftWeapon))
-							equipments.leftWeapon = null;
+						if (isTwoHandedWeapon(equipments.leftWeapon)) equipments.leftWeapon = null;
 					}
 				}
 			}

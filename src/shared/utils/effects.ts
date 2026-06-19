@@ -1,14 +1,14 @@
 import {
+	type Ability,
+	abilityEffect,
+	type Punishment,
+	punishmentEffect,
+} from '@shared/types/commonTypes';
+import {
 	setLevelTextSpelling,
 	setTargetClassSpelling,
 	setValueSign,
 } from '@shared/utils/utils';
-import {
-	Ability,
-	abilityEffect,
-	Punishment,
-	punishmentEffect,
-} from '@shared/types/commonTypes';
 
 export const AbilityAction = {
 	changeEscape: {
@@ -31,8 +31,7 @@ export const AbilityAction = {
 			const { value, targetClass } = props;
 			if (value === -Infinity)
 				return `${setTargetClassSpelling(targetClass, false)} автоматически побеждает его.`;
-			else
-				return `${setValueSign(value)} против ${setTargetClassSpelling(targetClass)}.`;
+			else return `${setValueSign(value)} против ${setTargetClassSpelling(targetClass)}.`;
 		},
 	},
 	absolutePunishment: {
@@ -87,16 +86,16 @@ export const PunishmentAction = {
 			if (optional) {
 				switch (value) {
 					case 'death':
-						description = ` Убивает ${optional!.targetClass}а.`;
+						description = ` Убивает ${optional.targetClass}а.`;
 						break;
 					case 'D6':
-						description = ` ${optional!.targetClass} теряет D6 уровней.`;
+						description = ` ${optional.targetClass} теряет D6 уровней.`;
 						break;
 					case 'firstLevel':
-						description = ` ${optional!.targetClass} становится 1 уровнем.`;
+						description = ` ${optional.targetClass} становится 1 уровнем.`;
 						break;
 					default:
-						description = ` ${optional!.targetClass} теряет ${setLevelTextSpelling(value)}.`;
+						description = ` ${optional.targetClass} теряет ${setLevelTextSpelling(value)}.`;
 						break;
 				}
 			}

@@ -1,28 +1,24 @@
-import { TEquipmentCard } from '@shared/types/cardTypes';
-import {
-	CardSubType,
-	EquipmentType,
-	PlayerClass,
-} from '@shared/types/commonTypes';
-import leather_armor from '@images/equipment/leather_armor.webp';
-import scale_armor from '@images/equipment/scale_armor.webp';
-import fire_monk_armor from '@images/equipment/fire_monk_armor.webp';
-import knight_armor from '@images/equipment/knight_armor.webp';
-import briar_armor from '@images/equipment/briar_armor.webp';
-import black_knife_armor from '@images/equipment/black_knife_armor.webp';
-import foot_soldier_cap from '@images/equipment/foot_soldier_cap.webp';
-import shining_horned_headband from '@images/equipment/shining_horned_headband.webp';
-import lazuli_glintstone_crown from '@images/equipment/lazuli_glintstone_crown.webp';
-import black_hood from '@images/equipment/black_hood.webp';
-import champion_gaiters from '@images/equipment/champion_gaiters.webp';
-import briar_greaves from '@images/equipment/briar_greaves.webp';
-import shaman_leggings from '@images/equipment/shaman_leggings.webp';
-import warrior_jar_shard from '@images/equipment/warrior_jar_shard.webp';
-import starscourge_heirloom from '@images/equipment/starscourge_heirloom.webp';
 import axe_talisman from '@images/equipment/axe_talisman.webp';
+import black_hood from '@images/equipment/black_hood.webp';
+import black_knife_armor from '@images/equipment/black_knife_armor.webp';
+import briar_armor from '@images/equipment/briar_armor.webp';
+import briar_greaves from '@images/equipment/briar_greaves.webp';
+import champion_gaiters from '@images/equipment/champion_gaiters.webp';
+import concealing_veil from '@images/equipment/concealing_veil.webp';
+import fire_monk_armor from '@images/equipment/fire_monk_armor.webp';
+import foot_soldier_cap from '@images/equipment/foot_soldier_cap.webp';
+import knight_armor from '@images/equipment/knight_armor.webp';
+import lazuli_glintstone_crown from '@images/equipment/lazuli_glintstone_crown.webp';
+import leather_armor from '@images/equipment/leather_armor.webp';
 import old_lords_talisman from '@images/equipment/old_lords_talisman.webp';
 import sacrificial_twig from '@images/equipment/sacrificial_twig.webp';
-import concealing_veil from '@images/equipment/concealing_veil.webp';
+import scale_armor from '@images/equipment/scale_armor.webp';
+import shaman_leggings from '@images/equipment/shaman_leggings.webp';
+import shining_horned_headband from '@images/equipment/shining_horned_headband.webp';
+import starscourge_heirloom from '@images/equipment/starscourge_heirloom.webp';
+import warrior_jar_shard from '@images/equipment/warrior_jar_shard.webp';
+import type { TEquipmentCard } from '@shared/types/cardTypes';
+import { CardSubType, EquipmentType, PlayerClass } from '@shared/types/commonTypes';
 
 export const equipments: TEquipmentCard[] = [
 	{

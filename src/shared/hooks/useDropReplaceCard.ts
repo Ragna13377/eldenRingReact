@@ -1,19 +1,19 @@
-import { Dispatch, RefObject, SetStateAction, useEffect } from 'react';
-import { XYCoord } from 'react-dnd';
-import { useDispatch } from '@/app/store';
-import { removePlayerHandCard } from '@shared/services/PlayerHand/slice';
+import type { ActionCreatorWithPayload } from '@reduxjs/toolkit';
 import { clearDraggableCard } from '@shared/services/DraggableCard/slice';
-import {
+import { removePlayerHandCard } from '@shared/services/PlayerHand/slice';
+import type {
 	TCardPayload,
 	TCardWithParams,
 	TDropParams,
 } from '@shared/types/utilityTypes';
-import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
+import { type Dispatch, type RefObject, type SetStateAction, useEffect } from 'react';
+import type { XYCoord } from 'react-dnd';
+import { useDispatch } from '@/app/store';
 
 export type TDropReplaceCard = {
 	dropParams: TDropParams;
 	setDropParams: Dispatch<SetStateAction<TDropParams>>;
-	refObject: RefObject<HTMLDivElement>;
+	refObject: RefObject<HTMLDivElement | null>;
 	currentDraggableCard: TCardWithParams | null;
 	addCardAction: ActionCreatorWithPayload<TCardPayload>;
 };
@@ -32,8 +32,7 @@ export const useDropReplaceCard = (
 	useEffect(() => {
 		if (dropParams.isDrop && currentDraggableCard) {
 			dispatch(removePlayerHandCard(currentDraggableCard));
-			const dropTargetRect =
-				refObject.current?.getBoundingClientRect() as DOMRect;
+			const dropTargetRect = refObject.current?.getBoundingClientRect() as DOMRect;
 			dispatch(
 				addCardAction({
 					currentDraggableCard,

@@ -1,15 +1,15 @@
-import React, { useEffect, useRef } from 'react';
-import { useSelector } from '@/app/store';
+import InventoryCell from '@entities/InventoryCell';
 import { getInventory } from '@shared/services/Inventory/slice';
 import { initialAvailableCellState } from '@widgets/Inventory/constants';
 import { useDropInventory } from '@widgets/Inventory/hooks';
 import { didInventoryUpdated } from '@widgets/Сard/utils';
-import InventoryCell from '@entities/InventoryCell';
+import { useEffect, useRef } from 'react';
+import { useSelector } from '@/app/store';
 import styles from './style.module.scss';
 
 const Inventory = () => {
 	const inventoryRef = useRef<HTMLDivElement>(null);
-	const { score, effect, equipments } = useSelector(getInventory);
+	const { score, equipments } = useSelector(getInventory);
 	const { availableCell, setAvailableCell, isOver } = useDropInventory({
 		inventoryRef,
 	});

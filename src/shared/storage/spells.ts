@@ -1,19 +1,19 @@
-import { TSpellCard } from '@shared/types/cardTypes';
-import { CardSubType } from '@shared/types/commonTypes';
+import ambush_shard from '@images/spells/ambush_shard.webp';
+import aspects_of_the_crucible_breath from '@images/spells/aspects_of_the_crucible_breath.webp';
+import aspects_of_the_crucible_horns from '@images/spells/aspects_of_the_crucible_horns.webp';
+import aspects_of_the_crucible_tail from '@images/spells/aspects_of_the_crucible_tail.webp';
 import briars_of_punishment from '@images/spells/briars_of_punishment.webp';
+import carian_piercer from '@images/spells/carian_piercer.webp';
+import crystal_torrent from '@images/spells/crystal_torrent.webp';
 import explosive_ghostflame from '@images/spells/explosive_ghostflame.webp';
 import fias_mist from '@images/spells/fias_mist.webp';
+import honed_bolt from '@images/spells/honed_bolt.webp';
 import howl_of_shabriri from '@images/spells/howl_of_shabriri.webp';
-import shatter_earth from '@images/spells/shatter_earth.webp';
-import crystal_torrent from '@images/spells/crystal_torrent.webp';
-import aspects_of_the_crucible_tail from '@images/spells/aspects_of_the_crucible_tail.webp';
 import poison_mist from '@images/spells/poison_mist.webp';
 import rannis_dark_moon from '@images/spells/rannis_dark_moon.webp';
-import aspects_of_the_crucible_breath from '@images/spells/aspects_of_the_crucible_breath.webp';
-import honed_bolt from '@images/spells/honed_bolt.webp';
-import aspects_of_the_crucible_horns from '@images/spells/aspects_of_the_crucible_horns.webp';
-import carian_piercer from '@images/spells/carian_piercer.webp';
-import ambush_shard from '@images/spells/ambush_shard.webp';
+import shatter_earth from '@images/spells/shatter_earth.webp';
+import type { TSpellCard } from '@shared/types/cardTypes';
+import { CardSubType } from '@shared/types/commonTypes';
 
 export const spells: TSpellCard[] = [
 	{

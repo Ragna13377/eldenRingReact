@@ -1,6 +1,6 @@
+import type { TInventoryCellProps } from '@entities/InventoryCell/types';
 import { clsx } from 'clsx';
 import { memo } from 'react';
-import { TInventoryCellProps } from '@entities/InventoryCell/types';
 import styles from './style.module.scss';
 
 const InventoryCell = ({

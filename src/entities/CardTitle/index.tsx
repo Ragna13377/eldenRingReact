@@ -1,5 +1,5 @@
+import type { TCardTitleProps } from '@entities/CardTitle/types';
 import { clsx } from 'clsx';
-import { TCardTitleProps } from '@entities/CardTitle/types';
 import styles from './style.module.scss';
 
 const CardTitle = ({ title, extraClass }: TCardTitleProps) => (

@@ -1,8 +1,8 @@
-import { RefObject } from 'react';
-import { TCardWithParams, TChangeAction } from '@shared/types/utilityTypes';
-import { TEquipmentCard, TWeaponCard } from '@shared/types/cardTypes';
-import { isWeaponCard } from '@shared/utils/typeGuard';
+import type { TEquipmentCard, TWeaponCard } from '@shared/types/cardTypes';
 import { EquipmentType } from '@shared/types/commonTypes';
+import type { TCardWithParams, TChangeAction } from '@shared/types/utilityTypes';
+import { isWeaponCard } from '@shared/utils/typeGuard';
+import type { RefObject } from 'react';
 
 export function setValueSign(value: number): string {
 	return value > 0 ? `+${value}` : `${value}`;
@@ -25,16 +25,12 @@ export function setLevelTextSpelling(value: number): string {
 	return levelSpelling;
 }
 
-export function setTargetClassSpelling(
-	targetClass: string[],
-	changes = true
-): string {
-	if (changes)
-		return targetClass.map((classType) => classType + 'ов').join(' и ');
+export function setTargetClassSpelling(targetClass: string[], changes = true): string {
+	if (changes) return targetClass.map((classType) => `${classType}ов`).join(' и ');
 	else return targetClass.join(' или ');
 }
 export function changeHoverEffect<T extends HTMLElement>(
-	ref: RefObject<T>,
+	ref: RefObject<T | null>,
 	style: string,
 	changeAction: TChangeAction
 ) {
@@ -43,14 +39,13 @@ export function changeHoverEffect<T extends HTMLElement>(
 export const getEnumKeyByValue = <T extends Record<string, string>>(
 	enumObj: T,
 	value: T[keyof T]
-): keyof T =>
-	Object.keys(enumObj).find((key) => enumObj[key] === value) as T[keyof T];
+): keyof T => Object.keys(enumObj).find((key) => enumObj[key] === value) as T[keyof T];
 
 export const throttle = <F extends (...args: Parameters<F>) => ReturnType<F>>(
 	fn: F,
 	delay: number
 ): ((...args: Parameters<F>) => void) => {
-	let timeout: ReturnType<typeof setTimeout> | undefined = undefined;
+	let timeout: ReturnType<typeof setTimeout> | undefined;
 	return function perform(...args) {
 		if (!timeout) {
 			timeout = setTimeout(() => {

@@ -1,5 +1,5 @@
-import { RefObject } from 'react';
+import type { RefObject } from 'react';
 
 export type TFieldDropHookProps = {
-	playerArenaRef: RefObject<HTMLDivElement>;
+	playerArenaRef: RefObject<HTMLDivElement | null>;
 };

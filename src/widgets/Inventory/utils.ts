@@ -1,9 +1,9 @@
-import { XYCoord } from 'react-dnd';
-import { TInventoryEquipment } from '@shared/types/utilityTypes';
 import { EquipmentType } from '@shared/types/commonTypes';
-import { TSetAvailableCellProps } from '@widgets/Inventory/types';
+import type { TInventoryEquipment } from '@shared/types/utilityTypes';
 import { isEquipmentCard, isWeaponCard } from '@shared/utils/typeGuard';
 import { getEnumKeyByValue, throttle } from '@shared/utils/utils';
+import type { TSetAvailableCellProps } from '@widgets/Inventory/types';
+import type { XYCoord } from 'react-dnd';
 
 const setAvailableCellHover = ({
 	monitor,
@@ -31,8 +31,7 @@ const setAvailableCellHover = ({
 			updateState.leftWeapon = true;
 			updateState.rightWeapon = true;
 		} else {
-			const dropTargetRect =
-				inventoryRef.current?.getBoundingClientRect() as DOMRect;
+			const dropTargetRect = inventoryRef.current?.getBoundingClientRect() as DOMRect;
 			const clientOffset = monitor.getClientOffset() as XYCoord;
 			const middle = dropTargetRect.left + dropTargetRect.width / 2;
 			if (clientOffset.x < middle && !availableCell.leftWeapon) {
@@ -50,7 +49,4 @@ const setAvailableCellHover = ({
 	}
 };
 
-export const optimizedSetAvailableCellHover = throttle(
-	setAvailableCellHover,
-	200
-);
+export const optimizedSetAvailableCellHover = throttle(setAvailableCellHover, 200);

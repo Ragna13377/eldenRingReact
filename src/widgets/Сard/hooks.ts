@@ -1,7 +1,7 @@
-import { useDrag } from 'react-dnd';
-import { useState } from 'react';
-import { TCardDragHookProps, TSmoothShift } from '@widgets/Сard/types';
 import { baseTransition } from '@widgets/Сard/constants';
+import type { TCardDragHookProps, TSmoothShift } from '@widgets/Сard/types';
+import { useState } from 'react';
+import { useDrag } from 'react-dnd';
 
 export const useCardDrag = ({ cardRef, subtype }: TCardDragHookProps) => {
 	const [smoothShift, setSmoothShift] = useState<TSmoothShift>({
@@ -14,8 +14,7 @@ export const useCardDrag = ({ cardRef, subtype }: TCardDragHookProps) => {
 			isDrag: monitor.isDragging(),
 		}),
 		end: (_, monitor) => {
-			const differenceFromInitialOffset =
-				monitor.getDifferenceFromInitialOffset();
+			const differenceFromInitialOffset = monitor.getDifferenceFromInitialOffset();
 			setSmoothShift((prev) => ({
 				...prev,
 				transition: 'none',

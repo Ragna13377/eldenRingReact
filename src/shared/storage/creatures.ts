@@ -1,4 +1,42 @@
-import { TCreatureCard } from '@shared/types/cardTypes';
+import abductor_virgin from '@images/creatures/abductor_virgin.webp';
+import adula from '@images/creatures/adula.webp';
+import ancestor_follower from '@images/creatures/ancestor_follower.webp';
+import bell_bearing_hunter from '@images/creatures/bell_bearing_hunter.webp';
+import black_knife_assassin from '@images/creatures/black_knife_assassin.webp';
+import cleanrot_knight from '@images/creatures/cleanrot_knight.webp';
+import crucible_knight from '@images/creatures/crucible_knight.webp';
+import crystalian from '@images/creatures/crystalian.webp';
+import deathbird from '@images/creatures/deathbird.webp';
+import demi_human from '@images/creatures/demi_human.webp';
+import erdtree_avatar from '@images/creatures/erdtree_avatar.webp';
+import fallingstar_beast from '@images/creatures/fallingstar_beast.webp';
+import fingercreeper from '@images/creatures/fingercreeper.webp';
+import flame_chariot from '@images/creatures/flame_chariot.webp';
+import godrick_the_grafted from '@images/creatures/godrick_the_grafted.webp';
+import golem from '@images/creatures/golem.webp';
+import grafted_scion from '@images/creatures/grafted_scion.webp';
+import guardian from '@images/creatures/guardian.webp';
+import kaiden_sellsword from '@images/creatures/kaiden_sellsword.webp';
+import land_squirt from '@images/creatures/land_squirt.webp';
+import margit from '@images/creatures/margit.webp';
+import miranda from '@images/creatures/miranda.webp';
+import miranda_sprout from '@images/creatures/miranda_sprout.webp';
+import monstrous_crow from '@images/creatures/monstrous_crow.webp';
+import nights_cavalry from '@images/creatures/nights_cavalry.webp';
+import omenkiler from '@images/creatures/omenkiler.webp';
+import red_wolf from '@images/creatures/red_wolf.webp';
+import rotten_stray from '@images/creatures/rotten_stray.webp';
+import royal_revenant from '@images/creatures/royal_revenant.webp';
+import school_of_graven_mages from '@images/creatures/school_of_graven_mages.webp';
+import skelet from '@images/creatures/skelet.webp';
+import skeletal_slime from '@images/creatures/skeletal_slime.webp';
+import tree_sentinel from '@images/creatures/tree_sentinel.webp';
+import troll_knight from '@images/creatures/troll_knight.webp';
+import ulcerated_spirit from '@images/creatures/ulcerated_spirit.webp';
+import vulgar_milita from '@images/creatures/vulgar_milita.webp';
+import wandering_mausoleum from '@images/creatures/wandering_mausoleum.webp';
+import warhawk from '@images/creatures/warhawk.webp';
+import type { TCreatureCard } from '@shared/types/cardTypes';
 import {
 	abilityEffect,
 	CardSubType,
@@ -7,44 +45,6 @@ import {
 	PlayerClass,
 	punishmentEffect,
 } from '@shared/types/commonTypes';
-import land_squirt from '@images/creatures/land_squirt.webp';
-import miranda_sprout from '@images/creatures/miranda_sprout.webp';
-import skeletal_slime from '@images/creatures/skeletal_slime.webp';
-import rotten_stray from '@images/creatures/rotten_stray.webp';
-import demi_human from '@images/creatures/demi_human.webp';
-import skelet from '@images/creatures/skelet.webp';
-import monstrous_crow from '@images/creatures/monstrous_crow.webp';
-import guardian from '@images/creatures/guardian.webp';
-import school_of_graven_mages from '@images/creatures/school_of_graven_mages.webp';
-import warhawk from '@images/creatures/warhawk.webp';
-import vulgar_milita from '@images/creatures/vulgar_milita.webp';
-import ancestor_follower from '@images/creatures/ancestor_follower.webp';
-import omenkiler from '@images/creatures/omenkiler.webp';
-import kaiden_sellsword from '@images/creatures/kaiden_sellsword.webp';
-import cleanrot_knight from '@images/creatures/cleanrot_knight.webp';
-import royal_revenant from '@images/creatures/royal_revenant.webp';
-import black_knife_assassin from '@images/creatures/black_knife_assassin.webp';
-import fingercreeper from '@images/creatures/fingercreeper.webp';
-import fallingstar_beast from '@images/creatures/fallingstar_beast.webp';
-import wandering_mausoleum from '@images/creatures/wandering_mausoleum.webp';
-import miranda from '@images/creatures/miranda.webp';
-import crucible_knight from '@images/creatures/crucible_knight.webp';
-import nights_cavalry from '@images/creatures/nights_cavalry.webp';
-import troll_knight from '@images/creatures/troll_knight.webp';
-import crystalian from '@images/creatures/crystalian.webp';
-import deathbird from '@images/creatures/deathbird.webp';
-import abductor_virgin from '@images/creatures/abductor_virgin.webp';
-import bell_bearing_hunter from '@images/creatures/bell_bearing_hunter.webp';
-import red_wolf from '@images/creatures/red_wolf.webp';
-import golem from '@images/creatures/golem.webp';
-import ulcerated_spirit from '@images/creatures/ulcerated_spirit.webp';
-import flame_chariot from '@images/creatures/flame_chariot.webp';
-import erdtree_avatar from '@images/creatures/erdtree_avatar.webp';
-import grafted_scion from '@images/creatures/grafted_scion.webp';
-import tree_sentinel from '@images/creatures/tree_sentinel.webp';
-import adula from '@images/creatures/adula.webp';
-import margit from '@images/creatures/margit.webp';
-import godrick_the_grafted from '@images/creatures/godrick_the_grafted.webp';
 
 export const creatures: TCreatureCard[] = [
 	{
@@ -91,9 +91,7 @@ export const creatures: TCreatureCard[] = [
 		level: 1,
 		loot: 1,
 		ability: [{ type: abilityEffect.changeEscape, value: -Infinity }],
-		punishment: [
-			{ type: punishmentEffect.removeClothes, value: EquipmentType.helmet },
-		],
+		punishment: [{ type: punishmentEffect.removeClothes, value: EquipmentType.helmet }],
 		race: null,
 	},
 	{
@@ -156,9 +154,7 @@ export const creatures: TCreatureCard[] = [
 		level: 1,
 		loot: 1,
 		ability: [{ type: abilityEffect.changeEscape, value: 2 }],
-		punishment: [
-			{ type: punishmentEffect.removeClothes, value: EquipmentType.weapon },
-		],
+		punishment: [{ type: punishmentEffect.removeClothes, value: EquipmentType.weapon }],
 		race: CreatureRace.beast,
 	},
 	{
@@ -489,9 +485,7 @@ export const creatures: TCreatureCard[] = [
 				value: 4,
 			},
 		],
-		punishment: [
-			{ type: punishmentEffect.removeClothes, value: EquipmentType.armor },
-		],
+		punishment: [{ type: punishmentEffect.removeClothes, value: EquipmentType.armor }],
 		race: null,
 	},
 	{

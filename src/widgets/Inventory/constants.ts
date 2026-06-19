@@ -1,4 +1,4 @@
-import { TInventoryEquipment } from '@shared/types/utilityTypes';
+import type { TInventoryEquipment } from '@shared/types/utilityTypes';
 
 export const initialAvailableCellState: TInventoryEquipment = {
 	helmet: false,

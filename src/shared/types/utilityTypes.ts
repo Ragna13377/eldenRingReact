@@ -1,7 +1,7 @@
-import { DropTargetMonitor, XYCoord } from 'react-dnd';
-import { Dispatch, RefObject, SetStateAction } from 'react';
-import { TCard } from '@shared/types/cardTypes';
-import { EquipmentType } from '@shared/types/commonTypes';
+import type { TCard } from '@shared/types/cardTypes';
+import type { EquipmentType } from '@shared/types/commonTypes';
+import type { Dispatch, RefObject, SetStateAction } from 'react';
+import type { DropTargetMonitor, XYCoord } from 'react-dnd';
 
 export type TChangeAction = 'add' | 'remove';
 export type TKey = string;
@@ -19,7 +19,7 @@ export type TDropParams = {
 };
 export type TCustomDrop = {
 	accept: string;
-	dropRef: RefObject<HTMLDivElement>;
+	dropRef: RefObject<HTMLDivElement | null>;
 	dropHandler: Dispatch<SetStateAction<TDropParams>>;
 	hoverHandler?: (monitor: DropTargetMonitor<unknown, unknown>) => void;
 };

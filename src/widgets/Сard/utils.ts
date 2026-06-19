@@ -1,11 +1,12 @@
-import React, { RefObject } from 'react';
+import type { TInventoryEquipment } from '@shared/types/utilityTypes';
 import { changeHoverEffect, throttle } from '@shared/utils/utils';
-import { TInventoryEquipment } from '@shared/types/utilityTypes';
 import styles from '@widgets/Сard/style.module.scss';
+import type React from 'react';
+import type { RefObject } from 'react';
 
 const outsideBorderListener = (
-	e: React.MouseEvent<HTMLDivElement>,
-	cardRef: RefObject<HTMLDivElement>
+	e: React.MouseEvent<HTMLElement>,
+	cardRef: RefObject<HTMLElement | null>
 ) => {
 	const X = e.clientX;
 	const Y = e.clientY;
@@ -17,17 +18,14 @@ const outsideBorderListener = (
 			Y < cardRect.top ||
 			Y > cardRect.bottom
 		) {
-			changeHoverEffect<HTMLDivElement>(cardRef, styles.hoverEffect, 'remove');
+			changeHoverEffect<HTMLElement>(cardRef, styles.hoverEffect, 'remove');
 			setTimeout(() => {
-				changeHoverEffect<HTMLDivElement>(cardRef, styles.hoverEffect, 'add');
+				changeHoverEffect<HTMLElement>(cardRef, styles.hoverEffect, 'add');
 			}, 100);
 		}
 	}
 };
-export const optimizedOutsideBorderListener = throttle(
-	outsideBorderListener,
-	10
-);
+export const optimizedOutsideBorderListener = throttle(outsideBorderListener, 10);
 
 export const didInventoryUpdated = (inventory: TInventoryEquipment) =>
 	Object.values(inventory).some((cell) => cell);

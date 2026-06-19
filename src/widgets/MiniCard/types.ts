@@ -1,8 +1,5 @@
-import { Dispatch, SetStateAction } from 'react';
-import {
-	TCardWithParams,
-	TChangeModalParams,
-} from '@shared/types/utilityTypes';
+import type { TCardWithParams, TChangeModalParams } from '@shared/types/utilityTypes';
+import type { Dispatch, SetStateAction } from 'react';
 
 export type TMiniCardProps = TCardWithParams & {
 	setIsModalOpen: Dispatch<SetStateAction<TChangeModalParams>>;

@@ -1,10 +1,10 @@
+import type { TFlavourTextProps } from '@entities/FlavourText/types';
+import { getFlavourText } from '@entities/FlavourText/utils';
+import { AbilityAction, PunishmentAction } from '@shared/utils/effects';
+import { isCreatureCard, isEquipmentCard } from '@shared/utils/typeGuard';
+import { maxLineLength } from '@widgets/Сard/constants';
 import { clsx } from 'clsx';
 import { useEffect, useRef, useState } from 'react';
-import { maxLineLength } from '@widgets/Сard/constants';
-import { isCreatureCard, isEquipmentCard } from '@shared/utils/typeGuard';
-import { AbilityAction, PunishmentAction } from '@shared/utils/effects';
-import { TFlavourTextProps } from '@entities/FlavourText/types';
-import { getFlavourText } from '@entities/FlavourText/utils';
 import styles from './style.module.scss';
 
 const FlavourText = ({ card, fontExtraClass }: TFlavourTextProps) => {
@@ -39,9 +39,7 @@ const FlavourText = ({ card, fontExtraClass }: TFlavourTextProps) => {
 					{card.punishment && (
 						<p className={styles.punishment}>
 							<span className={styles.flavourText_title}>Наказание: </span>
-							{card.punishment.map((p) =>
-								PunishmentAction[p.type].getDescription(p)
-							)}
+							{card.punishment.map((p) => PunishmentAction[p.type].getDescription(p))}
 						</p>
 					)}
 				</>

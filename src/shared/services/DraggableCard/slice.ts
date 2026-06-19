@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TCardWithParams } from '@shared/types/utilityTypes';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import type { TCardWithParams } from '@shared/types/utilityTypes';
 
 const initialState: { data: TCardWithParams | null } = {
 	data: null,
@@ -21,6 +21,5 @@ const draggableCardSlice = createSlice({
 });
 
 export default draggableCardSlice.reducer;
-export const { setDraggableCard, clearDraggableCard } =
-	draggableCardSlice.actions;
+export const { setDraggableCard, clearDraggableCard } = draggableCardSlice.actions;
 export const { getDraggableCard } = draggableCardSlice.selectors;

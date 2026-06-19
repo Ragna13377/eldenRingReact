@@ -1,23 +1,24 @@
-import React, { memo, useEffect, useRef } from 'react';
-import { TCardWithParams } from '@shared/types/utilityTypes';
-import { changeHoverEffect } from '@shared/utils/utils';
-import { optimizedOutsideBorderListener } from '@widgets/Сard/utils';
-import { useCardDrag } from '@widgets/Сard/hooks';
-import { useDispatch } from '@/app/store';
-import { setDraggableCard } from '@shared/services/DraggableCard/slice';
-import CardLayout from '@entities/CardLayout';
 import CardContent from '@entities/CardContent';
-import FlavourText from '@entities/FlavourText';
+import CardLayout from '@entities/CardLayout';
 import CardTitle from '@entities/CardTitle';
+import FlavourText from '@entities/FlavourText';
 import adventuresBackface from '@images/card/card_backface/adventure.webp';
 import treasuresBackface from '@images/card/card_backface/treasure.webp';
 import layout from '@images/card/cardTemplate.webp';
+import { setDraggableCard } from '@shared/services/DraggableCard/slice';
+import { changeHoverEffect } from '@shared/utils/utils';
+import { useCardDrag } from '@widgets/Сard/hooks';
+import type { TCardProps } from '@widgets/Сard/types';
+import { optimizedOutsideBorderListener } from '@widgets/Сard/utils';
+import clsx from 'clsx';
+import { memo, useEffect, useRef } from 'react';
+import { useDispatch } from '@/app/store';
 import styles from './style.module.scss';
 
-const Card = ({ card, cardKey }: TCardWithParams) => {
+const Card = ({ card, cardKey, isActionable, onCardClick }: TCardProps) => {
 	const dispatch = useDispatch();
 	const { type, subtype, title, image } = card;
-	const cardRef = useRef<HTMLDivElement>(null);
+	const cardRef = useRef<HTMLButtonElement>(null);
 	const { isDrag, smoothShift } = useCardDrag({
 		cardRef,
 		subtype,
@@ -27,19 +28,22 @@ const Card = ({ card, cardKey }: TCardWithParams) => {
 		if (isDrag) dispatch(setDraggableCard({ card, cardKey }));
 	}, [isDrag, dispatch, card, cardKey]);
 	return (
-		<div
-			role='presentation'
+		<button
+			type="button"
 			id={cardKey}
-			className={styles.hoverEffect}
+			className={clsx(styles.hoverEffect, {
+				[styles.actionable]: isActionable,
+			})}
 			ref={cardRef}
+			onClick={() => onCardClick?.({ card, cardKey })}
 			onMouseUp={() =>
-				changeHoverEffect<HTMLDivElement>(cardRef, styles.hoverEffect, 'add')
+				changeHoverEffect<HTMLButtonElement>(cardRef, styles.hoverEffect, 'add')
 			}
 			onMouseDown={() =>
-				changeHoverEffect<HTMLDivElement>(cardRef, styles.hoverEffect, 'remove')
+				changeHoverEffect<HTMLButtonElement>(cardRef, styles.hoverEffect, 'remove')
 			}
 			onMouseEnter={() =>
-				changeHoverEffect<HTMLDivElement>(cardRef, styles.hoverEffect, 'add')
+				changeHoverEffect<HTMLButtonElement>(cardRef, styles.hoverEffect, 'add')
 			}
 			onMouseMove={(e) => optimizedOutsideBorderListener(e, cardRef)}
 			style={{
@@ -72,7 +76,7 @@ const Card = ({ card, cardKey }: TCardWithParams) => {
 					}}
 				/>
 			</article>
-		</div>
+		</button>
 	);
 };
 

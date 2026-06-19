@@ -1,13 +1,13 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import {
-	TypedUseSelectorHook,
-	useDispatch as dispatchHook,
-	useSelector as selectorHook,
-} from 'react-redux';
-import playerHandReducer from '@shared/services/PlayerHand/slice';
-import playerArenaReducer from '@shared/services/PlayerArena/slice';
 import draggableCardReducer from '@shared/services/DraggableCard/slice';
 import inventoryReducer from '@shared/services/Inventory/slice';
+import playerArenaReducer from '@shared/services/PlayerArena/slice';
+import playerHandReducer from '@shared/services/PlayerHand/slice';
+import {
+	useDispatch as dispatchHook,
+	useSelector as selectorHook,
+	type TypedUseSelectorHook,
+} from 'react-redux';
 
 const rootReducer = combineReducers({
 	playerHand: playerHandReducer,

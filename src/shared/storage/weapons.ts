@@ -1,26 +1,22 @@
-import { TWeaponCard } from '@shared/types/cardTypes';
-import {
-	CardSubType,
-	EquipmentType,
-	PlayerClass,
-} from '@shared/types/commonTypes';
-import envoys_horn from '@images/weapon/envoys_horn.webp';
-import pike from '@images/weapon/pike.webp';
-import grossmesser from '@images/weapon/grossmesser.webp';
-import claymore from '@images/weapon/claymore.webp';
-import lordsworns_straight_sword from '@images/weapon/lordsworns_straight_sword.webp';
-import ghizas_wheel from '@images/weapon/ghizas_wheel.webp';
-import zweihander from '@images/weapon/zweihander.webp';
-import reduvia from '@images/weapon/reduvia.webp';
-import giant_crusher from '@images/weapon/giant_crusher.webp';
 import chainlink_flail from '@images/weapon/chainlink_flail.webp';
+import claymore from '@images/weapon/claymore.webp';
 import dragon_kings_cragblade from '@images/weapon/dragon_kings_cragblade.webp';
-import scepter_of_the_all_knowing from '@images/weapon/scepter_of_the_all_knowing.webp';
+import envoys_horn from '@images/weapon/envoys_horn.webp';
 import fingerprint_stone_shield from '@images/weapon/fingerprint_stone_shield.webp';
+import ghizas_wheel from '@images/weapon/ghizas_wheel.webp';
+import giant_crusher from '@images/weapon/giant_crusher.webp';
+import golden_halberd from '@images/weapon/golden_halberd.webp';
 import golem_greatbow from '@images/weapon/golem_greatbow.webp';
 import greathorn_hammer from '@images/weapon/greathorn_hammer.webp';
-import golden_halberd from '@images/weapon/golden_halberd.webp';
+import grossmesser from '@images/weapon/grossmesser.webp';
+import lordsworns_straight_sword from '@images/weapon/lordsworns_straight_sword.webp';
 import meteorite_staff from '@images/weapon/meteorite_staff.webp';
+import pike from '@images/weapon/pike.webp';
+import reduvia from '@images/weapon/reduvia.webp';
+import scepter_of_the_all_knowing from '@images/weapon/scepter_of_the_all_knowing.webp';
+import zweihander from '@images/weapon/zweihander.webp';
+import type { TWeaponCard } from '@shared/types/cardTypes';
+import { CardSubType, EquipmentType, PlayerClass } from '@shared/types/commonTypes';
 
 export const weapons: TWeaponCard[] = [
 	{

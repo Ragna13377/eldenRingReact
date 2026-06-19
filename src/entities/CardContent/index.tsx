@@ -1,20 +1,14 @@
-import { clsx } from 'clsx';
-import React from 'react';
+import type { TCardContentProps } from '@entities/CardContent/types';
+import Features from '@entities/Features';
 import { CreatureRace } from '@shared/types/commonTypes';
-import { TCardContentProps } from '@entities/CardContent/types';
 import { isCreatureCard, isEquipmentCard } from '@shared/utils/typeGuard';
 import { getEnumKeyByValue } from '@shared/utils/utils';
-import Features from '@entities/Features';
+import { clsx } from 'clsx';
 import styles from './style.module.scss';
-const CardContent = ({
-	card,
-	extraContentStyle,
-	children,
-}: TCardContentProps) => (
+
+const CardContent = ({ card, extraContentStyle, children }: TCardContentProps) => (
 	<div className={clsx(styles.content, extraContentStyle)}>
-		{isCreatureCard(card) && (
-			<div className={styles.strength}>{card.strength}</div>
-		)}
+		{isCreatureCard(card) && <div className={styles.strength}>{card.strength}</div>}
 		{children}
 		<Features {...card} />
 		<div

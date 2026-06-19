@@ -1,10 +1,9 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { RootState } from '@/app/store';
-import { TCardWithParams } from '@shared/types/utilityTypes';
+import type { TCardWithParams } from '@shared/types/utilityTypes';
+import type { RootState } from '@/app/store';
 
 export const getPlayerArenaCardById = (id: string) =>
 	createSelector(
 		(state: RootState) => state.playerArena,
-		(items) =>
-			items ? (items.find((el) => el.cardKey === id) as TCardWithParams) : null
+		(items) => (items ? (items.find((el) => el.cardKey === id) as TCardWithParams) : null)
 	);

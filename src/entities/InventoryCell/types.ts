@@ -1,5 +1,5 @@
-import { PropsWithChildren } from 'react';
-import { TCardWithParams } from '@shared/types/utilityTypes';
+import type { TCardWithParams } from '@shared/types/utilityTypes';
+import type { PropsWithChildren } from 'react';
 
 export type TInventoryCellProps = PropsWithChildren & {
 	isAvailable?: boolean;

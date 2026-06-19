@@ -1,9 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-	cardWidth,
-	maxCardCount,
-} from '@shared/services/PlayerArena/constants';
-import { TCardPayload, TCardWithParams } from '@shared/types/utilityTypes';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { cardWidth, maxCardCount } from '@shared/services/PlayerArena/constants';
+import type { TCardPayload, TCardWithParams } from '@shared/types/utilityTypes';
 
 const initialState: TCardWithParams[] = [];
 const playerArenaSlice = createSlice({
@@ -11,8 +8,7 @@ const playerArenaSlice = createSlice({
 	initialState,
 	reducers: {
 		addPlayerArenaCard(state, action: PayloadAction<TCardPayload>) {
-			const { currentDraggableCard, dropTargetRect, cursorPosition } =
-				action.payload;
+			const { currentDraggableCard, dropTargetRect, cursorPosition } = action.payload;
 			if (currentDraggableCard) {
 				const boundary = (cardWidth * (maxCardCount - state.length + 1)) / 2;
 				if (
@@ -46,6 +42,5 @@ const playerArenaSlice = createSlice({
 	},
 });
 export default playerArenaSlice.reducer;
-export const { addPlayerArenaCard, removePlayerArenaCard } =
-	playerArenaSlice.actions;
+export const { addPlayerArenaCard, removePlayerArenaCard } = playerArenaSlice.actions;
 export const { getPlayerArenaCard } = playerArenaSlice.selectors;

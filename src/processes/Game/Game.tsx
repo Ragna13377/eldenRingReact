@@ -1,6 +1,6 @@
-import clsx from 'clsx';
 import Field from '@pages/Field';
 import Inventory from '@widgets/Inventory';
+import clsx from 'clsx';
 import styles from './Game.module.scss';
 
 const Game = () => (
