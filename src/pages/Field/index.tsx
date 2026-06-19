@@ -539,9 +539,7 @@ const Field = () => {
 										{encounterCard.card.title}
 									</span>
 								</>
-							) : (
-								<span>Центр стола</span>
-							)}
+							) : null}
 						</div>
 					</div>
 					<div
