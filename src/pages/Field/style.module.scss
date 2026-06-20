@@ -19,6 +19,10 @@ $interaction-hover-glow:
 	isolation: isolate;
 }
 
+.fieldContainerRulesOpen {
+	z-index: 60;
+}
+
 .field {
 	position: relative;
 	z-index: 1;

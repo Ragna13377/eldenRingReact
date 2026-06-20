@@ -877,7 +877,11 @@ const Field = () => {
 	const turnHint = getTurnHint();
 
 	return (
-		<div className={styles.fieldContainer}>
+		<div
+			className={clsx(styles.fieldContainer, {
+				[styles.fieldContainerRulesOpen]: isRulesOpen,
+			})}
+		>
 			<img className={styles.fieldLayout} src={field} alt="Игровое поле" />
 			<div className={styles.field}>
 				<fieldset className={styles.deckControls}>
