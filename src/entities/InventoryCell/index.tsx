@@ -7,12 +7,19 @@ const InventoryCell = ({
 	extraClass,
 	isAvailable,
 	data,
+	setIsModalOpen,
 	children,
 }: TInventoryCellProps) => (
 	<div
 		className={clsx(styles.inventoryCell, extraClass, {
 			[styles.inventoryCellHover]: isAvailable,
 		})}
+		onMouseEnter={() => {
+			if (data) setIsModalOpen?.({ isOpen: true, hoveredCard: data });
+		}}
+		onMouseLeave={() => {
+			if (data) setIsModalOpen?.({ isOpen: false, hoveredCard: null });
+		}}
 	>
 		{data && (
 			<img

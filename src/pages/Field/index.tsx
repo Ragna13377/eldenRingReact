@@ -33,9 +33,8 @@ import { getPlayerHandCard, setHand } from '@shared/services/PlayerHand/slice';
 import { clearDraggableCard } from '@shared/services/DraggableCard/slice';
 import { deckSizes } from '@shared/storage/decks';
 import { CardSubType } from '@shared/types/commonTypes';
-import type { TChangeModalParams } from '@shared/types/utilityTypes';
+import type { TFieldProps } from '@pages/Field/types';
 import MiniCard from '@widgets/MiniCard';
-import Modal from '@widgets/Modal';
 import Card from '@widgets/Сard';
 import { clsx } from 'clsx';
 import { Check, CircleHelp, RotateCw, Save } from 'lucide-react';
@@ -177,14 +176,10 @@ const rulesSections = [
 	},
 ];
 
-const Field = () => {
+const Field = ({ setIsModalOpen }: TFieldProps) => {
 	const dispatch = useDispatch();
 	const playerArenaRef = useRef<HTMLDivElement>(null);
 	const rulesHelpRef = useRef<HTMLDivElement>(null);
-	const [modalParams, setIsModalOpen] = useState<TChangeModalParams>({
-		isOpen: false,
-		hoveredCardKey: '',
-	});
 	const [game, setGame] = useState<GameState>(() => createInitialDuelGame());
 	const [isRulesOpen, setIsRulesOpen] = useState(false);
 	const [isShuffling, setIsShuffling] = useState(true);
@@ -1140,7 +1135,6 @@ const Field = () => {
 					</section>
 				</section>
 			</div>
-			<Modal {...modalParams} />
 		</div>
 	);
 };

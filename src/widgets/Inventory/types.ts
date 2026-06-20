@@ -3,12 +3,14 @@ import type {
 	TCardWithParams,
 	TInventoryEquipment,
 	TInventoryOwner,
+	TChangeModalParams,
 } from '@shared/types/utilityTypes';
 import type { Dispatch, RefObject, SetStateAction } from 'react';
 
 export type TInventoryProps = {
 	ownerId: TInventoryOwner;
 	isDropEnabled?: boolean;
+	setIsModalOpen?: Dispatch<SetStateAction<TChangeModalParams>>;
 };
 
 export type TUseDropInventoryProps = {

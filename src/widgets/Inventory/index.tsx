@@ -8,7 +8,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { useSelector } from '@/app/store';
 import styles from './style.module.scss';
 
-const Inventory = ({ ownerId, isDropEnabled = true }: TInventoryProps) => {
+const Inventory = ({ ownerId, isDropEnabled = true, setIsModalOpen }: TInventoryProps) => {
 	const inventoryRef = useRef<HTMLDivElement>(null);
 	const { score, equipments } = useSelector((state) => getInventoryByOwner(state, ownerId));
 	const { availableCell, setAvailableCell, isOver, setNodeRef } = useDropInventory({
@@ -34,34 +34,40 @@ const Inventory = ({ ownerId, isDropEnabled = true }: TInventoryProps) => {
 				extraClass={styles.helmet}
 				isAvailable={availableCell.helmet}
 				data={equipments.helmet}
+				setIsModalOpen={setIsModalOpen}
 			/>
 			<InventoryCell extraClass={styles.status}>{score}</InventoryCell>
 			<InventoryCell
 				extraClass={styles.amulet}
 				isAvailable={availableCell.amulet}
 				data={equipments.amulet}
+				setIsModalOpen={setIsModalOpen}
 			/>
 			<InventoryCell
 				extraClass={styles.leftWeapon}
 				isAvailable={availableCell.leftWeapon}
 				data={equipments.leftWeapon}
+				setIsModalOpen={setIsModalOpen}
 			/>
 			<InventoryCell extraClass={styles.playerClass} />
 			<InventoryCell
 				extraClass={styles.rightWeapon}
 				isAvailable={availableCell.rightWeapon}
 				data={equipments.rightWeapon}
+				setIsModalOpen={setIsModalOpen}
 			/>
 			<InventoryCell
 				extraClass={styles.armor}
 				isAvailable={availableCell.armor}
 				data={equipments.armor}
+				setIsModalOpen={setIsModalOpen}
 			/>
 			<InventoryCell extraClass={styles.flavourText} />
 			<InventoryCell
 				extraClass={styles.boots}
 				isAvailable={availableCell.boots}
 				data={equipments.boots}
+				setIsModalOpen={setIsModalOpen}
 			/>
 		</article>
 	);
