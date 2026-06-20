@@ -3,18 +3,19 @@ import type { TInventoryEquipment } from '@shared/types/utilityTypes';
 import { isEquipmentCard, isWeaponCard } from '@shared/utils/typeGuard';
 import { getEnumKeyByValue, throttle } from '@shared/utils/utils';
 import type { TSetAvailableCellProps } from '@widgets/Inventory/types';
-import type { XYCoord } from 'react-dnd';
 
 const setAvailableCellHover = ({
-	monitor,
+	clientOffset,
 	inventoryRef,
+	isOver,
 	availableCell,
 	setAvailableCell,
 	currentDraggableCard,
 }: TSetAvailableCellProps) => {
 	if (
-		!monitor.isOver() ||
+		!isOver ||
 		!currentDraggableCard ||
+		!clientOffset ||
 		!isEquipmentCard(currentDraggableCard.card)
 	)
 		return;
@@ -32,7 +33,6 @@ const setAvailableCellHover = ({
 			updateState.rightWeapon = true;
 		} else {
 			const dropTargetRect = inventoryRef.current?.getBoundingClientRect() as DOMRect;
-			const clientOffset = monitor.getClientOffset() as XYCoord;
 			const middle = dropTargetRect.left + dropTargetRect.width / 2;
 			if (clientOffset.x < middle && !availableCell.leftWeapon) {
 				updateState.leftWeapon = true;

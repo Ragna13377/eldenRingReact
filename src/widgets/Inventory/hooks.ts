@@ -1,18 +1,27 @@
-import { useCustomDrop } from '@shared/hooks/useCustomDrop';
-import { useDropReplaceCard } from '@shared/hooks/useDropReplaceCard';
+import { useDndContext, useDroppable } from '@dnd-kit/core';
 import { getDraggableCard } from '@shared/services/DraggableCard/slice';
-import { addInventoryCard } from '@shared/services/Inventory/slice';
 import { CardSubType } from '@shared/types/commonTypes';
 import type {
-	TCardPayload,
-	TDropParams,
+	TClientPosition,
 	TInventoryEquipment,
 } from '@shared/types/utilityTypes';
 import { initialAvailableCellState } from '@widgets/Inventory/constants';
 import type { TUseDropInventoryProps } from '@widgets/Inventory/types';
 import { optimizedSetAvailableCellHover } from '@widgets/Inventory/utils';
-import { useCallback, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from '@/app/store';
+
+const getActiveClientOffset = (
+	active: ReturnType<typeof useDndContext>['active']
+): TClientPosition | null => {
+	const translatedRect = active?.rect.current.translated;
+	if (!translatedRect) return null;
+
+	return {
+		x: translatedRect.left + translatedRect.width / 2,
+		y: translatedRect.top + translatedRect.height / 2,
+	};
+};
 
 export const useDropInventory = ({
 	inventoryRef,
@@ -20,48 +29,38 @@ export const useDropInventory = ({
 	isDropEnabled = true,
 }: TUseDropInventoryProps) => {
 	const currentDraggableCard = useSelector(getDraggableCard);
-	const [inventoryDropResult, setInventoryDropResult] = useState<TDropParams>({
-		isDrop: false,
-		getClientOffset: null,
-	});
 	const [availableCell, setAvailableCell] = useState<TInventoryEquipment>(
 		initialAvailableCellState
 	);
-	const { isOver } = useCustomDrop({
-		accept: CardSubType.equipment,
-		dropHandler: setInventoryDropResult,
-		dropRef: inventoryRef,
-		hoverHandler: (monitor) => {
-			optimizedSetAvailableCellHover({
-				monitor,
-				currentDraggableCard,
-				availableCell,
-				setAvailableCell,
-				inventoryRef,
-			});
+	const { active } = useDndContext();
+	const { isOver, setNodeRef } = useDroppable({
+		id: `inventory-${ownerId}`,
+		data: {
+			accept: CardSubType.equipment,
+			ownerId,
+			type: 'inventory',
 		},
-		canDrop: isDropEnabled,
+		disabled: !isDropEnabled,
 	});
-	const addOwnerToPayload = useCallback(
-		(payload: TCardPayload): TCardPayload => ({ ...payload, ownerId }),
-		[ownerId]
+	const clientOffset = useMemo(() => getActiveClientOffset(active), [active]);
+
+	useEffect(
+		() =>
+			optimizedSetAvailableCellHover({
+				availableCell,
+				clientOffset,
+				currentDraggableCard,
+				inventoryRef,
+				isOver,
+				setAvailableCell,
+			}),
+		[availableCell, clientOffset, currentDraggableCard, inventoryRef, isOver]
 	);
-	useDropReplaceCard(
-		{
-			dropParams: inventoryDropResult,
-			setDropParams: setInventoryDropResult,
-			refObject: inventoryRef,
-			currentDraggableCard,
-			addCardAction: addInventoryCard,
-			getCardPayload: addOwnerToPayload,
-		},
-		() => {
-			setAvailableCell(initialAvailableCellState);
-		}
-	);
+
 	return {
 		availableCell,
-		setAvailableCell,
 		isOver,
+		setAvailableCell,
+		setNodeRef,
 	};
 };

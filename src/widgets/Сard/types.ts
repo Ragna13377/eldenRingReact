@@ -1,8 +1,4 @@
-import type { CardSubType } from '@shared/types/commonTypes';
 import type { TCardWithParams } from '@shared/types/utilityTypes';
-import type { baseTransition } from '@widgets/Сard/constants';
-import type { RefObject } from 'react';
-import type { XYCoord } from 'react-dnd';
 
 export type TCardProps = TCardWithParams & {
 	isActionable?: boolean;
@@ -10,12 +6,6 @@ export type TCardProps = TCardWithParams & {
 };
 
 export type TCardDragHookProps = {
-	cardRef: RefObject<HTMLElement | null>;
-	subtype: CardSubType;
+	card: TCardWithParams;
 	cardKey: string;
 };
-export type TSmoothShift = {
-	transition: TTransition;
-	position: XYCoord;
-};
-export type TTransition = 'none' | typeof baseTransition;

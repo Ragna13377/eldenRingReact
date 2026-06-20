@@ -12,10 +12,14 @@
 Используемые технологии:
 * React
 * Redux
-* React DND
+* dnd-kit
 * Typescript
 * FSD
 * Vite
+
+## Drag and Drop
+
+Проект переведён с React DnD HTML5 Backend на dnd-kit: HTML5 Backend плохо контролировал preview перетаскиваемой карты и курсор, из-за чего браузер мог показывать системный no-drop поверх кастомного интерфейса.
 
 Планируемая доработка:
 1. Создание ИИ

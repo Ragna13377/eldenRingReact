@@ -4,25 +4,32 @@ import { initialAvailableCellState } from '@widgets/Inventory/constants';
 import { useDropInventory } from '@widgets/Inventory/hooks';
 import type { TInventoryProps } from '@widgets/Inventory/types';
 import { didInventoryUpdated } from '@widgets/Сard/utils';
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useSelector } from '@/app/store';
 import styles from './style.module.scss';
 
 const Inventory = ({ ownerId, isDropEnabled = true }: TInventoryProps) => {
 	const inventoryRef = useRef<HTMLDivElement>(null);
 	const { score, equipments } = useSelector((state) => getInventoryByOwner(state, ownerId));
-	const { availableCell, setAvailableCell, isOver } = useDropInventory({
+	const { availableCell, setAvailableCell, isOver, setNodeRef } = useDropInventory({
 		inventoryRef,
 		ownerId,
 		isDropEnabled,
 	});
+	const setInventoryRef = useCallback(
+		(node: HTMLDivElement | null) => {
+			inventoryRef.current = node;
+			setNodeRef(node);
+		},
+		[setNodeRef]
+	);
 	useEffect(() => {
 		if (!isOver && didInventoryUpdated(availableCell)) {
 			setAvailableCell(initialAvailableCellState);
 		}
 	}, [isOver, availableCell, setAvailableCell]);
 	return (
-		<article className={styles.inventory} ref={inventoryRef}>
+		<article className={styles.inventory} ref={setInventoryRef}>
 			<InventoryCell
 				extraClass={styles.helmet}
 				isAvailable={availableCell.helmet}

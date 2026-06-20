@@ -5,5 +5,18 @@
 html {
 	font-family: 'RobotoSlab', 'Arial', serif;
 	font-style: normal;
-	cursor: url("@images/cursor.png"), default !important;
+	cursor: url("@images/cursor_poiner_50.png"), default !important;
+}
+
+html *,
+html *::before,
+html *::after {
+	cursor: url("@images/cursor_poiner_50.png"), default !important;
+}
+
+html.cardDragging,
+html.cardDragging *,
+html.cardDragging *::before,
+html.cardDragging *::after {
+	cursor: url("@images/cursor_drag_50.png"), grabbing !important;
 }

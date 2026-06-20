@@ -24,7 +24,7 @@ import MiniCard from '@widgets/MiniCard';
 import Modal from '@widgets/Modal';
 import Card from '@widgets/Сard';
 import { clsx } from 'clsx';
-import { type CSSProperties, useEffect, useRef, useState } from 'react';
+import { type CSSProperties, useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from '@/app/store';
 import styles from './style.module.scss';
 
@@ -77,7 +77,14 @@ const Field = () => {
 	const playerHand = useSelector(getPlayerHandCard);
 	const playerArena = useSelector(getPlayerArenaCard);
 	const inventory = useSelector(getInventory);
-	const { isOver } = useDropField({ playerArenaRef });
+	const { isOver, setNodeRef: setArenaNodeRef } = useDropField();
+	const setPlayerArenaRef = useCallback(
+		(node: HTMLDivElement | null) => {
+			playerArenaRef.current = node;
+			setArenaNodeRef(node);
+		},
+		[setArenaNodeRef]
+	);
 	const humanPlayer = getPlayer(game, game.humanPlayerId);
 	const botPlayer = getPlayer(game, game.botPlayerId);
 	const isHumanTurn = game.currentPlayerId === game.humanPlayerId;
@@ -546,7 +553,7 @@ const Field = () => {
 						className={clsx(styles.playerArena, {
 							[styles.dragOverArena]: isOver,
 						})}
-						ref={playerArenaRef}
+						ref={setPlayerArenaRef}
 					>
 						{playerArena.length > 0 &&
 							playerArena.map((item) => (

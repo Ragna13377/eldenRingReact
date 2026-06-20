@@ -1,10 +1,10 @@
 import type {
+	TClientPosition,
 	TCardWithParams,
 	TInventoryEquipment,
 	TInventoryOwner,
 } from '@shared/types/utilityTypes';
 import type { Dispatch, RefObject, SetStateAction } from 'react';
-import type { DropTargetMonitor } from 'react-dnd';
 
 export type TInventoryProps = {
 	ownerId: TInventoryOwner;
@@ -17,8 +17,9 @@ export type TUseDropInventoryProps = {
 	isDropEnabled?: boolean;
 };
 export type TSetAvailableCellProps = {
+	clientOffset: TClientPosition | null;
 	inventoryRef: RefObject<HTMLDivElement | null>;
-	monitor: DropTargetMonitor<unknown, unknown>;
+	isOver: boolean;
 	currentDraggableCard: TCardWithParams | null;
 	availableCell: TInventoryEquipment;
 	setAvailableCell: Dispatch<SetStateAction<TInventoryEquipment>>;
