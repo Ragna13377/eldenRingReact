@@ -38,7 +38,7 @@ import MiniCard from '@widgets/MiniCard';
 import Modal from '@widgets/Modal';
 import Card from '@widgets/Сard';
 import { clsx } from 'clsx';
-import { CircleHelp, RotateCw, Save } from 'lucide-react';
+import { Check, CircleHelp, RotateCw, Save } from 'lucide-react';
 import { type CSSProperties, useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from '@/app/store';
 import styles from './style.module.scss';
@@ -201,6 +201,7 @@ const Field = () => {
 	const inventoryState = useSelector((state) => state.inventory);
 	const { isOver, setNodeRef: setArenaNodeRef } = useDropField();
 	const shuffleTimerRef = useRef<number | null>(null);
+	const saveStatusTimerRef = useRef<number | null>(null);
 	const setPlayerArenaRef = useCallback(
 		(node: HTMLDivElement | null) => {
 			playerArenaRef.current = node;
@@ -214,6 +215,12 @@ const Field = () => {
 		window.clearTimeout(shuffleTimerRef.current);
 		shuffleTimerRef.current = null;
 	}, []);
+	const clearSaveStatusTimer = useCallback(() => {
+		if (saveStatusTimerRef.current === null) return;
+
+		window.clearTimeout(saveStatusTimerRef.current);
+		saveStatusTimerRef.current = null;
+	}, []);
 	const startNewGame = useCallback(
 		async (shouldClearSave = false) => {
 			if (shouldClearSave) {
@@ -225,6 +232,7 @@ const Field = () => {
 			}
 
 			clearShuffleTimer();
+			clearSaveStatusTimer();
 			const initialGame = createInitialDuelGame();
 			setIsSaveReady(false);
 			setGame({ ...initialGame, phase: 'setup' });
@@ -247,12 +255,15 @@ const Field = () => {
 				shuffleTimerRef.current = null;
 			}, 1200);
 		},
-		[clearShuffleTimer, dispatch]
+		[clearSaveStatusTimer, clearShuffleTimer, dispatch]
 	);
-	const saveCurrentGame = useCallback(async () => {
+	const saveCurrentGame = useCallback(async (showFeedback = false) => {
 		if (!isSaveReady || isShuffling) return;
 
-		setSaveStatus('saving');
+		if (showFeedback) {
+			clearSaveStatusTimer();
+			setSaveStatus('saving');
+		}
 		try {
 			await saveGameSnapshot({
 				game,
@@ -266,11 +277,18 @@ const Field = () => {
 					playerArena,
 				},
 			});
-			setSaveStatus('saved');
+			if (showFeedback) {
+				setSaveStatus('saved');
+				saveStatusTimerRef.current = window.setTimeout(() => {
+					setSaveStatus('idle');
+					saveStatusTimerRef.current = null;
+				}, 1800);
+			}
 		} catch {
 			setSaveStatus('error');
 		}
 	}, [
+		clearSaveStatusTimer,
 		game,
 		handLimitTarget,
 		hintKind,
@@ -340,7 +358,7 @@ const Field = () => {
 				setTreasureDrawsAvailable(snapshot.ui.treasureDrawsAvailable);
 				setHandLimitTarget(snapshot.ui.handLimitTarget);
 				setIsSaveReady(true);
-				setSaveStatus('saved');
+				setSaveStatus('idle');
 			})
 			.catch(() => {
 				if (isMounted) {
@@ -351,18 +369,9 @@ const Field = () => {
 		return () => {
 			isMounted = false;
 			clearShuffleTimer();
+			clearSaveStatusTimer();
 		};
-	}, [clearShuffleTimer, dispatch, startNewGame]);
-
-	useEffect(() => {
-		if (!isSaveReady || isShuffling) return;
-
-		const autosaveTimer = window.setTimeout(() => {
-			void saveCurrentGame();
-		}, 450);
-
-		return () => window.clearTimeout(autosaveTimer);
-	}, [game, inventoryState, isSaveReady, isShuffling, playerArena, saveCurrentGame]);
+	}, [clearSaveStatusTimer, clearShuffleTimer, dispatch, startNewGame]);
 
 	useEffect(() => {
 		if (isShuffling || game.currentPlayerId !== game.botPlayerId || game.phase === 'gameOver') {
@@ -933,10 +942,14 @@ const Field = () => {
 						data-status={saveStatus}
 						data-tooltip="Сохранить игру"
 						type="button"
-						onClick={() => void saveCurrentGame()}
-						disabled={!isSaveReady || isShuffling}
+						onClick={() => void saveCurrentGame(true)}
+						disabled={!isSaveReady || isShuffling || saveStatus === 'saving'}
 					>
-						<Save aria-hidden="true" size={18} strokeWidth={2.2} />
+						{saveStatus === 'saved' ? (
+							<Check aria-hidden="true" size={19} strokeWidth={2.4} />
+						) : (
+							<Save aria-hidden="true" size={18} strokeWidth={2.2} />
+						)}
 					</button>
 					<button
 						aria-label="Новая игра"
