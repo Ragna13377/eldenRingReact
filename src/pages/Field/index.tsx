@@ -53,26 +53,98 @@ type TTurnPhase =
 	| 'charity'
 	| 'finished';
 
-const phaseText: Record<TTurnPhase, string> = {
-	shuffle: 'Перетасовка',
-	kickDoor: 'Вышиби дверь',
-	doorRevealed: 'Реши судьбу карты',
-	combat: 'Бой',
-	choice: 'Неприятности или нычки',
-	charity: 'От щедрот',
-	finished: 'Ход завершён',
+type THintKind =
+	| 'gameStart'
+	| 'turnPreparation'
+	| 'eventReveal'
+	| 'enemyRevealed'
+	| 'eventEffect'
+	| 'eventCard'
+	| 'postEventChoice'
+	| 'combat'
+	| 'combatRestrictions'
+	| 'intervention'
+	| 'combatWin'
+	| 'reward'
+	| 'combatLoss'
+	| 'escape'
+	| 'defeatEffect'
+	| 'handLimit'
+	| 'botTurn'
+	| 'botThinking'
+	| 'botCombat'
+	| 'gameWin';
+
+type TTurnHint = {
+	title: string;
+	meta?: string;
+	text: string[];
 };
+
+const rulesSections = [
+	{
+		title: 'Цель',
+		content: ['Первым получить 10 уровень.'],
+	},
+	{
+		title: 'Ход',
+		content: [
+			'В начале хода можно сыграть карты, экипировать предметы и применить доступные эффекты.',
+			'Затем открывается карта события: враг начинает бой, проклятие или эффект применяется сразу, другую карту можно взять в руку или применить.',
+			'Если боя не было, выбери одно действие: вызвать врага из руки или взять скрытую карту события.',
+		],
+	},
+	{
+		title: 'Бой',
+		content: [
+			'Сравнивается сила персонажа и сила врага.',
+			'Чтобы победить, сила персонажа должна быть больше силы врага. При равенстве побеждает враг.',
+		],
+	},
+	{
+		title: 'Ограничения в бою',
+		content: [
+			'Во время боя нельзя менять экипировку, продавать предметы или выполнять подготовительные действия.',
+			'Разрешены только карты и эффекты, которые можно применять в бою.',
+			'Оппонент может вмешиваться в бой: усиливать врага, добавлять новых врагов или применять эффекты, если его карты это позволяют.',
+		],
+	},
+	{
+		title: 'Победа в бою',
+		content: ['За победу над врагом игрок получает уровни и карты награды.'],
+	},
+	{
+		title: 'Поражение',
+		content: [
+			'Если победить нельзя, игра проверяет попытку сбежать.',
+			'При успехе бой заканчивается без награды. При провале применяется эффект поражения от врага.',
+		],
+	},
+	{
+		title: 'Конец хода',
+		content: ['В конце хода в руке должно быть не больше 5 карт. Лишние карты сбрасываются.'],
+	},
+	{
+		title: 'Победа',
+		content: [
+			'Игра заканчивается, когда игрок получает 10 уровень.',
+			'Обычно 10 уровень можно получить только за победу в бою.',
+		],
+	},
+];
 
 const Field = () => {
 	const dispatch = useDispatch();
 	const playerArenaRef = useRef<HTMLDivElement>(null);
+	const rulesHelpRef = useRef<HTMLDivElement>(null);
 	const [modalParams, setIsModalOpen] = useState<TChangeModalParams>({
 		isOpen: false,
 		hoveredCardKey: '',
 	});
 	const [game, setGame] = useState<GameState>(() => createInitialDuelGame());
+	const [isRulesOpen, setIsRulesOpen] = useState(false);
 	const [isShuffling, setIsShuffling] = useState(true);
-	const [statusText, setStatusText] = useState('Колоды перемешиваются.');
+	const [hintKind, setHintKind] = useState<THintKind>('gameStart');
 	const [treasureDrawsAvailable, setTreasureDrawsAvailable] = useState(0);
 	const playerHand = useSelector(getPlayerHandCard);
 	const playerArena = useSelector(getPlayerArenaCard);
@@ -121,14 +193,14 @@ const Field = () => {
 		setGame({ ...initialGame, phase: 'setup' });
 		dispatch(setHand([]));
 		setIsShuffling(true);
-		setStatusText('Колоды перемешиваются.');
+		setHintKind('gameStart');
 		setTreasureDrawsAvailable(0);
 
 		const shuffleTimer = window.setTimeout(() => {
 			setGame({ ...initialGame, phase: 'eventReveal' });
 			dispatch(setHand(initialGame.players[0].hand));
 			setIsShuffling(false);
-			setStatusText('Нажми на колоду дверей, чтобы вскрыть верхнюю карту.');
+			setHintKind('eventReveal');
 		}, 1200);
 
 		return () => window.clearTimeout(shuffleTimer);
@@ -139,14 +211,15 @@ const Field = () => {
 			return;
 		}
 
-		setStatusText('Бот думает.');
+		setHintKind(game.phase === 'combat' ? 'botCombat' : 'botThinking');
 		const botTimer = window.setTimeout(() => {
 			setGame((prev) => {
 				const next = runBotTurn(prev);
 				if (next.currentPlayerId === next.humanPlayerId && next.phase !== 'gameOver') {
-					setStatusText('Твой ход. Вскрой дверь.');
+					setHintKind('eventReveal');
 					return { ...next, phase: 'eventReveal' };
 				}
+				setHintKind(next.phase === 'gameOver' ? 'gameWin' : 'botTurn');
 				return next;
 			});
 		}, 900);
@@ -155,8 +228,40 @@ const Field = () => {
 	}, [game.currentPlayerId, game.phase, game.botPlayerId, isShuffling]);
 
 	useEffect(() => {
+		if (!isRulesOpen) return;
+
+		const handlePointerDown = (event: MouseEvent) => {
+			if (rulesHelpRef.current?.contains(event.target as Node)) return;
+
+			setIsRulesOpen(false);
+		};
+
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.key === 'Escape') {
+				setIsRulesOpen(false);
+			}
+		};
+
+		document.addEventListener('mousedown', handlePointerDown);
+		document.addEventListener('keydown', handleKeyDown);
+
+		return () => {
+			document.removeEventListener('mousedown', handlePointerDown);
+			document.removeEventListener('keydown', handleKeyDown);
+		};
+	}, [isRulesOpen]);
+
+	useEffect(() => {
 		dispatch(setHand(humanPlayer.hand));
 	}, [dispatch, humanPlayer.hand]);
+
+	useEffect(() => {
+		if (hintKind !== 'enemyRevealed' || game.phase !== 'combat') return;
+
+		const combatHintTimer = window.setTimeout(() => setHintKind('combat'), 900);
+
+		return () => window.clearTimeout(combatHintTimer);
+	}, [game.phase, hintKind]);
 
 	const drawCard = (deckType: 'adventures' | 'treasures') => {
 		if (isShuffling) return;
@@ -167,11 +272,11 @@ const Field = () => {
 		if (deckType === 'adventures') {
 			setGame((prev) => {
 				const [afterDraw, nextCard] = drawEvent(prev);
-				if (!nextCard) return addLog(afterDraw, prev.humanPlayerId, 'Колода дверей пуста.');
+				if (!nextCard) return addLog(afterDraw, prev.humanPlayerId, 'Колода событий пуста.');
 				const currentHuman = getPlayer(afterDraw, afterDraw.humanPlayerId);
 				if (nextCard.card.subtype === CardSubType.creature) {
 					const enemyPower = 'strength' in nextCard.card ? nextCard.card.strength : 0;
-					setStatusText('За дверью монстр. Сравни силу и реши бой.');
+					setHintKind('enemyRevealed');
 					return addLog(
 						{
 							...afterDraw,
@@ -193,10 +298,12 @@ const Field = () => {
 							},
 						},
 						prev.humanPlayerId,
-						`Ты вскрыл монстра: ${nextCard.card.title}.`
+						`Ты открыл врага: ${nextCard.card.title}.`
 					);
 				}
-				setStatusText('Это не монстр. Можно взять карту в руку.');
+				setHintKind(
+					nextCard.card.subtype === CardSubType.spell ? 'eventEffect' : 'eventCard'
+				);
 				return addLog(
 					{
 						...afterDraw,
@@ -204,7 +311,7 @@ const Field = () => {
 						revealedEvent: nextCard,
 					},
 					prev.humanPlayerId,
-					`Ты вскрыл карту: ${nextCard.card.title}.`
+					`Ты открыл карту: ${nextCard.card.title}.`
 				);
 			});
 		} else {
@@ -212,7 +319,7 @@ const Field = () => {
 				const [afterDraw, reward] = drawReward(prev);
 				if (!reward) return afterDraw;
 				setTreasureDrawsAvailable((value) => Math.max(0, value - 1));
-				setStatusText('Сокровище добавлено в руку.');
+				setHintKind(treasureDrawsAvailable > 1 ? 'reward' : 'handLimit');
 				return updatePlayer(afterDraw, prev.humanPlayerId, (player) => ({
 					...player,
 					hand: [...player.hand, reward],
@@ -226,7 +333,7 @@ const Field = () => {
 		setGame((prev) => {
 			const card = prev.revealedEvent;
 			if (!card) return prev;
-			setStatusText('Выбери: сыграть монстра с руки или взять вторую дверь в руку.');
+			setHintKind('postEventChoice');
 			return updatePlayer(
 				{
 					...prev,
@@ -244,7 +351,7 @@ const Field = () => {
 		setGame((prev) => {
 			const [afterDraw, card] = drawEvent(prev);
 			if (!card) return afterDraw;
-			setStatusText('Вторая дверь взята в руку. Проверь лимит руки.');
+			setHintKind('handLimit');
 			return updatePlayer(
 				{
 					...afterDraw,
@@ -262,7 +369,7 @@ const Field = () => {
 		setGame((prev) => {
 			const currentHuman = getPlayer(prev, prev.humanPlayerId);
 			const enemyPower = 'strength' in monster.card ? monster.card.strength : 0;
-			setStatusText('Монстр сыгран с руки. Реши бой.');
+			setHintKind('enemyRevealed');
 			return updatePlayer(
 				{
 					...prev,
@@ -295,11 +402,7 @@ const Field = () => {
 		if (!combatStats?.isWinning) return;
 		const combat = combatStats;
 		setTreasureDrawsAvailable(combat.expectedRewardCards);
-		setStatusText(
-			combat.expectedRewardCards > 0
-				? `Монстр побеждён. Можно взять сокровища: ${combat.expectedRewardCards}.`
-				: 'Монстр побеждён. Проверь лимит руки.'
-		);
+		setHintKind(combat.expectedRewardCards > 0 ? 'combatWin' : 'handLimit');
 		setGame((prev) => {
 			const enemy = prev.combat?.enemyCard;
 			if (!enemy || !prev.combat) return prev;
@@ -336,7 +439,7 @@ const Field = () => {
 			};
 			return enemy ? discardEvent(next, enemy) : next;
 		});
-		setStatusText('Бой проигран. Непотребство карты пока не автоматизировано.');
+		setHintKind('escape');
 	};
 
 	const discardForCharity = (card: GameCard) => {
@@ -351,13 +454,13 @@ const Field = () => {
 				? discardReward(afterDiscard, card)
 				: discardEvent(afterDiscard, card);
 		});
-		setStatusText('Лишняя карта сброшена. В руке должно остаться не больше пяти.');
+		setHintKind(humanPlayer.hand.length > 6 ? 'handLimit' : 'turnPreparation');
 	};
 
 	const finishTurn = () => {
 		if (humanPlayer.hand.length > 5 || treasureDrawsAvailable > 0) return;
 		setGame((prev) => passTurn(addLog(prev, prev.humanPlayerId, 'Ты завершил ход.')));
-		setStatusText('Ход бота.');
+		setHintKind('botTurn');
 	};
 
 	const getDeckLayers = (deckType: 'adventures' | 'treasures') => {
@@ -371,9 +474,164 @@ const Field = () => {
 		);
 	};
 
+	const getTurnHint = (): TTurnHint => {
+		const activePlayer = isHumanTurn ? humanPlayer : botPlayer;
+		const playerMeta = `${activePlayer.name} · уровень ${activePlayer.level}`;
+
+		if (game.winnerPlayerId) {
+			const winner = getPlayer(game, game.winnerPlayerId);
+			return {
+				title: 'Победа',
+				text: [`${winner.name} получает 10 уровень и выигрывает дуэль.`],
+			};
+		}
+
+		if (game.currentPlayerId === game.botPlayerId) {
+			if (hintKind === 'botCombat' || game.phase === 'combat') {
+				return {
+					title: 'Бой бота',
+					text: ['Бот сравнивает свою силу с силой врага и выбирает допустимые карты.'],
+				};
+			}
+
+			return hintKind === 'botThinking'
+				? {
+						title: 'Ход бота',
+						text: ['Бот оценивает доступные действия.'],
+					}
+				: {
+						title: 'Ход бота',
+						text: [
+							'Бот выполняет свой ход автоматически.',
+							'Действия бота отображаются в журнале игры.',
+						],
+					};
+		}
+
+		if (game.phase === 'combat' && combatStats && hintKind !== 'enemyRevealed') {
+			return {
+				title: 'Бой',
+				meta: `${humanPlayer.name}: ${combatStats.playerPower} силы · Враг: ${combatStats.enemyPower} силы`,
+				text: [
+					combatStats.isWinning
+						? 'Вы побеждаете по силе. Оппонент может вмешаться картами.'
+						: 'Силы недостаточно для победы. Используйте боевые карты или перейдите к бегству.',
+				],
+			};
+		}
+
+		switch (hintKind) {
+			case 'gameStart':
+				return {
+					title: 'Дуэль началась',
+					text: [`Игрок против бота. Первым ходит ${humanPlayer.name}.`],
+				};
+			case 'turnPreparation':
+				return {
+					title: 'Подготовка хода',
+					meta: playerMeta,
+					text: [
+						'Можно сыграть карты, экипировать предметы и применить доступные эффекты.',
+						'Когда будете готовы, откройте событие.',
+					],
+				};
+			case 'eventReveal':
+				return {
+					title: 'Открытие события',
+					meta: playerMeta,
+					text: ['Нажмите на колоду событий, чтобы открыть верхнюю карту.'],
+				};
+			case 'enemyRevealed':
+				return {
+					title: 'Враг обнаружен',
+					meta: playerMeta,
+					text: ['Открытый враг начинает бой.'],
+				};
+			case 'eventEffect':
+				return {
+					title: 'Эффект события',
+					meta: playerMeta,
+					text: ['Открытая карта применяется сразу.'],
+				};
+			case 'eventCard':
+				return {
+					title: 'Карта события',
+					meta: playerMeta,
+					text: ['Эту карту можно взять в руку или применить, если она доступна.'],
+				};
+			case 'postEventChoice':
+				return {
+					title: 'Выбор действия',
+					meta: playerMeta,
+					text: ['Выберите: вызвать врага из руки или взять скрытую карту события.'],
+				};
+			case 'combatRestrictions':
+				return {
+					title: 'Бой',
+					text: [
+						'Во время боя нельзя менять экипировку, продавать предметы или выполнять подготовительные действия.',
+						'Разрешены только карты и эффекты, применимые в бою.',
+					],
+				};
+			case 'intervention':
+				return {
+					title: 'Вмешательство',
+					text: [
+						'Оппонент может усилить врага, добавить нового врага или применить боевой эффект.',
+					],
+				};
+			case 'combatWin':
+				return {
+					title: 'Победа в бою',
+					text: ['Враг побеждён. Получите уровни и карты награды.'],
+				};
+			case 'reward':
+				return {
+					title: 'Награда',
+					text: [
+						'Возьмите карты из колоды наград.',
+						'После получения награды ход перейдёт к завершению.',
+					],
+				};
+			case 'combatLoss':
+				return {
+					title: 'Поражение в бою',
+					text: ['Победить врага не удалось. Начинается попытка бегства.'],
+				};
+			case 'escape':
+				return {
+					title: 'Бегство',
+					text: [
+						'Игра проверяет, удалось ли избежать последствий боя.',
+						'При провале применяется эффект поражения от врага.',
+					],
+				};
+			case 'defeatEffect':
+				return {
+					title: 'Эффект поражения',
+					text: ['Применяется эффект, указанный на карте врага.'],
+				};
+			case 'handLimit':
+				return {
+					title: 'Конец хода',
+					text: [
+						'В руке должно быть не больше 5 карт.',
+						'Лишние карты нужно сбросить.',
+					],
+				};
+			default:
+				return {
+					title: 'Открытие события',
+					meta: playerMeta,
+					text: ['Нажмите на колоду событий, чтобы открыть верхнюю карту.'],
+				};
+		}
+	};
+
 	const botHandSlots = Array.from({ length: botPlayer.hand.length }).map(
 		(_, index) => `bot-card-${index + 1}`
 	);
+	const turnHint = getTurnHint();
 
 	return (
 		<div className={styles.fieldContainer}>
@@ -391,7 +649,7 @@ const Field = () => {
 						onClick={() => drawCard('adventures')}
 						disabled={isShuffling || phase !== 'kickDoor' || game.eventDeck.length === 0}
 					>
-						<span className={styles.deckTitle}>Двери</span>
+						<span className={styles.deckTitle}>События</span>
 						<span className={styles.deckStack}>
 							{deckLayerSlots.slice(0, getDeckLayers('adventures')).map((layer) => (
 								<span
@@ -418,7 +676,7 @@ const Field = () => {
 							isShuffling || treasureDrawsAvailable <= 0 || game.rewardDeck.length === 0
 						}
 					>
-						<span className={styles.deckTitle}>Сокровища</span>
+						<span className={styles.deckTitle}>Награды</span>
 						<span className={styles.deckStack}>
 							{deckLayerSlots.slice(0, getDeckLayers('treasures')).map((layer) => (
 								<span
@@ -434,40 +692,51 @@ const Field = () => {
 						</span>
 					</button>
 				</fieldset>
-				<div className={styles.rulesHelp}>
-					<button className={styles.rulesButton} type="button">
+				<div className={styles.rulesHelp} ref={rulesHelpRef}>
+					<button
+						aria-controls="rules-panel"
+						aria-expanded={isRulesOpen}
+						aria-label="Открыть правила"
+						className={styles.rulesButton}
+						type="button"
+						onClick={() => setIsRulesOpen((value) => !value)}
+					>
 						?
 					</button>
-					<div className={styles.rulesScroll}>
-						<strong>Ход</strong>
-						<span>1. Вскрой дверь. Монстр уходит в бой, другая карта может уйти в руку.</span>
-						<span>2. Если монстра не было: сыграй монстра с руки или возьми вторую дверь.</span>
-						<span>3. В конце оставь не больше пяти карт в руке.</span>
-					</div>
+					{isRulesOpen && (
+						<aside className={styles.rulesPanel} id="rules-panel" aria-label="Правила">
+							<div className={styles.rulesHeader}>
+								<strong>Правила</strong>
+								<button
+									aria-label="Закрыть правила"
+									className={styles.rulesCloseButton}
+									type="button"
+									onClick={() => setIsRulesOpen(false)}
+								>
+									X
+								</button>
+							</div>
+							<div className={styles.rulesScroll}>
+								{rulesSections.map((section) => (
+									<section className={styles.rulesSection} key={section.title}>
+										<h2>{section.title}</h2>
+										{section.content.map((text) => (
+											<p key={text}>{text}</p>
+										))}
+									</section>
+								))}
+							</div>
+						</aside>
+					)}
 				</div>
 				<aside className={styles.turnHud}>
-					<span className={styles.phaseTitle}>{phaseText[phase]}</span>
-					<span className={styles.turnBadge}>
-						{isHumanTurn ? humanPlayer.name : botPlayer.name} · уровень{' '}
-						{isHumanTurn ? humanPlayer.level : botPlayer.level}
-					</span>
-					<span className={styles.phaseStatus}>{statusText}</span>
-					{combatStats && (
-						<div className={styles.combatScore}>
-							<span>Ты: {combatStats.playerPower}</span>
-							<span>Враг: {combatStats.enemyPower}</span>
-							<span
-								className={clsx({
-									[styles.scoreWin]: combatStats.isWinning,
-									[styles.scoreLose]: !combatStats.isWinning,
-								})}
-							>
-								{combatStats.isWinning
-									? `победа +${combatStats.margin}`
-									: `не хватает ${combatStats.requiredPowerToWin}`}
-							</span>
-						</div>
-					)}
+					<span className={styles.phaseTitle}>{turnHint.title}</span>
+					{turnHint.meta && <span className={styles.turnBadge}>{turnHint.meta}</span>}
+					<div className={styles.phaseStatus}>
+						{turnHint.text.map((text) => (
+							<span key={text}>{text}</span>
+						))}
+					</div>
 					<div className={styles.phaseActions}>
 						{phase === 'doorRevealed' && (
 							<button className={styles.actionButton} type="button" onClick={keepDoorCard}>
@@ -477,9 +746,9 @@ const Field = () => {
 						{phase === 'choice' && (
 							<>
 								<button className={styles.actionButton} type="button" onClick={lootRoom}>
-									Чистить нычки
+									Взять скрытое событие
 								</button>
-								<span className={styles.actionHint}>или выбери монстра в руке</span>
+								<span className={styles.actionHint}>или выбери врага в руке</span>
 							</>
 						)}
 						{phase === 'combat' && (
@@ -497,7 +766,7 @@ const Field = () => {
 									type="button"
 									onClick={resolveCombatLoss}
 								>
-									Смывка
+									Бегство
 								</button>
 							</>
 						)}

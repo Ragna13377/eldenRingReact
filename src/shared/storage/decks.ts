@@ -16,10 +16,10 @@ export const deckSizes = {
 	treasures: weapons.length + equipments.length,
 } satisfies Record<keyof TDeckState, number>;
 
-const withCardKeys = (cards: TCard[]): TCardWithParams[] =>
-	cards.map((card) => ({
+const withCardKeys = (cards: TCard[], keyPrefix?: string): TCardWithParams[] =>
+	cards.map((card, index) => ({
 		card,
-		cardKey: uuidv4(),
+		cardKey: keyPrefix ? `${keyPrefix}-${index + 1}` : uuidv4(),
 	}));
 
 const shuffle = <T>(items: T[]) => {
@@ -36,10 +36,64 @@ const shuffle = <T>(items: T[]) => {
 	return shuffledItems;
 };
 
-export const createDecks = (): TDeckState => ({
-	adventures: shuffle(withCardKeys([...creatures, ...spells])),
-	treasures: shuffle(withCardKeys([...weapons, ...equipments])),
+const orderCardsByTitle = <T extends TCard>(cards: T[], titles: string[]) => {
+	const selectedCards = titles
+		.map((title) => cards.find((card) => card.title === title))
+		.filter((card): card is T => Boolean(card));
+	const selectedCardSet = new Set<TCard>(selectedCards);
+
+	return [...selectedCards, ...cards.filter((card) => !selectedCardSet.has(card))];
+};
+
+const createTestDecks = (): TDeckState => ({
+	adventures: withCardKeys(
+		orderCardsByTitle([...creatures, ...spells], [
+			'Росток Миранды',
+			'Карающие шипы',
+			'Туман Фии',
+			'Скелет',
+			'Получеловек',
+			'Взрывное пламя смерти',
+			'Чудовищная ворона',
+			'Вой Шабрири',
+			'Земляной брызгун',
+			'Дрожь земли',
+			'Маргит, Ужасное Знамение',
+			'Рыцарь Горнила',
+		]),
+		'test-adventure'
+	),
+	treasures: withCardKeys(
+		orderCardsByTitle([...weapons, ...equipments], [
+			'Рожок посланца',
+			'Кожаный доспех',
+			'Головной убор пехотинца',
+			'Краги победителя',
+			'Осколок воина-кувшина',
+			'Пика',
+			'Чешуйчатый доспех',
+			'Повязка с сияющими рогами',
+			'Поножи с шипами',
+			'Метеоритный посох',
+			'Доспех Чёрного ножа',
+			'Скрывающая вуаль',
+		]),
+		'test-treasure'
+	),
 });
+
+export const isTestDeckEnabled = () => import.meta.env.VITE_USE_TEST_DECK === 'true';
+
+export const createDecks = (): TDeckState => {
+	if (isTestDeckEnabled()) {
+		return createTestDecks();
+	}
+
+	return {
+		adventures: shuffle(withCardKeys([...creatures, ...spells])),
+		treasures: shuffle(withCardKeys([...weapons, ...equipments])),
+	};
+};
 
 export const dealCards = (deck: TCardWithParams[], count: number) => ({
 	drawnCards: deck.slice(0, count),

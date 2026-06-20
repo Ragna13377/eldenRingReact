@@ -1,5 +1,14 @@
 $card-width: 162px;
 $field-offset: 40px;
+$interaction-active-glow:
+	drop-shadow(0 0 6px rgba(255, 231, 139, 0.92))
+	drop-shadow(0 0 12px rgba(255, 180, 62, 0.72));
+$interaction-hover-shadow:
+	inset 0 0 20px 5px rgba(99, 119, 31, 0.8),
+	0 0 24px rgba(191, 154, 78, 0.28);
+$interaction-hover-glow:
+	drop-shadow(0 0 7px rgba(166, 210, 83, 0.92))
+	drop-shadow(0 0 14px rgba(99, 119, 31, 0.8));
 
 .fieldContainer {
 	position: relative;
@@ -152,11 +161,9 @@ $hand-height: 25%;
 	font-size: 13px;
 	background: linear-gradient(180deg, rgba(86, 55, 24, 0.9), rgba(22, 15, 10, 0.95));
 	box-shadow: 0 8px 14px rgba(0, 0, 0, 0.28);
-	cursor: pointer;
 
 	&:disabled {
 		opacity: 0.42;
-		cursor: default;
 	}
 }
 
@@ -312,11 +319,9 @@ $hand-height: 25%;
 	color: #f5deb0;
 	font-family: inherit;
 	background: transparent;
-	cursor: pointer;
 
 	&:disabled {
 		filter: grayscale(0.45) saturate(0.65) brightness(0.72);
-		cursor: default;
 	}
 }
 
@@ -377,9 +382,21 @@ $hand-height: 25%;
 }
 
 .activeDeck .deckStack {
-	filter:
-		drop-shadow(0 0 6px rgba(255, 231, 139, 0.92))
-		drop-shadow(0 0 12px rgba(255, 180, 62, 0.72));
+	filter: $interaction-active-glow;
+}
+
+.activeDeck:not(:disabled):hover .deckStack,
+.activeDeck:not(:disabled):focus-visible .deckStack {
+	filter: $interaction-hover-glow;
+}
+
+.activeDeck:not(:disabled):hover .deckLayer,
+.activeDeck:not(:disabled):focus-visible .deckLayer {
+	border-color: rgba(166, 210, 83, 0.72);
+	box-shadow:
+		0 10px 16px rgba(0, 0, 0, 0.4),
+		$interaction-hover-shadow,
+		inset 0 0 14px rgba(0, 0, 0, 0.38);
 }
 
 .rulesHelp {
@@ -390,52 +407,195 @@ $hand-height: 25%;
 }
 
 .rulesButton {
+	position: relative;
 	display: grid;
 	place-items: center;
 	width: 34px;
 	height: 34px;
-	border: 1px solid rgba(241, 200, 119, 0.58);
+	border: 1px solid rgba(219, 177, 92, 0.78);
 	border-radius: 50%;
-	color: #f5deb0;
+	color: #f9e6b8;
 	font-weight: 700;
 	background:
-		radial-gradient(circle at 35% 30%, rgba(205, 157, 72, 0.9), rgba(52, 31, 13, 0.96)),
-		#2b1a0c;
-	box-shadow: 0 8px 18px rgba(0, 0, 0, 0.42);
-	cursor: help;
+		radial-gradient(circle at 38% 30%, rgba(255, 229, 157, 0.22), transparent 34%),
+		linear-gradient(145deg, #5c4324 0%, #24160c 48%, #080604 100%);
+	box-shadow:
+		0 0 0 1px rgba(19, 12, 7, 0.92),
+		0 8px 18px rgba(0, 0, 0, 0.46),
+		inset 0 0 0 2px rgba(255, 221, 139, 0.12),
+		inset 0 -7px 12px rgba(0, 0, 0, 0.42);
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+	transition:
+		border-color 0.16s ease,
+		box-shadow 0.16s ease,
+		color 0.16s ease;
+
+	&::before {
+		position: absolute;
+		inset: 4px;
+		border: 1px solid rgba(245, 222, 176, 0.18);
+		border-radius: inherit;
+		content: '';
+		pointer-events: none;
+	}
+
+	&:hover,
+	&:focus-visible {
+		border-color: rgba(255, 228, 150, 0.98);
+		color: #fff3c8;
+		box-shadow:
+			0 0 0 1px rgba(54, 32, 12, 0.96),
+			0 0 12px rgba(238, 198, 104, 0.42),
+			0 10px 20px rgba(0, 0, 0, 0.5),
+			inset 0 0 0 2px rgba(255, 234, 170, 0.18),
+			inset 0 -7px 12px rgba(0, 0, 0, 0.42);
+	}
+
+	&:focus-visible {
+		outline: 2px solid rgba(255, 231, 169, 0.5);
+		outline-offset: 3px;
+	}
 }
 
-.rulesScroll {
+.rulesPanel {
 	position: absolute;
 	top: 42px;
 	right: 0;
 	display: grid;
-	gap: 8px;
-	width: 280px;
-	padding: 20px 22px;
+	grid-template-rows: auto minmax(0, 1fr);
+	width: clamp(360px, 28vw, 420px);
+	max-height: 70vh;
+	overflow: hidden;
 	border: 1px solid rgba(90, 48, 18, 0.7);
 	border-radius: 8px;
 	color: #382111;
-	font-size: 13px;
-	line-height: 1.35;
 	background:
 		linear-gradient(90deg, rgba(77, 38, 12, 0.18), transparent 12%, transparent 88%, rgba(77, 38, 12, 0.18)),
 		#d5b177;
 	box-shadow:
 		0 18px 28px rgba(0, 0, 0, 0.38),
 		inset 0 0 18px rgba(86, 45, 18, 0.28);
-	opacity: 0;
-	pointer-events: none;
-	transform: translateY(-8px);
-	transition:
-		opacity 0.18s ease,
-		transform 0.18s ease;
 }
 
-.rulesHelp:hover .rulesScroll,
-.rulesHelp:focus-within .rulesScroll {
-	opacity: 1;
-	transform: translateY(0);
+.rulesHeader {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 16px 18px 10px;
+	border-bottom: 1px solid rgba(90, 48, 18, 0.2);
+	font-size: 16px;
+}
+
+.rulesCloseButton {
+	position: relative;
+	display: grid;
+	place-items: center;
+	width: 30px;
+	height: 30px;
+	padding: 0;
+	border: 1px solid rgba(90, 48, 18, 0.42);
+	border-radius: 50%;
+	color: #382111;
+	font: inherit;
+	font-size: 13px;
+	font-weight: 700;
+	background: rgba(255, 238, 183, 0.34);
+	transition:
+		border-color 0.16s ease,
+		box-shadow 0.16s ease,
+		background 0.16s ease;
+
+	&::before {
+		position: absolute;
+		inset: -4px;
+		border: 1px solid transparent;
+		border-radius: inherit;
+		box-shadow: none;
+		content: '';
+		pointer-events: auto;
+		transition:
+			border-color 0.16s ease,
+			box-shadow 0.16s ease;
+	}
+
+	&:hover,
+	&:focus-visible {
+		border-color: rgba(73, 35, 12, 0.82);
+		background: rgba(255, 230, 159, 0.58);
+		box-shadow:
+			0 0 10px rgba(90, 48, 18, 0.28),
+			inset 0 0 8px rgba(90, 48, 18, 0.16);
+	}
+
+	&:hover::before,
+	&:focus-visible::before {
+		border-color: rgba(73, 35, 12, 0.46);
+		box-shadow: 0 0 12px rgba(90, 48, 18, 0.28);
+	}
+
+	&:focus-visible {
+		outline: 2px solid rgba(90, 48, 18, 0.32);
+		outline-offset: 2px;
+	}
+}
+
+.rulesScroll {
+	display: grid;
+	gap: 14px;
+	min-height: 0;
+	overflow-y: auto;
+	padding: 14px 18px 18px;
+	font-size: 13px;
+	line-height: 1.38;
+	scrollbar-gutter: stable;
+
+	&::-webkit-scrollbar {
+		width: 13px;
+	}
+
+	&::-webkit-scrollbar-track {
+		border-left: 1px solid rgba(92, 46, 16, 0.2);
+		background:
+			linear-gradient(90deg, rgba(68, 33, 11, 0.18), transparent 45%, rgba(255, 239, 188, 0.2)),
+			#c99d62;
+		box-shadow: inset 0 0 10px rgba(63, 31, 12, 0.28);
+	}
+
+	&::-webkit-scrollbar-thumb {
+		border: 3px solid #c99d62;
+		border-radius: 999px;
+		background:
+			linear-gradient(180deg, rgba(255, 232, 158, 0.78), rgba(116, 64, 24, 0.94) 48%, rgba(47, 24, 10, 0.98));
+		box-shadow:
+			inset 0 0 0 1px rgba(44, 21, 8, 0.72),
+			0 0 6px rgba(63, 31, 12, 0.28);
+	}
+
+	&::-webkit-scrollbar-thumb:hover {
+		background:
+			linear-gradient(180deg, rgba(255, 241, 181, 0.95), rgba(142, 78, 30, 0.98) 48%, rgba(56, 28, 10, 1));
+	}
+
+	&::-webkit-scrollbar-corner {
+		background: #c99d62;
+	}
+}
+
+.rulesSection {
+	display: grid;
+	gap: 5px;
+
+	h2 {
+		margin: 0;
+		color: #2f1a0d;
+		font-size: 14px;
+		line-height: 1.2;
+	}
+
+	p {
+		margin: 0;
+	}
 }
 
 .zoneLabel {
@@ -443,9 +603,7 @@ $hand-height: 25%;
 }
 
 .dragOverArena {
-	box-shadow:
-		inset 0 0 20px 5px rgba(99, 119, 31, 0.8),
-		0 0 24px rgba(191, 154, 78, 0.28);
+	box-shadow: $interaction-hover-shadow;
 }
 
 .fieldLayout {

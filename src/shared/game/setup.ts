@@ -1,4 +1,4 @@
-import { createDecks, dealCards } from '@shared/storage/decks';
+import { createDecks, dealCards, isTestDeckEnabled } from '@shared/storage/decks';
 import type { GameState, PlayerKind, PlayerState } from './types';
 
 const createPlayer = (kind: PlayerKind, name: string): PlayerState => ({
@@ -18,9 +18,9 @@ const createPlayer = (kind: PlayerKind, name: string): PlayerState => ({
 
 export const createInitialDuelGame = (): GameState => {
 	const decks = createDecks();
-	const humanEvents = dealCards(decks.adventures, 4);
+	const humanEvents = dealCards(decks.adventures, isTestDeckEnabled() ? 3 : 4);
 	const botEvents = dealCards(humanEvents.remainingCards, 4);
-	const humanRewards = dealCards(decks.treasures, 4);
+	const humanRewards = dealCards(decks.treasures, isTestDeckEnabled() ? 5 : 4);
 	const botRewards = dealCards(humanRewards.remainingCards, 4);
 	const humanPlayer = createPlayer('human', 'Погасший');
 	const botPlayer = createPlayer('bot', 'Соперник');
@@ -52,4 +52,3 @@ export const createInitialDuelGame = (): GameState => {
 		winnerPlayerId: null,
 	};
 };
-

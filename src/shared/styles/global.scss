@@ -5,18 +5,100 @@
 html {
 	font-family: 'RobotoSlab', 'Arial', serif;
 	font-style: normal;
-	cursor: url("@images/cursor_poiner_50.png"), default !important;
+	cursor: none !important;
 }
 
+html:not(.cardDragging),
+html:not(.cardDragging) body,
+html:not(.cardDragging) #root,
+html:not(.cardDragging) *,
+html:not(.cardDragging) *::before,
+html:not(.cardDragging) *::after,
+body,
+#root,
 html *,
 html *::before,
 html *::after {
-	cursor: url("@images/cursor_poiner_50.png"), default !important;
+	cursor: none !important;
+}
+
+html:not(.cardDragging):hover,
+html:not(.cardDragging) body:hover,
+html:not(.cardDragging) #root:hover,
+html:not(.cardDragging) *:hover,
+html:not(.cardDragging) *:focus,
+html:not(.cardDragging) *:focus-visible,
+html:not(.cardDragging) *:active,
+html:not(.cardDragging) *:disabled,
+html:not(.cardDragging) *:hover::before,
+html:not(.cardDragging) *:hover::after,
+html:not(.cardDragging) *:focus::before,
+html:not(.cardDragging) *:focus::after,
+html:not(.cardDragging) *:active::before,
+html:not(.cardDragging) *:active::after,
+html:hover,
+body:hover,
+#root:hover,
+html *:hover,
+html *:focus,
+html *:focus-visible,
+html *:active,
+html *:disabled,
+html *:hover::before,
+html *:hover::after,
+html *:focus::before,
+html *:focus::after,
+html *:active::before,
+html *:active::after {
+	cursor: none !important;
+}
+
+html:not(.cardDragging) *::-webkit-scrollbar,
+html:not(.cardDragging) *::-webkit-scrollbar-button,
+html:not(.cardDragging) *::-webkit-scrollbar-track,
+html:not(.cardDragging) *::-webkit-scrollbar-track-piece,
+html:not(.cardDragging) *::-webkit-scrollbar-thumb,
+html:not(.cardDragging) *::-webkit-scrollbar-corner,
+html:not(.cardDragging) *::-webkit-resizer {
+	cursor: none !important;
 }
 
 html.cardDragging,
 html.cardDragging *,
 html.cardDragging *::before,
-html.cardDragging *::after {
-	cursor: url("@images/cursor_drag_50.png"), grabbing !important;
+html.cardDragging *::after,
+html.cardDragging *::-webkit-scrollbar,
+html.cardDragging *::-webkit-scrollbar-button,
+html.cardDragging *::-webkit-scrollbar-track,
+html.cardDragging *::-webkit-scrollbar-track-piece,
+html.cardDragging *::-webkit-scrollbar-thumb,
+html.cardDragging *::-webkit-scrollbar-corner,
+html.cardDragging *::-webkit-resizer {
+	cursor: none !important;
+}
+
+html:not(.cardDragging) button,
+html:not(.cardDragging) button *,
+html:not(.cardDragging) a,
+html:not(.cardDragging) a *,
+html:not(.cardDragging) [role="button"],
+html:not(.cardDragging) [role="button"] *,
+html:not(.cardDragging) input,
+html:not(.cardDragging) select,
+html:not(.cardDragging) textarea {
+	cursor: none !important;
+}
+
+.customCursor {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 2147483647;
+	width: 50px;
+	height: 50px;
+	pointer-events: none;
+	user-select: none;
+	will-change: transform, opacity;
+	transition: opacity 0.08s ease;
+	cursor: none !important;
 }

@@ -154,7 +154,7 @@ const DndKitProvider = ({ children }: PropsWithChildren) => {
 				adjustScale={false}
 				dropAnimation={{ duration: 420, easing: 'ease-out' }}
 				modifiers={[centerOverlayOnCursor]}
-				zIndex={2147483647}
+				zIndex={2147483646}
 			>
 				{activeCard ? <CardView {...activeCard} /> : null}
 			</DragOverlay>

@@ -38,7 +38,7 @@ const FlavourText = ({ card, fontExtraClass }: TFlavourTextProps) => {
 					)}
 					{card.punishment && (
 						<p className={styles.punishment}>
-							<span className={styles.flavourText_title}>Наказание: </span>
+							<span className={styles.flavourText_title}>Эффект поражения: </span>
 							{card.punishment.map((p) => PunishmentAction[p.type].getDescription(p))}
 						</p>
 					)}
@@ -52,7 +52,7 @@ const FlavourText = ({ card, fontExtraClass }: TFlavourTextProps) => {
 					</p>
 					{card.bonus && (
 						<p className={styles.equipmentText}>
-							<strong>Бонус: </strong>
+							<strong>Боевые бонусы: </strong>
 							{getFlavourText(card.bonus)}
 						</p>
 					)}
