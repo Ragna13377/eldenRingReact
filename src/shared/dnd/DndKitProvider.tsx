@@ -62,8 +62,8 @@ const centerOverlayOnCursor: Modifier = ({ activatorEvent, activeNodeRect, trans
 
 	return {
 		...transform,
-		x: transform.x + activeNodeRect.width / 2 - grabOffsetX,
-		y: transform.y + activeNodeRect.height / 2 - grabOffsetY,
+		x: transform.x + grabOffsetX - activeNodeRect.width / 2,
+		y: transform.y + grabOffsetY - activeNodeRect.height / 2,
 	};
 };
 
@@ -150,7 +150,12 @@ const DndKitProvider = ({ children }: PropsWithChildren) => {
 			sensors={sensors}
 		>
 			{children}
-			<DragOverlay adjustScale={false} modifiers={[centerOverlayOnCursor]} zIndex={2147483647}>
+			<DragOverlay
+				adjustScale={false}
+				dropAnimation={{ duration: 420, easing: 'ease-out' }}
+				modifiers={[centerOverlayOnCursor]}
+				zIndex={2147483647}
+			>
 				{activeCard ? <CardView {...activeCard} /> : null}
 			</DragOverlay>
 		</DndContext>
