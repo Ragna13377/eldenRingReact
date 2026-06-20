@@ -84,6 +84,14 @@ const InventorySlice = createSlice({
 			const { ownerId = 'human', type } = action.payload;
 			state[ownerId].equipments[type] = null;
 		},
+		setInventory: (
+			_state,
+			action: PayloadAction<Record<TInventoryOwner, TInventory<TCardWithParams | null>>>
+		) => action.payload,
+		resetInventory: () => ({
+			human: createInitialInventory(),
+			bot: createInitialInventory(),
+		}),
 	},
 	selectors: {
 		getInventory: (state) => state.human,
@@ -92,5 +100,6 @@ const InventorySlice = createSlice({
 });
 
 export default InventorySlice.reducer;
-export const { addInventoryCard, removeInventoryCard } = InventorySlice.actions;
+export const { addInventoryCard, removeInventoryCard, resetInventory, setInventory } =
+	InventorySlice.actions;
 export const { getInventory, getInventoryByOwner } = InventorySlice.selectors;

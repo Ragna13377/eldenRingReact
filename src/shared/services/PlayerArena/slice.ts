@@ -36,11 +36,20 @@ const playerArenaSlice = createSlice({
 		removePlayerArenaCard(state, action: PayloadAction<TCardWithParams>) {
 			return state.filter((card) => card.cardKey !== action.payload.cardKey);
 		},
+		setPlayerArena: (_state, action: PayloadAction<TCardWithParams[]>) => [
+			...action.payload,
+		],
+		resetPlayerArena: () => [],
 	},
 	selectors: {
 		getPlayerArenaCard: (state) => state,
 	},
 });
 export default playerArenaSlice.reducer;
-export const { addPlayerArenaCard, removePlayerArenaCard } = playerArenaSlice.actions;
+export const {
+	addPlayerArenaCard,
+	removePlayerArenaCard,
+	resetPlayerArena,
+	setPlayerArena,
+} = playerArenaSlice.actions;
 export const { getPlayerArenaCard } = playerArenaSlice.selectors;

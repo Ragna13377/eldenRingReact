@@ -167,6 +167,22 @@ $hand-height: 25%;
 	}
 }
 
+.readyButton {
+	min-width: 142px;
+	min-height: 46px;
+	border-color: rgba(255, 218, 124, 0.82);
+	color: #fff0c4;
+	font-size: 16px;
+	font-weight: 700;
+	text-transform: uppercase;
+	background:
+		linear-gradient(180deg, rgba(132, 88, 34, 0.96), rgba(39, 24, 11, 0.98));
+	box-shadow:
+		0 0 14px rgba(255, 184, 66, 0.26),
+		0 10px 18px rgba(0, 0, 0, 0.34),
+		inset 0 0 12px rgba(255, 217, 128, 0.12);
+}
+
 .actionHint {
 	color: rgba(245, 222, 176, 0.62);
 	font-size: 12px;
@@ -404,9 +420,20 @@ $hand-height: 25%;
 	top: 18px;
 	right: 18px;
 	z-index: 40;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px;
+	border: 1px solid rgba(241, 200, 119, 0.22);
+	border-radius: 999px;
+	background: rgba(9, 7, 5, 0.76);
+	box-shadow:
+		0 10px 22px rgba(0, 0, 0, 0.34),
+		inset 0 0 14px rgba(0, 0, 0, 0.28);
+	backdrop-filter: blur(2px);
 }
 
-.rulesButton {
+.utilityButton {
 	position: relative;
 	display: grid;
 	place-items: center;
@@ -430,6 +457,24 @@ $hand-height: 25%;
 		box-shadow 0.16s ease,
 		color 0.16s ease;
 
+	&[data-status='saved'] {
+		border-color: rgba(166, 210, 83, 0.62);
+	}
+
+	&[data-status='saving'] {
+		border-color: rgba(255, 228, 150, 0.98);
+		box-shadow:
+			0 0 0 1px rgba(54, 32, 12, 0.96),
+			0 0 12px rgba(238, 198, 104, 0.36),
+			0 10px 20px rgba(0, 0, 0, 0.48),
+			inset 0 0 0 2px rgba(255, 234, 170, 0.18),
+			inset 0 -7px 12px rgba(0, 0, 0, 0.42);
+	}
+
+	&[data-status='error'] {
+		border-color: rgba(225, 139, 120, 0.86);
+	}
+
 	&::before {
 		position: absolute;
 		inset: 4px;
@@ -437,6 +482,32 @@ $hand-height: 25%;
 		border-radius: inherit;
 		content: '';
 		pointer-events: none;
+	}
+
+	&::after {
+		position: absolute;
+		top: calc(100% + 9px);
+		left: 50%;
+		width: max-content;
+		max-width: 150px;
+		padding: 5px 7px;
+		border: 1px solid rgba(241, 200, 119, 0.28);
+		border-radius: 5px;
+		color: rgba(245, 222, 176, 0.9);
+		font-size: 11px;
+		font-weight: 400;
+		line-height: 1.2;
+		text-transform: none;
+		background: rgba(12, 9, 7, 0.9);
+		box-shadow: 0 8px 16px rgba(0, 0, 0, 0.34);
+		content: attr(data-tooltip);
+		opacity: 0;
+		pointer-events: none;
+		text-shadow: none;
+		transform: translate(-50%, -3px);
+		transition:
+			opacity 0.14s ease,
+			transform 0.14s ease;
 	}
 
 	&:hover,
@@ -451,15 +522,25 @@ $hand-height: 25%;
 			inset 0 -7px 12px rgba(0, 0, 0, 0.42);
 	}
 
+	&:hover::after,
+	&:focus-visible::after {
+		opacity: 1;
+		transform: translate(-50%, 0);
+	}
+
 	&:focus-visible {
 		outline: 2px solid rgba(255, 231, 169, 0.5);
 		outline-offset: 3px;
+	}
+
+	&:disabled {
+		opacity: 0.46;
 	}
 }
 
 .rulesPanel {
 	position: absolute;
-	top: 42px;
+	top: 52px;
 	right: 0;
 	display: grid;
 	grid-template-rows: auto minmax(0, 1fr);

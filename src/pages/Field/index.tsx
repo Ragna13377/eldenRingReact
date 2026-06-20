@@ -1,6 +1,11 @@
 import field from '@images/field.webp';
 import { useDropField } from '@pages/Field/hooks';
 import { runBotTurn } from '@shared/game/bot/bot-controller';
+import {
+	clearGameSnapshot,
+	loadGameSnapshot,
+	saveGameSnapshot,
+} from '@shared/game/saveStorage';
 import { createInitialDuelGame } from '@shared/game/setup';
 import type { GameCard, GameState } from '@shared/game/types';
 import {
@@ -14,9 +19,18 @@ import {
 	passTurn,
 	updatePlayer,
 } from '@shared/game/utils';
-import { getInventory } from '@shared/services/Inventory/slice';
-import { getPlayerArenaCard } from '@shared/services/PlayerArena/slice';
+import {
+	getInventory,
+	resetInventory,
+	setInventory,
+} from '@shared/services/Inventory/slice';
+import {
+	getPlayerArenaCard,
+	resetPlayerArena,
+	setPlayerArena,
+} from '@shared/services/PlayerArena/slice';
 import { getPlayerHandCard, setHand } from '@shared/services/PlayerHand/slice';
+import { clearDraggableCard } from '@shared/services/DraggableCard/slice';
 import { deckSizes } from '@shared/storage/decks';
 import { CardSubType } from '@shared/types/commonTypes';
 import type { TChangeModalParams } from '@shared/types/utilityTypes';
@@ -24,6 +38,7 @@ import MiniCard from '@widgets/MiniCard';
 import Modal from '@widgets/Modal';
 import Card from '@widgets/Сard';
 import { clsx } from 'clsx';
+import { CircleHelp, RotateCw, Save } from 'lucide-react';
 import { type CSSProperties, useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from '@/app/store';
 import styles from './style.module.scss';
@@ -46,6 +61,7 @@ const deckLayerSlots = Array.from({ length: maxVisibleDeckLayers }).map(
 
 type TTurnPhase =
 	| 'shuffle'
+	| 'preparation'
 	| 'kickDoor'
 	| 'doorRevealed'
 	| 'combat'
@@ -80,6 +96,34 @@ type TTurnHint = {
 	meta?: string;
 	text: string[];
 };
+
+type TSaveStatus = 'idle' | 'saving' | 'saved' | 'error';
+
+const turnHintKinds: THintKind[] = [
+	'gameStart',
+	'turnPreparation',
+	'eventReveal',
+	'enemyRevealed',
+	'eventEffect',
+	'eventCard',
+	'postEventChoice',
+	'combat',
+	'combatRestrictions',
+	'intervention',
+	'combatWin',
+	'reward',
+	'combatLoss',
+	'escape',
+	'defeatEffect',
+	'handLimit',
+	'botTurn',
+	'botThinking',
+	'botCombat',
+	'gameWin',
+];
+
+const isTurnHintKind = (value: string): value is THintKind =>
+	turnHintKinds.includes(value as THintKind);
 
 const rulesSections = [
 	{
@@ -144,12 +188,19 @@ const Field = () => {
 	const [game, setGame] = useState<GameState>(() => createInitialDuelGame());
 	const [isRulesOpen, setIsRulesOpen] = useState(false);
 	const [isShuffling, setIsShuffling] = useState(true);
+	const [isSaveReady, setIsSaveReady] = useState(false);
+	const [saveStatus, setSaveStatus] = useState<TSaveStatus>('idle');
 	const [hintKind, setHintKind] = useState<THintKind>('gameStart');
 	const [treasureDrawsAvailable, setTreasureDrawsAvailable] = useState(0);
+	const [handLimitTarget, setHandLimitTarget] = useState<'eventReveal' | 'turnEnd'>(
+		'turnEnd'
+	);
 	const playerHand = useSelector(getPlayerHandCard);
 	const playerArena = useSelector(getPlayerArenaCard);
 	const inventory = useSelector(getInventory);
+	const inventoryState = useSelector((state) => state.inventory);
 	const { isOver, setNodeRef: setArenaNodeRef } = useDropField();
+	const shuffleTimerRef = useRef<number | null>(null);
 	const setPlayerArenaRef = useCallback(
 		(node: HTMLDivElement | null) => {
 			playerArenaRef.current = node;
@@ -157,6 +208,78 @@ const Field = () => {
 		},
 		[setArenaNodeRef]
 	);
+	const clearShuffleTimer = useCallback(() => {
+		if (shuffleTimerRef.current === null) return;
+
+		window.clearTimeout(shuffleTimerRef.current);
+		shuffleTimerRef.current = null;
+	}, []);
+	const startNewGame = useCallback(
+		async (shouldClearSave = false) => {
+			if (shouldClearSave) {
+				try {
+					await clearGameSnapshot();
+				} catch {
+					setSaveStatus('error');
+				}
+			}
+
+			clearShuffleTimer();
+			const initialGame = createInitialDuelGame();
+			setIsSaveReady(false);
+			setGame({ ...initialGame, phase: 'setup' });
+			dispatch(resetInventory());
+			dispatch(resetPlayerArena());
+			dispatch(clearDraggableCard());
+			dispatch(setHand([]));
+			setIsShuffling(true);
+			setHintKind('gameStart');
+			setTreasureDrawsAvailable(0);
+			setHandLimitTarget('turnEnd');
+			setSaveStatus('idle');
+
+			shuffleTimerRef.current = window.setTimeout(() => {
+				setGame({ ...initialGame, phase: 'turnPreparation' });
+				dispatch(setHand(initialGame.players[0].hand));
+				setIsShuffling(false);
+				setHintKind('turnPreparation');
+				setIsSaveReady(true);
+				shuffleTimerRef.current = null;
+			}, 1200);
+		},
+		[clearShuffleTimer, dispatch]
+	);
+	const saveCurrentGame = useCallback(async () => {
+		if (!isSaveReady || isShuffling) return;
+
+		setSaveStatus('saving');
+		try {
+			await saveGameSnapshot({
+				game,
+				ui: {
+					handLimitTarget,
+					hintKind,
+					treasureDrawsAvailable,
+				},
+				redux: {
+					inventory: inventoryState,
+					playerArena,
+				},
+			});
+			setSaveStatus('saved');
+		} catch {
+			setSaveStatus('error');
+		}
+	}, [
+		game,
+		handLimitTarget,
+		hintKind,
+		inventoryState,
+		isSaveReady,
+		isShuffling,
+		playerArena,
+		treasureDrawsAvailable,
+	]);
 	const humanPlayer = getPlayer(game, game.humanPlayerId);
 	const botPlayer = getPlayer(game, game.botPlayerId);
 	const isHumanTurn = game.currentPlayerId === game.humanPlayerId;
@@ -174,7 +297,9 @@ const Field = () => {
 			: game.combat;
 	const phase = isShuffling
 		? 'shuffle'
-		: game.phase === 'eventReveal'
+		: game.phase === 'turnPreparation'
+			? 'preparation'
+			: game.phase === 'eventReveal'
 			? 'kickDoor'
 			: game.phase === 'postEventChoice'
 				? encounterCard
@@ -189,22 +314,55 @@ const Field = () => {
 							: 'kickDoor';
 
 	useEffect(() => {
-		const initialGame = createInitialDuelGame();
-		setGame({ ...initialGame, phase: 'setup' });
-		dispatch(setHand([]));
-		setIsShuffling(true);
-		setHintKind('gameStart');
-		setTreasureDrawsAvailable(0);
+		let isMounted = true;
 
-		const shuffleTimer = window.setTimeout(() => {
-			setGame({ ...initialGame, phase: 'eventReveal' });
-			dispatch(setHand(initialGame.players[0].hand));
-			setIsShuffling(false);
-			setHintKind('eventReveal');
-		}, 1200);
+		loadGameSnapshot()
+			.then((snapshot) => {
+				if (!isMounted) return;
 
-		return () => window.clearTimeout(shuffleTimer);
-	}, [dispatch]);
+				if (!snapshot) {
+					void startNewGame();
+					return;
+				}
+
+				clearShuffleTimer();
+				setGame(snapshot.game);
+				dispatch(setInventory(snapshot.redux.inventory));
+				dispatch(setPlayerArena(snapshot.redux.playerArena));
+				dispatch(clearDraggableCard());
+				dispatch(setHand(getPlayer(snapshot.game, snapshot.game.humanPlayerId).hand));
+				setIsShuffling(false);
+				setHintKind(
+					isTurnHintKind(snapshot.ui.hintKind)
+						? snapshot.ui.hintKind
+						: 'turnPreparation'
+				);
+				setTreasureDrawsAvailable(snapshot.ui.treasureDrawsAvailable);
+				setHandLimitTarget(snapshot.ui.handLimitTarget);
+				setIsSaveReady(true);
+				setSaveStatus('saved');
+			})
+			.catch(() => {
+				if (isMounted) {
+					void startNewGame();
+				}
+			});
+
+		return () => {
+			isMounted = false;
+			clearShuffleTimer();
+		};
+	}, [clearShuffleTimer, dispatch, startNewGame]);
+
+	useEffect(() => {
+		if (!isSaveReady || isShuffling) return;
+
+		const autosaveTimer = window.setTimeout(() => {
+			void saveCurrentGame();
+		}, 450);
+
+		return () => window.clearTimeout(autosaveTimer);
+	}, [game, inventoryState, isSaveReady, isShuffling, playerArena, saveCurrentGame]);
 
 	useEffect(() => {
 		if (isShuffling || game.currentPlayerId !== game.botPlayerId || game.phase === 'gameOver') {
@@ -216,8 +374,9 @@ const Field = () => {
 			setGame((prev) => {
 				const next = runBotTurn(prev);
 				if (next.currentPlayerId === next.humanPlayerId && next.phase !== 'gameOver') {
-					setHintKind('eventReveal');
-					return { ...next, phase: 'eventReveal' };
+					setHandLimitTarget('turnEnd');
+					setHintKind('turnPreparation');
+					return { ...next, phase: 'turnPreparation' };
 				}
 				setHintKind(next.phase === 'gameOver' ? 'gameWin' : 'botTurn');
 				return next;
@@ -254,6 +413,45 @@ const Field = () => {
 	useEffect(() => {
 		dispatch(setHand(humanPlayer.hand));
 	}, [dispatch, humanPlayer.hand]);
+
+	useEffect(() => {
+		const handleInventoryCardEquipped = (event: Event) => {
+			const { ownerId, equippedCard, returnedCards } = (
+				event as CustomEvent<{
+					equippedCard: GameCard;
+					ownerId: 'human' | 'bot';
+					returnedCards: GameCard[];
+				}>
+			).detail;
+
+			if (ownerId !== 'human') return;
+
+			setGame((prev) =>
+				updatePlayer(prev, prev.humanPlayerId, (player) => {
+					const handWithoutEquipped = player.hand.filter(
+						(card) => card.cardKey !== equippedCard.cardKey
+					);
+					const existingCardKeys = new Set(
+						handWithoutEquipped.map((card) => card.cardKey)
+					);
+					const cardsToReturn = returnedCards.filter(
+						(card) => !existingCardKeys.has(card.cardKey)
+					);
+
+					return {
+						...player,
+						hand: [...handWithoutEquipped, ...cardsToReturn],
+					};
+				})
+			);
+		};
+
+		window.addEventListener('inventory-card-equipped', handleInventoryCardEquipped);
+
+		return () => {
+			window.removeEventListener('inventory-card-equipped', handleInventoryCardEquipped);
+		};
+	}, []);
 
 	useEffect(() => {
 		if (hintKind !== 'enemyRevealed' || game.phase !== 'combat') return;
@@ -454,11 +652,40 @@ const Field = () => {
 				? discardReward(afterDiscard, card)
 				: discardEvent(afterDiscard, card);
 		});
-		setHintKind(humanPlayer.hand.length > 6 ? 'handLimit' : 'turnPreparation');
+		setHintKind('handLimit');
+	};
+
+	const readyForEventReveal = () => {
+		if (game.phase !== 'turnPreparation') return;
+		if (humanPlayer.hand.length > 5) {
+			setHandLimitTarget('eventReveal');
+			setHintKind('handLimit');
+			setGame((prev) => ({
+				...prev,
+				phase: 'handLimit',
+			}));
+			return;
+		}
+
+		setHintKind('eventReveal');
+		setGame((prev) => ({
+			...prev,
+			phase: 'eventReveal',
+		}));
 	};
 
 	const finishTurn = () => {
 		if (humanPlayer.hand.length > 5 || treasureDrawsAvailable > 0) return;
+		if (handLimitTarget === 'eventReveal') {
+			setHandLimitTarget('turnEnd');
+			setHintKind('eventReveal');
+			setGame((prev) => ({
+				...prev,
+				phase: 'eventReveal',
+			}));
+			return;
+		}
+
 		setGame((prev) => passTurn(addLog(prev, prev.humanPlayerId, 'Ты завершил ход.')));
 		setHintKind('botTurn');
 	};
@@ -613,10 +840,17 @@ const Field = () => {
 				};
 			case 'handLimit':
 				return {
-					title: 'Конец хода',
+					title:
+						handLimitTarget === 'eventReveal'
+							? 'Подготовка руки'
+							: 'Конец хода',
 					text: [
 						'В руке должно быть не больше 5 карт.',
-						'Лишние карты нужно сбросить.',
+						humanPlayer.hand.length > 5
+							? 'Нажмите лишние карты в руке, чтобы сбросить их.'
+							: handLimitTarget === 'eventReveal'
+								? 'Теперь нажмите Готов, чтобы открыть событие.'
+								: 'Теперь можно завершить ход.',
 					],
 				};
 			default:
@@ -694,14 +928,35 @@ const Field = () => {
 				</fieldset>
 				<div className={styles.rulesHelp} ref={rulesHelpRef}>
 					<button
+						aria-label="Сохранить игру"
+						className={styles.utilityButton}
+						data-status={saveStatus}
+						data-tooltip="Сохранить игру"
+						type="button"
+						onClick={() => void saveCurrentGame()}
+						disabled={!isSaveReady || isShuffling}
+					>
+						<Save aria-hidden="true" size={18} strokeWidth={2.2} />
+					</button>
+					<button
+						aria-label="Новая игра"
+						className={styles.utilityButton}
+						data-tooltip="Новая игра"
+						type="button"
+						onClick={() => void startNewGame(true)}
+					>
+						<RotateCw aria-hidden="true" size={18} strokeWidth={2.2} />
+					</button>
+					<button
 						aria-controls="rules-panel"
 						aria-expanded={isRulesOpen}
 						aria-label="Открыть правила"
-						className={styles.rulesButton}
+						className={clsx(styles.utilityButton, styles.rulesButton)}
+						data-tooltip="Правила"
 						type="button"
 						onClick={() => setIsRulesOpen((value) => !value)}
 					>
-						?
+						<CircleHelp aria-hidden="true" size={19} strokeWidth={2.2} />
 					</button>
 					{isRulesOpen && (
 						<aside className={styles.rulesPanel} id="rules-panel" aria-label="Правила">
@@ -738,6 +993,15 @@ const Field = () => {
 						))}
 					</div>
 					<div className={styles.phaseActions}>
+						{phase === 'preparation' && (
+							<button
+								className={clsx(styles.actionButton, styles.readyButton)}
+								type="button"
+								onClick={readyForEventReveal}
+							>
+								Готов
+							</button>
+						)}
 						{phase === 'doorRevealed' && (
 							<button className={styles.actionButton} type="button" onClick={keepDoorCard}>
 								В руку
@@ -773,12 +1037,14 @@ const Field = () => {
 						{phase === 'charity' && (
 							<>
 								<button
-									className={styles.actionButton}
+									className={clsx(styles.actionButton, {
+										[styles.readyButton]: handLimitTarget === 'eventReveal',
+									})}
 									type="button"
 									onClick={finishTurn}
 									disabled={humanPlayer.hand.length > 5 || treasureDrawsAvailable > 0}
 								>
-									Завершить ход
+									{handLimitTarget === 'eventReveal' ? 'Готов' : 'Завершить ход'}
 								</button>
 								{humanPlayer.hand.length > 5 && (
 									<span className={styles.actionHint}>сбрось лишние карты кликом</span>
