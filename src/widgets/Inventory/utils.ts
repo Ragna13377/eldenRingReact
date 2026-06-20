@@ -1,10 +1,10 @@
 import { EquipmentType } from '@shared/types/commonTypes';
 import type { TInventoryEquipment } from '@shared/types/utilityTypes';
 import { isEquipmentCard, isWeaponCard } from '@shared/utils/typeGuard';
-import { getEnumKeyByValue, throttle } from '@shared/utils/utils';
+import { getEnumKeyByValue } from '@shared/utils/utils';
 import type { TSetAvailableCellProps } from '@widgets/Inventory/types';
 
-const setAvailableCellHover = ({
+export const setAvailableCellHover = ({
 	clientOffset,
 	inventoryRef,
 	isOver,
@@ -45,8 +45,13 @@ const setAvailableCellHover = ({
 		}
 	}
 	if (Object.keys(updateState).length > 0) {
-		setAvailableCell((prev) => ({ ...prev, ...updateState }));
+		setAvailableCell((prev) => {
+			const nextState = { ...prev, ...updateState };
+			return Object.entries(nextState).some(
+				([key, value]) => prev[key as keyof TInventoryEquipment] !== value
+			)
+				? nextState
+				: prev;
+		});
 	}
 };
-
-export const optimizedSetAvailableCellHover = throttle(setAvailableCellHover, 200);

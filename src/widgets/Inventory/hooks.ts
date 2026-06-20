@@ -1,25 +1,50 @@
-import { useDndContext, useDroppable } from '@dnd-kit/core';
+import {
+	useDndMonitor,
+	useDroppable,
+	type DragCancelEvent,
+	type DragEndEvent,
+	type DragMoveEvent,
+} from '@dnd-kit/core';
 import { getDraggableCard } from '@shared/services/DraggableCard/slice';
 import { CardSubType } from '@shared/types/commonTypes';
 import type {
+	TCardWithParams,
 	TClientPosition,
 	TInventoryEquipment,
 } from '@shared/types/utilityTypes';
 import { initialAvailableCellState } from '@widgets/Inventory/constants';
 import type { TUseDropInventoryProps } from '@widgets/Inventory/types';
-import { optimizedSetAvailableCellHover } from '@widgets/Inventory/utils';
-import { useEffect, useState } from 'react';
+import { setAvailableCellHover } from '@widgets/Inventory/utils';
+import { useCallback, useState } from 'react';
 import { useSelector } from '@/app/store';
 
-const getActiveClientOffset = (
-	active: ReturnType<typeof useDndContext>['active']
-): TClientPosition | null => {
-	const translatedRect = active?.rect.current.translated;
-	if (!translatedRect) return null;
+type TDraggableCardData = {
+	card?: TCardWithParams;
+};
 
+const getActivatorClientOffset = (event: DragMoveEvent): TClientPosition | null => {
+	const { activatorEvent, delta } = event;
+
+	if (
+		!(
+			activatorEvent instanceof MouseEvent ||
+			activatorEvent instanceof PointerEvent ||
+			activatorEvent instanceof TouchEvent
+		)
+	)
+		return null;
+
+	const clientPosition =
+		activatorEvent instanceof TouchEvent
+			? activatorEvent.touches[0]
+			: activatorEvent;
+	const clientX = clientPosition?.clientX;
+	const clientY = clientPosition?.clientY;
+
+	if (clientX === undefined || clientY === undefined) return null;
 	return {
-		x: translatedRect.left + translatedRect.width / 2,
-		y: translatedRect.top + translatedRect.height / 2,
+		x: clientX + delta.x,
+		y: clientY + delta.y,
 	};
 };
 
@@ -32,7 +57,6 @@ export const useDropInventory = ({
 	const [availableCell, setAvailableCell] = useState<TInventoryEquipment>(
 		initialAvailableCellState
 	);
-	const { active } = useDndContext();
 	const { isOver, setNodeRef } = useDroppable({
 		id: `inventory-${ownerId}`,
 		data: {
@@ -42,20 +66,44 @@ export const useDropInventory = ({
 		},
 		disabled: !isDropEnabled,
 	});
-	const clientOffset = getActiveClientOffset(active);
+	const resetAvailableCell = useCallback(() => {
+		setAvailableCell((prev) =>
+			Object.values(prev).some(Boolean) ? initialAvailableCellState : prev
+		);
+	}, []);
 
-	useEffect(
-		() =>
-			optimizedSetAvailableCellHover({
+	useDndMonitor({
+		onDragMove(event) {
+			const isInventoryOver = event.over?.id === `inventory-${ownerId}`;
+			const draggedCard =
+				(event.active.data.current as TDraggableCardData | undefined)?.card ??
+				currentDraggableCard;
+
+			if (!isDropEnabled || !isInventoryOver) {
+				resetAvailableCell();
+				return;
+			}
+
+			setAvailableCellHover({
 				availableCell,
-				clientOffset,
-				currentDraggableCard,
+				clientOffset: getActivatorClientOffset(event),
+				currentDraggableCard: draggedCard ?? null,
 				inventoryRef,
-				isOver,
+				isOver: true,
 				setAvailableCell,
-			}),
-		[availableCell, clientOffset, currentDraggableCard, inventoryRef, isOver]
-	);
+			});
+		},
+		onDragOver(event: DragMoveEvent) {
+			const isInventoryOver = event.over?.id === `inventory-${ownerId}`;
+			if (!isInventoryOver) resetAvailableCell();
+		},
+		onDragEnd(_: DragEndEvent) {
+			resetAvailableCell();
+		},
+		onDragCancel(_: DragCancelEvent) {
+			resetAvailableCell();
+		},
+	});
 
 	return {
 		availableCell,
