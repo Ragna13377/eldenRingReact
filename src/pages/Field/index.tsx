@@ -1,4 +1,5 @@
 import field from '@images/layout/field.webp';
+import closeIcon from '@images/ui/close.png';
 import helpIcon from '@images/ui/help.png';
 import refreshIcon from '@images/ui/refresh.png';
 import saveIcon from '@images/ui/save.png';
@@ -923,18 +924,20 @@ const Field = ({ setIsModalOpen }: TFieldProps) => {
 									type="button"
 									onClick={() => setIsRulesOpen(false)}
 								>
-									X
+									<img className={styles.rulesCloseIcon} src={closeIcon} alt="" aria-hidden="true" />
 								</button>
 							</div>
 							<div className={styles.rulesScroll}>
-								{rulesSections.map((section) => (
-									<section className={styles.rulesSection} key={section.title}>
-										<h2>{section.title}</h2>
-										{section.content.map((text) => (
-											<p key={text}>{text}</p>
-										))}
-									</section>
-								))}
+								<div className={styles.rulesContent}>
+									{rulesSections.map((section) => (
+										<section className={styles.rulesSection} key={section.title}>
+											<h2>{section.title}</h2>
+											{section.content.map((text) => (
+												<p key={text}>{text}</p>
+											))}
+										</section>
+									))}
+								</div>
 							</div>
 						</aside>
 					)}

@@ -355,8 +355,8 @@ $interaction-hover-glow:
 .deckTitle {
 	position: absolute;
 	right: auto;
-	bottom: calc(100% + 0.5rem);
-	left: 50%;
+	bottom: calc(50% + clamp(3.95rem, 5.65vw, 6.2rem));
+	left: calc(50% + 0.375rem);
 	z-index: 2;
 	width: max-content;
 	max-width: 8.25rem;
@@ -574,6 +574,14 @@ $interaction-hover-glow:
 }
 
 .rulesPanel {
+	--rules-ink: #382111;
+	--rules-ink-strong: #2f1a0d;
+	--rules-parchment: #c9a36d;
+	--rules-parchment-muted: #b98f59;
+	--rules-brown: #5a3012;
+	--rules-wax-red: rgba(137, 32, 25, 0.9);
+	--rules-wax-glow: rgba(164, 38, 30, 0.34);
+
 	position: absolute;
 	top: calc(100% + 0.75rem);
 	right: 0;
@@ -582,15 +590,18 @@ $interaction-hover-glow:
 	width: clamp(360px, 28vw, 420px);
 	max-height: 70vh;
 	overflow: hidden;
-	border: 1px solid rgba(90, 48, 18, 0.7);
+	border: 1px solid rgba(71, 35, 13, 0.74);
 	border-radius: 8px;
-	color: #382111;
+	color: var(--rules-ink);
 	background:
-		linear-gradient(90deg, rgba(77, 38, 12, 0.18), transparent 12%, transparent 88%, rgba(77, 38, 12, 0.18)),
-		#d5b177;
+		linear-gradient(90deg, rgba(61, 29, 10, 0.22), transparent 13%, transparent 87%, rgba(61, 29, 10, 0.22)),
+		linear-gradient(180deg, rgba(255, 232, 166, 0.1), rgba(79, 36, 12, 0.08)),
+		var(--rules-parchment);
 	box-shadow:
 		0 18px 28px rgba(0, 0, 0, 0.38),
-		inset 0 0 18px rgba(86, 45, 18, 0.28);
+		inset 0 0 0 1px rgba(255, 230, 166, 0.12),
+		inset 0 0 24px rgba(68, 33, 12, 0.38),
+		inset 0 0 38px rgba(43, 20, 8, 0.16);
 }
 
 .rulesHeader {
@@ -610,23 +621,20 @@ $interaction-hover-glow:
 	width: 30px;
 	height: 30px;
 	padding: 0;
-	border: 1px solid rgba(90, 48, 18, 0.42);
+	border: 0;
 	border-radius: 50%;
-	color: #382111;
+	color: var(--rules-ink);
 	font: inherit;
-	font-size: 13px;
-	font-weight: 700;
-	background: rgba(255, 238, 183, 0.34);
+	background: transparent;
 	transition:
-		border-color 0.16s ease,
 		box-shadow 0.16s ease,
 		background 0.16s ease;
 
 	&::before {
 		position: absolute;
-		inset: -4px;
+		inset: -1px;
 		border: 1px solid transparent;
-		border-radius: inherit;
+		border-radius: 50%;
 		box-shadow: none;
 		content: '';
 		pointer-events: auto;
@@ -637,31 +645,54 @@ $interaction-hover-glow:
 
 	&:hover,
 	&:focus-visible {
-		border-color: rgba(73, 35, 12, 0.82);
-		background: rgba(255, 230, 159, 0.58);
-		box-shadow:
-			0 0 10px rgba(90, 48, 18, 0.28),
-			inset 0 0 8px rgba(90, 48, 18, 0.16);
+		background: transparent;
 	}
 
-	&:hover::before,
 	&:focus-visible::before {
-		border-color: rgba(73, 35, 12, 0.46);
-		box-shadow: 0 0 12px rgba(90, 48, 18, 0.28);
+		border-color: var(--rules-wax-red);
+		box-shadow: 0 0 10px var(--rules-wax-glow);
 	}
 
 	&:focus-visible {
-		outline: 2px solid rgba(90, 48, 18, 0.32);
+		outline: 2px solid rgba(164, 38, 30, 0.34);
 		outline-offset: 2px;
 	}
 }
 
+.rulesCloseIcon {
+	display: block;
+	width: 108%;
+	height: 108%;
+	object-fit: contain;
+	filter:
+		brightness(1.42)
+		contrast(1.24)
+		saturate(1.12)
+		drop-shadow(0 0 0.18rem rgba(255, 226, 164, 0.18));
+	pointer-events: none;
+	transition: filter 0.16s ease;
+}
+
+.rulesCloseButton:hover .rulesCloseIcon {
+	filter:
+		brightness(1.14)
+		contrast(1.38)
+		saturate(1.08)
+		drop-shadow(0 0 0.14rem rgba(90, 20, 16, 0.22));
+}
+
+.rulesCloseButton:focus-visible .rulesCloseIcon {
+	filter:
+		brightness(1.62)
+		contrast(1.3)
+		saturate(1.18)
+		drop-shadow(0 0 0.24rem rgba(255, 226, 164, 0.28));
+}
+
 .rulesScroll {
-	display: grid;
-	gap: 14px;
 	min-height: 0;
+	margin-right: 4px;
 	overflow-y: auto;
-	padding: 14px 18px 18px;
 	font-size: 13px;
 	line-height: 1.38;
 	scrollbar-gutter: stable;
@@ -672,6 +703,7 @@ $interaction-hover-glow:
 
 	&::-webkit-scrollbar-track {
 		border-left: 1px solid rgba(92, 46, 16, 0.2);
+		border-radius: 999px;
 		background:
 			linear-gradient(90deg, rgba(68, 33, 11, 0.18), transparent 45%, rgba(255, 239, 188, 0.2)),
 			#c99d62;
@@ -679,23 +711,31 @@ $interaction-hover-glow:
 	}
 
 	&::-webkit-scrollbar-thumb {
-		border: 3px solid #c99d62;
+		border: 0;
 		border-radius: 999px;
 		background:
-			linear-gradient(180deg, rgba(255, 232, 158, 0.78), rgba(116, 64, 24, 0.94) 48%, rgba(47, 24, 10, 0.98));
+			linear-gradient(90deg, rgba(255, 239, 194, 0.16), transparent 48%, rgba(84, 47, 22, 0.08)),
+			linear-gradient(180deg, #b2824f, #976333 52%, #7b4a22);
 		box-shadow:
-			inset 0 0 0 1px rgba(44, 21, 8, 0.72),
-			0 0 6px rgba(63, 31, 12, 0.28);
+			inset 0 0 0 1px rgba(82, 43, 19, 0.12),
+			inset 0 0 8px rgba(255, 226, 164, 0.1);
 	}
 
 	&::-webkit-scrollbar-thumb:hover {
 		background:
-			linear-gradient(180deg, rgba(255, 241, 181, 0.95), rgba(142, 78, 30, 0.98) 48%, rgba(56, 28, 10, 1));
+			linear-gradient(90deg, rgba(255, 240, 194, 0.18), transparent 48%, rgba(84, 47, 22, 0.09)),
+			linear-gradient(180deg, #bd8e59, #a16e3c 52%, #85532a);
 	}
 
 	&::-webkit-scrollbar-corner {
 		background: #c99d62;
 	}
+}
+
+.rulesContent {
+	display: grid;
+	gap: 14px;
+	padding: 14px 18px 18px;
 }
 
 .rulesSection {
