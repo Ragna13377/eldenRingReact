@@ -3,14 +3,22 @@ import { useDropReplaceCard } from '@shared/hooks/useDropReplaceCard';
 import { getDraggableCard } from '@shared/services/DraggableCard/slice';
 import { addInventoryCard } from '@shared/services/Inventory/slice';
 import { CardSubType } from '@shared/types/commonTypes';
-import type { TDropParams, TInventoryEquipment } from '@shared/types/utilityTypes';
+import type {
+	TCardPayload,
+	TDropParams,
+	TInventoryEquipment,
+} from '@shared/types/utilityTypes';
 import { initialAvailableCellState } from '@widgets/Inventory/constants';
 import type { TUseDropInventoryProps } from '@widgets/Inventory/types';
 import { optimizedSetAvailableCellHover } from '@widgets/Inventory/utils';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useSelector } from '@/app/store';
 
-export const useDropInventory = ({ inventoryRef }: TUseDropInventoryProps) => {
+export const useDropInventory = ({
+	inventoryRef,
+	ownerId,
+	isDropEnabled = true,
+}: TUseDropInventoryProps) => {
 	const currentDraggableCard = useSelector(getDraggableCard);
 	const [inventoryDropResult, setInventoryDropResult] = useState<TDropParams>({
 		isDrop: false,
@@ -32,7 +40,12 @@ export const useDropInventory = ({ inventoryRef }: TUseDropInventoryProps) => {
 				inventoryRef,
 			});
 		},
+		canDrop: isDropEnabled,
 	});
+	const addOwnerToPayload = useCallback(
+		(payload: TCardPayload): TCardPayload => ({ ...payload, ownerId }),
+		[ownerId]
+	);
 	useDropReplaceCard(
 		{
 			dropParams: inventoryDropResult,
@@ -40,6 +53,7 @@ export const useDropInventory = ({ inventoryRef }: TUseDropInventoryProps) => {
 			refObject: inventoryRef,
 			currentDraggableCard,
 			addCardAction: addInventoryCard,
+			getCardPayload: addOwnerToPayload,
 		},
 		() => {
 			setAvailableCell(initialAvailableCellState);

@@ -6,9 +6,11 @@ export const useCustomDrop = ({
 	dropRef,
 	dropHandler,
 	hoverHandler,
+	canDrop = true,
 }: TCustomDrop) => {
 	const [{ isOver }, drop] = useDrop({
 		accept,
+		canDrop: () => canDrop,
 		drop: (_, monitor) => {
 			const getClientOffset = monitor.getClientOffset();
 			dropHandler((prev) => ({

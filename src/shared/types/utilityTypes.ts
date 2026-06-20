@@ -22,6 +22,7 @@ export type TCustomDrop = {
 	dropRef: RefObject<HTMLDivElement | null>;
 	dropHandler: Dispatch<SetStateAction<TDropParams>>;
 	hoverHandler?: (monitor: DropTargetMonitor<unknown, unknown>) => void;
+	canDrop?: boolean;
 };
 export type TInventoryEquipment<T = boolean> = Record<
 	Exclude<keyof typeof EquipmentType, 'weapon'> | 'leftWeapon' | 'rightWeapon',
@@ -32,8 +33,10 @@ export type TInventory<T = null> = {
 	effect: string;
 	equipments: TInventoryEquipment<T>;
 };
+export type TInventoryOwner = 'human' | 'bot';
 export type TCardPayload = {
 	currentDraggableCard: TCardWithParams | null;
 	dropTargetRect: DOMRectReadOnly;
 	cursorPosition: XYCoord;
+	ownerId?: TInventoryOwner;
 };

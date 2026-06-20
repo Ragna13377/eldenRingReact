@@ -16,6 +16,7 @@ export type TDropReplaceCard = {
 	refObject: RefObject<HTMLDivElement | null>;
 	currentDraggableCard: TCardWithParams | null;
 	addCardAction: ActionCreatorWithPayload<TCardPayload>;
+	getCardPayload?: (payload: TCardPayload) => TCardPayload;
 };
 
 export const useDropReplaceCard = (
@@ -25,6 +26,7 @@ export const useDropReplaceCard = (
 		refObject,
 		currentDraggableCard,
 		addCardAction,
+		getCardPayload,
 	}: TDropReplaceCard,
 	additionalFunction?: () => void
 ) => {
@@ -33,13 +35,12 @@ export const useDropReplaceCard = (
 		if (dropParams.isDrop && currentDraggableCard) {
 			dispatch(removePlayerHandCard(currentDraggableCard));
 			const dropTargetRect = refObject.current?.getBoundingClientRect() as DOMRect;
-			dispatch(
-				addCardAction({
-					currentDraggableCard,
-					dropTargetRect: dropTargetRect.toJSON(),
-					cursorPosition: dropParams.getClientOffset as XYCoord,
-				})
-			);
+			const payload = {
+				currentDraggableCard,
+				dropTargetRect: dropTargetRect.toJSON(),
+				cursorPosition: dropParams.getClientOffset as XYCoord,
+			};
+			dispatch(addCardAction(getCardPayload ? getCardPayload(payload) : payload));
 			dispatch(clearDraggableCard());
 			setDropParams((prev) => ({
 				...prev,
@@ -55,6 +56,7 @@ export const useDropReplaceCard = (
 		refObject,
 		currentDraggableCard,
 		addCardAction,
+		getCardPayload,
 		additionalFunction,
 	]);
 };

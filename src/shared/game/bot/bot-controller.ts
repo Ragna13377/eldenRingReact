@@ -49,7 +49,7 @@ export const runBotTurn = (state: GameState): GameState => {
 	}
 
 	bot = getPlayer(nextState, nextState.botPlayerId);
-	const [afterDraw, eventCard] = drawEvent({ ...nextState, phase: 'eventReveal' });
+	const [afterDraw, eventCard] = drawEvent({ ...nextState, phase: 'eventReveal' as const });
 	nextState = afterDraw;
 	if (!eventCard) {
 		return passTurn(addLog(nextState, bot.id, 'Колода событий пуста.'));
@@ -76,7 +76,7 @@ export const runBotTurn = (state: GameState): GameState => {
 		} else {
 			const [afterLoot, hiddenEvent] = drawEvent({
 				...nextState,
-				phase: 'postEventChoice',
+				phase: 'postEventChoice' as const,
 			});
 			nextState = afterLoot;
 			if (hiddenEvent) {
@@ -96,7 +96,10 @@ export const runBotTurn = (state: GameState): GameState => {
 	return passTurn(addLog(nextState, bot.id, 'Бот завершил ход.'));
 };
 
-const resolveBotCombat = (state: GameState, enemyCard: NonNullable<GameState['revealedEvent']>) => {
+const resolveBotCombat = (
+	state: GameState,
+	enemyCard: NonNullable<GameState['revealedEvent']>
+): GameState => {
 	const bot = getPlayer(state, state.botPlayerId);
 	const combat = createCombat(bot, enemyCard);
 	let nextState: GameState = {
@@ -134,7 +137,7 @@ const resolveBotCombat = (state: GameState, enemyCard: NonNullable<GameState['re
 
 	return {
 		...nextState,
-		phase: 'handLimit',
+		phase: 'handLimit' as const,
 		combat: null,
 		revealedEvent: null,
 	};
@@ -164,4 +167,3 @@ const discardExtraCards = (state: GameState) => {
 		`Бот сбросил: ${discards.map((card) => card.card.title).join(', ')}.`
 	);
 };
-

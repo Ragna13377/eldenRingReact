@@ -1,17 +1,20 @@
 import InventoryCell from '@entities/InventoryCell';
-import { getInventory } from '@shared/services/Inventory/slice';
+import { getInventoryByOwner } from '@shared/services/Inventory/slice';
 import { initialAvailableCellState } from '@widgets/Inventory/constants';
 import { useDropInventory } from '@widgets/Inventory/hooks';
+import type { TInventoryProps } from '@widgets/Inventory/types';
 import { didInventoryUpdated } from '@widgets/Сard/utils';
 import { useEffect, useRef } from 'react';
 import { useSelector } from '@/app/store';
 import styles from './style.module.scss';
 
-const Inventory = () => {
+const Inventory = ({ ownerId, isDropEnabled = true }: TInventoryProps) => {
 	const inventoryRef = useRef<HTMLDivElement>(null);
-	const { score, equipments } = useSelector(getInventory);
+	const { score, equipments } = useSelector((state) => getInventoryByOwner(state, ownerId));
 	const { availableCell, setAvailableCell, isOver } = useDropInventory({
 		inventoryRef,
+		ownerId,
+		isDropEnabled,
 	});
 	useEffect(() => {
 		if (!isOver && didInventoryUpdated(availableCell)) {

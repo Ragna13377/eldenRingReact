@@ -6,11 +6,12 @@ import type {
 	TCardWithParams,
 	TInventory,
 	TInventoryEquipment,
+	TInventoryOwner,
 } from '@shared/types/utilityTypes';
 import { isWeaponCard } from '@shared/utils/typeGuard';
 import { getEnumKeyByValue, isTwoHandedWeapon } from '@shared/utils/utils';
 
-const initialState: TInventory<TCardWithParams | null> = {
+const createInitialInventory = (): TInventory<TCardWithParams | null> => ({
 	score: 0,
 	effect: '',
 	equipments: {
@@ -21,16 +22,28 @@ const initialState: TInventory<TCardWithParams | null> = {
 		armor: null,
 		boots: null,
 	},
+});
+
+const initialState: Record<TInventoryOwner, TInventory<TCardWithParams | null>> = {
+	human: createInitialInventory(),
+	bot: createInitialInventory(),
 };
+
 const InventorySlice = createSlice({
 	name: 'inventory',
 	initialState,
 	reducers: {
 		addInventoryCard: (state, action: PayloadAction<TCardPayload>) => {
-			const { currentDraggableCard, dropTargetRect, cursorPosition } = action.payload;
+			const {
+				currentDraggableCard,
+				dropTargetRect,
+				cursorPosition,
+				ownerId = 'human',
+			} = action.payload;
 			if (!currentDraggableCard) return;
 			const { card } = currentDraggableCard as { card: TEquipmentCard };
-			const { equipments } = state;
+			const inventory = state[ownerId];
+			const { equipments } = inventory;
 			if (!isWeaponCard(card)) {
 				const key = getEnumKeyByValue(
 					EquipmentType,
@@ -51,26 +64,33 @@ const InventorySlice = createSlice({
 					}
 				}
 			}
-			state.score = Object.values(equipments).reduce((acc, el) => {
+			inventory.score = Object.values(equipments).reduce((acc, el) => {
 				if (!el) return acc;
 				const { card } = el as { card: TEquipmentCard };
 				return acc + card.primaryStats.strength;
 			}, 0);
 			if (isTwoHandedWeapon(equipments.rightWeapon)) {
 				const { card } = equipments.rightWeapon as { card: TWeaponCard };
-				state.score -= card.primaryStats.strength;
+				inventory.score -= card.primaryStats.strength;
 			}
 		},
-		removeInventoryCard: (state, action) => ({
-			...state,
-			[action.payload.type]: null,
-		}),
+		removeInventoryCard: (
+			state,
+			action: PayloadAction<{
+				ownerId?: TInventoryOwner;
+				type: keyof TInventoryEquipment;
+			}>
+		) => {
+			const { ownerId = 'human', type } = action.payload;
+			state[ownerId].equipments[type] = null;
+		},
 	},
 	selectors: {
-		getInventory: (state) => state,
+		getInventory: (state) => state.human,
+		getInventoryByOwner: (state, ownerId: TInventoryOwner) => state[ownerId],
 	},
 });
 
 export default InventorySlice.reducer;
 export const { addInventoryCard, removeInventoryCard } = InventorySlice.actions;
-export const { getInventory } = InventorySlice.selectors;
+export const { getInventory, getInventoryByOwner } = InventorySlice.selectors;

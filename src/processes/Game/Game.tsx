@@ -6,11 +6,11 @@ import styles from './Game.module.scss';
 const Game = () => (
 	<main className={styles.main}>
 		<aside className={clsx(styles.sidePanel, styles.leftPanel)}>
-			<Inventory />
+			<Inventory ownerId="bot" isDropEnabled={false} />
 		</aside>
 		<Field />
 		<aside className={clsx(styles.sidePanel, styles.rightPanel)}>
-			<Inventory />
+			<Inventory ownerId="human" />
 		</aside>
 	</main>
 );
