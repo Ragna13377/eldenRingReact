@@ -1,5 +1,5 @@
-import dragCursor from '@images/cursor_drag_50.png';
-import pointerCursor from '@images/cursor_poiner_50.png';
+import dragCursor from '@images/cursor/cursor_drag_50.png';
+import pointerCursor from '@images/cursor/cursor_poiner_50.png';
 import { useEffect, useState } from 'react';
 
 type TCursorState = {

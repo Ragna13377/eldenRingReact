@@ -1,4 +1,7 @@
-import field from '@images/field.webp';
+import field from '@images/layout/field.webp';
+import helpIcon from '@images/ui/help.png';
+import refreshIcon from '@images/ui/refresh.png';
+import saveIcon from '@images/ui/save.png';
 import { useDropField } from '@pages/Field/hooks';
 import { runBotTurn } from '@shared/game/bot/bot-controller';
 import {
@@ -37,7 +40,6 @@ import type { TFieldProps } from '@pages/Field/types';
 import MiniCard from '@widgets/MiniCard';
 import Card from '@widgets/Сard';
 import { clsx } from 'clsx';
-import { Check, CircleHelp, RotateCw, Save } from 'lucide-react';
 import { type CSSProperties, useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from '@/app/store';
 import styles from './style.module.scss';
@@ -889,11 +891,7 @@ const Field = ({ setIsModalOpen }: TFieldProps) => {
 						onClick={() => void saveCurrentGame(true)}
 						disabled={!isSaveReady || isShuffling || saveStatus === 'saving'}
 					>
-						{saveStatus === 'saved' ? (
-							<Check aria-hidden="true" size={19} strokeWidth={2.4} />
-						) : (
-							<Save aria-hidden="true" size={18} strokeWidth={2.2} />
-						)}
+						<img className={styles.utilityIcon} src={saveIcon} alt="" aria-hidden="true" />
 					</button>
 					<button
 						aria-label="Новая игра"
@@ -902,7 +900,7 @@ const Field = ({ setIsModalOpen }: TFieldProps) => {
 						type="button"
 						onClick={() => void startNewGame(true)}
 					>
-						<RotateCw aria-hidden="true" size={18} strokeWidth={2.2} />
+						<img className={styles.utilityIcon} src={refreshIcon} alt="" aria-hidden="true" />
 					</button>
 					<button
 						aria-controls="rules-panel"
@@ -913,7 +911,7 @@ const Field = ({ setIsModalOpen }: TFieldProps) => {
 						type="button"
 						onClick={() => setIsRulesOpen((value) => !value)}
 					>
-						<CircleHelp aria-hidden="true" size={19} strokeWidth={2.2} />
+						<img className={styles.utilityIcon} src={helpIcon} alt="" aria-hidden="true" />
 					</button>
 					{isRulesOpen && (
 						<aside className={styles.rulesPanel} id="rules-panel" aria-label="Правила">

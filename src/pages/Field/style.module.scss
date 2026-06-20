@@ -1,5 +1,5 @@
-$card-width: 162px;
-$field-offset: 40px;
+$card-width: 10.125rem;
+$field-offset: 2.5rem;
 $interaction-active-glow:
 	drop-shadow(0 0 6px rgba(255, 231, 139, 0.92))
 	drop-shadow(0 0 12px rgba(255, 180, 62, 0.72));
@@ -15,7 +15,7 @@ $interaction-hover-glow:
 	display: grid;
 	place-items: center;
 	height: 100%;
-	min-width: 740px;
+	min-width: 46.25rem;
 	isolation: isolate;
 }
 
@@ -32,10 +32,8 @@ $interaction-hover-glow:
 	align-items: center;
 	width: min(100%, $card-width * 5 + $field-offset * 2);
 	height: 100%;
-	padding: 4.4% 50px 4.4%;
+	padding: var(--field-block-padding, clamp(1.75rem, 4.4dvh, 3rem)) 3.125rem;
 }
-
-$hand-height: 25%;
 
 .hand, .playerArena, .enemyArena, .encounterZone {
 	position: relative;
@@ -46,36 +44,34 @@ $hand-height: 25%;
 
 .hand {
 	width: 100%;
-	height: $hand-height;
+	height: calc(var(--field-hand-ratio, 18) * 1%);
 }
 
 .arena {
 	position: relative;
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	grid-template-rows: repeat(3, minmax(0, 1fr));
 	width: 100%;
-	height: 64%;
-	padding: 2px 0;
+	height: calc(var(--field-arena-ratio, 64) * 1%);
+	padding: 0.125rem 0;
 }
 
 .enemyArena, .playerArena {
-	flex: 1 1 0;
 	width: 100%;
 	height: auto;
 	min-height: 0;
 	justify-content: center;
 	border: 1px solid rgba(214, 170, 82, 0.24);
-	border-radius: 8px;
+	border-radius: 0.5rem;
 	background: rgba(9, 8, 6, 0.3);
 	box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.38);
 }
 
 .playerArena {
-	gap: 8px;
+	gap: 0.5rem;
 }
 
 .encounterZone {
-	flex: 1 1 0;
 	justify-content: center;
 	height: auto;
 	min-height: 0;
@@ -85,15 +81,15 @@ $hand-height: 25%;
 
 .turnHud {
 	position: fixed;
-	top: 68px;
-	right: 18px;
+	top: calc(1.125rem + 2.875rem + 0.875rem);
+	right: clamp(1rem, 1.6vw, 1.125rem);
 	z-index: 30;
 	display: grid;
-	gap: 9px;
-	width: 292px;
-	padding: 12px;
+	gap: 0.5625rem;
+	width: clamp(16rem, 22vw, 18.25rem);
+	padding: 0.75rem;
 	border: 1px solid rgba(241, 200, 119, 0.22);
-	border-radius: 8px;
+	border-radius: 0.5rem;
 	color: #f5deb0;
 	background: rgba(9, 7, 5, 0.78);
 	box-shadow:
@@ -103,7 +99,7 @@ $hand-height: 25%;
 }
 
 .phaseTitle {
-	font-size: 20px;
+	font-size: 1.25rem;
 	font-weight: 700;
 	text-transform: uppercase;
 	letter-spacing: 0.08em;
@@ -111,17 +107,17 @@ $hand-height: 25%;
 
 .turnBadge {
 	width: fit-content;
-	padding: 4px 8px;
+	padding: 0.25rem 0.5rem;
 	border: 1px solid rgba(241, 200, 119, 0.26);
-	border-radius: 5px;
+	border-radius: 0.3125rem;
 	color: rgba(245, 222, 176, 0.82);
-	font-size: 12px;
+	font-size: 0.75rem;
 	background: rgba(0, 0, 0, 0.28);
 }
 
 .phaseStatus {
 	color: rgba(245, 222, 176, 0.78);
-	font-size: 15px;
+	font-size: 0.9375rem;
 	line-height: 1.35;
 }
 
@@ -129,8 +125,8 @@ $hand-height: 25%;
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 8px;
-	min-height: 34px;
+	gap: 0.5rem;
+	min-height: 2.125rem;
 }
 
 .combatScore {
@@ -158,14 +154,14 @@ $hand-height: 25%;
 }
 
 .actionButton {
-	min-width: 92px;
-	min-height: 32px;
-	padding: 6px 10px;
+	min-width: 5.75rem;
+	min-height: 2rem;
+	padding: 0.375rem 0.625rem;
 	border: 1px solid rgba(241, 200, 119, 0.48);
-	border-radius: 6px;
+	border-radius: 0.375rem;
 	color: #f5deb0;
 	font-family: inherit;
-	font-size: 13px;
+	font-size: 0.8125rem;
 	background: linear-gradient(180deg, rgba(86, 55, 24, 0.9), rgba(22, 15, 10, 0.95));
 	box-shadow: 0 8px 14px rgba(0, 0, 0, 0.28);
 
@@ -175,11 +171,11 @@ $hand-height: 25%;
 }
 
 .readyButton {
-	min-width: 142px;
-	min-height: 46px;
+	min-width: 8.875rem;
+	min-height: 2.875rem;
 	border-color: rgba(255, 218, 124, 0.82);
 	color: #fff0c4;
-	font-size: 16px;
+	font-size: 1rem;
 	font-weight: 700;
 	text-transform: uppercase;
 	background:
@@ -192,7 +188,7 @@ $hand-height: 25%;
 
 .actionHint {
 	color: rgba(245, 222, 176, 0.62);
-	font-size: 12px;
+	font-size: 0.75rem;
 }
 
 .encounterSlot {
@@ -315,16 +311,19 @@ $hand-height: 25%;
 
 .deckControls {
 	position: absolute;
-	top: 50%;
-	right: -340px;
+	top: auto;
+	bottom: calc(100% / 3);
+	left: calc(100% + clamp(2rem, 4vw, 4.5rem));
 	z-index: 5;
-	display: flex;
-	flex-direction: row;
-	gap: 30px;
+	display: grid;
+	grid-template-columns: repeat(2, clamp(5.6rem, 8.6vw, 9.125rem));
+	align-items: end;
+	gap: clamp(1.25rem, 2.4vw, 2.75rem);
+	width: max-content;
+	height: calc(100% / 3);
 	margin: 0;
 	padding: 0;
 	border: 0;
-	transform: translateY(-50%);
 }
 
 .visuallyHidden {
@@ -340,8 +339,8 @@ $hand-height: 25%;
 	position: relative;
 	display: grid;
 	place-items: center;
-	width: 146px;
-	height: 196px;
+	width: 100%;
+	height: 100%;
 	padding: 0;
 	border: 0;
 	color: #f5deb0;
@@ -356,16 +355,16 @@ $hand-height: 25%;
 .deckTitle {
 	position: absolute;
 	right: auto;
-	bottom: calc(100% + 8px);
+	bottom: calc(100% + 0.5rem);
 	left: 50%;
 	z-index: 2;
 	width: max-content;
-	max-width: 132px;
-	padding: 5px 7px;
+	max-width: 8.25rem;
+	padding: 0.3125rem 0.4375rem;
 	border: 1px solid rgba(241, 200, 119, 0.3);
-	border-radius: 5px;
+	border-radius: 0.3125rem;
 	color: rgba(245, 222, 176, 0.82);
-	font-size: 13px;
+	font-size: 0.8125rem;
 	background: rgba(12, 9, 7, 0.82);
 	box-shadow: 0 6px 14px rgba(0, 0, 0, 0.32);
 	transform: translateX(-50%);
@@ -374,8 +373,9 @@ $hand-height: 25%;
 .deckStack {
 	position: relative;
 	display: block;
-	width: 118px;
-	height: 170px;
+	width: min(80%, calc(100% - 1.75rem));
+	max-width: 7.375rem;
+	aspect-ratio: 118 / 170;
 }
 
 .deckLayer {
@@ -429,16 +429,24 @@ $hand-height: 25%;
 
 .rulesHelp {
 	position: fixed;
-	top: 18px;
-	right: 18px;
+	top: 1.125rem;
+	right: clamp(1rem, 1.6vw, 1.125rem);
 	z-index: 40;
 	display: flex;
 	align-items: center;
-	gap: 8px;
-	padding: 6px;
-	border: 1px solid rgba(241, 200, 119, 0.22);
-	border-radius: 999px;
-	background: rgba(9, 7, 5, 0.76);
+	gap: 0.375rem;
+	padding: 0.3125rem;
+	border: 1px solid rgba(241, 200, 119, 0.28);
+	border-radius: 0.625rem;
+	background:
+		linear-gradient(135deg, transparent 0 0.45rem, rgba(9, 7, 5, 0.78) 0)
+			top left / 51% 51% no-repeat,
+		linear-gradient(225deg, transparent 0 0.45rem, rgba(9, 7, 5, 0.78) 0)
+			top right / 51% 51% no-repeat,
+		linear-gradient(45deg, transparent 0 0.45rem, rgba(9, 7, 5, 0.78) 0)
+			bottom left / 51% 51% no-repeat,
+		linear-gradient(315deg, transparent 0 0.45rem, rgba(9, 7, 5, 0.78) 0)
+			bottom right / 51% 51% no-repeat;
 	box-shadow:
 		0 10px 22px rgba(0, 0, 0, 0.34),
 		inset 0 0 14px rgba(0, 0, 0, 0.28);
@@ -449,20 +457,17 @@ $hand-height: 25%;
 	position: relative;
 	display: grid;
 	place-items: center;
-	width: 34px;
-	height: 34px;
-	border: 1px solid rgba(219, 177, 92, 0.78);
-	border-radius: 50%;
+	width: 2.375rem;
+	height: 2.375rem;
+	padding: 0;
+	border: 1px solid rgba(219, 177, 92, 0.42);
+	border-radius: 0.375rem;
 	color: #f9e6b8;
 	font-weight: 700;
-	background:
-		radial-gradient(circle at 38% 30%, rgba(255, 229, 157, 0.22), transparent 34%),
-		linear-gradient(145deg, #5c4324 0%, #24160c 48%, #080604 100%);
+	background: rgba(0, 0, 0, 0.08);
 	box-shadow:
-		0 0 0 1px rgba(19, 12, 7, 0.92),
-		0 8px 18px rgba(0, 0, 0, 0.46),
-		inset 0 0 0 2px rgba(255, 221, 139, 0.12),
-		inset 0 -7px 12px rgba(0, 0, 0, 0.42);
+		0 8px 18px rgba(0, 0, 0, 0.32),
+		inset 0 0 10px rgba(0, 0, 0, 0.18);
 	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
 	transition:
 		border-color 0.16s ease,
@@ -476,11 +481,9 @@ $hand-height: 25%;
 	&[data-status='saving'] {
 		border-color: rgba(255, 228, 150, 0.98);
 		box-shadow:
-			0 0 0 1px rgba(54, 32, 12, 0.96),
 			0 0 12px rgba(238, 198, 104, 0.36),
-			0 10px 20px rgba(0, 0, 0, 0.48),
-			inset 0 0 0 2px rgba(255, 234, 170, 0.18),
-			inset 0 -7px 12px rgba(0, 0, 0, 0.42);
+			0 10px 20px rgba(0, 0, 0, 0.42),
+			inset 0 0 12px rgba(255, 234, 170, 0.12);
 	}
 
 	&[data-status='error'] {
@@ -489,8 +492,8 @@ $hand-height: 25%;
 
 	&::before {
 		position: absolute;
-		inset: 4px;
-		border: 1px solid rgba(245, 222, 176, 0.18);
+		inset: 0.1875rem;
+		border: 1px solid rgba(245, 222, 176, 0.1);
 		border-radius: inherit;
 		content: '';
 		pointer-events: none;
@@ -527,11 +530,9 @@ $hand-height: 25%;
 		border-color: rgba(255, 228, 150, 0.98);
 		color: #fff3c8;
 		box-shadow:
-			0 0 0 1px rgba(54, 32, 12, 0.96),
 			0 0 12px rgba(238, 198, 104, 0.42),
-			0 10px 20px rgba(0, 0, 0, 0.5),
-			inset 0 0 0 2px rgba(255, 234, 170, 0.18),
-			inset 0 -7px 12px rgba(0, 0, 0, 0.42);
+			0 10px 20px rgba(0, 0, 0, 0.44),
+			inset 0 0 12px rgba(255, 234, 170, 0.12);
 	}
 
 	&:hover::after,
@@ -550,9 +551,31 @@ $hand-height: 25%;
 	}
 }
 
+.utilityIcon {
+	display: block;
+	width: 108%;
+	height: 108%;
+	object-fit: contain;
+	filter:
+		brightness(1.38)
+		contrast(1.18)
+		saturate(1.18)
+		drop-shadow(0 0 0.25rem rgba(255, 223, 143, 0.42));
+	pointer-events: none;
+}
+
+.utilityButton:hover .utilityIcon,
+.utilityButton:focus-visible .utilityIcon {
+	filter:
+		brightness(1.58)
+		contrast(1.24)
+		saturate(1.28)
+		drop-shadow(0 0 0.35rem rgba(255, 228, 150, 0.58));
+}
+
 .rulesPanel {
 	position: absolute;
-	top: 52px;
+	top: calc(100% + 0.75rem);
 	right: 0;
 	display: grid;
 	grid-template-rows: auto minmax(0, 1fr);
