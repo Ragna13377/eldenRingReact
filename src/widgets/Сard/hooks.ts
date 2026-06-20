@@ -12,6 +12,9 @@ export const useCardDrag = ({ cardRef, subtype, cardKey }: TCardDragHookProps) =
 	const [{ isDrag }, drag, preview] = useDrag({
 		type: subtype,
 		item: { cardKey },
+		options: {
+			dropEffect: 'move',
+		},
 		collect: (monitor) => ({
 			isDrag: monitor.isDragging(),
 		}),
