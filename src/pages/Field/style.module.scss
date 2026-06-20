@@ -50,17 +50,19 @@ $hand-height: 25%;
 }
 
 .arena {
-	display: grid;
-	grid-template-rows: 0.86fr 136px 0.92fr;
-	gap: 6px;
+	position: relative;
+	display: flex;
+	flex-direction: column;
 	width: 100%;
-	height: 47%;
+	height: 64%;
 	padding: 2px 0;
 }
 
 .enemyArena, .playerArena {
+	flex: 1 1 0;
 	width: 100%;
-	min-height: 126px;
+	height: auto;
+	min-height: 0;
 	justify-content: center;
 	border: 1px solid rgba(214, 170, 82, 0.24);
 	border-radius: 8px;
@@ -70,12 +72,13 @@ $hand-height: 25%;
 
 .playerArena {
 	gap: 8px;
-	transform: translateY(28px);
 }
 
 .encounterZone {
+	flex: 1 1 0;
 	justify-content: center;
-	min-height: 124px;
+	height: auto;
+	min-height: 0;
 	padding: 0;
 	background: transparent;
 }
@@ -257,8 +260,7 @@ $hand-height: 25%;
 	display: flex;
 	align-items: flex-end;
 	justify-content: center;
-	height: 35%;
-	margin-top: auto;
+	height: 18%;
 }
 
 .enemyHand {
@@ -289,10 +291,16 @@ $hand-height: 25%;
 
 	position: relative;
 	margin-inline: -22px;
+	transition: transform 0.22s ease-out;
 	transform:
 		translateY(calc(var(--card-index) * 0px))
 		rotate(calc((var(--card-index) - (var(--card-count) - 1) / 2) * 4deg));
 	transform-origin: 50% 110%;
+
+	&:hover {
+		z-index: 45;
+		transform: translateY(-10px) rotate(0deg);
+	}
 }
 
 .cardBack {
@@ -307,7 +315,7 @@ $hand-height: 25%;
 
 .deckControls {
 	position: absolute;
-	top: 48%;
+	top: 50%;
 	right: -340px;
 	z-index: 5;
 	display: flex;

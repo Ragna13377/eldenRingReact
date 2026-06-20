@@ -879,61 +879,6 @@ const Field = ({ setIsModalOpen }: TFieldProps) => {
 		>
 			<img className={styles.fieldLayout} src={field} alt="Игровое поле" />
 			<div className={styles.field}>
-				<fieldset className={styles.deckControls}>
-					<legend className={styles.visuallyHidden}>Колоды</legend>
-					<button
-						className={clsx(styles.deckButton, {
-							[styles.activeDeck]: phase === 'kickDoor',
-							[styles.shufflingDeck]: isShuffling,
-							[styles.emptyDeck]: getDeckLayers('adventures') === 0,
-						})}
-						type="button"
-						onClick={() => drawCard('adventures')}
-						disabled={isShuffling || phase !== 'kickDoor' || game.eventDeck.length === 0}
-					>
-						<span className={styles.deckTitle}>События</span>
-						<span className={styles.deckStack}>
-							{deckLayerSlots.slice(0, getDeckLayers('adventures')).map((layer) => (
-								<span
-									className={styles.deckLayer}
-									key={`adventures-${layer.id}`}
-									style={
-										{
-											'--layer-index': layer.index,
-										} as CSSProperties
-									}
-								/>
-							))}
-						</span>
-					</button>
-					<button
-						className={clsx(styles.deckButton, styles.treasureDeck, {
-							[styles.activeDeck]: treasureDrawsAvailable > 0,
-							[styles.shufflingDeck]: isShuffling,
-							[styles.emptyDeck]: getDeckLayers('treasures') === 0,
-						})}
-						type="button"
-						onClick={() => drawCard('treasures')}
-						disabled={
-							isShuffling || treasureDrawsAvailable <= 0 || game.rewardDeck.length === 0
-						}
-					>
-						<span className={styles.deckTitle}>Награды</span>
-						<span className={styles.deckStack}>
-							{deckLayerSlots.slice(0, getDeckLayers('treasures')).map((layer) => (
-								<span
-									className={styles.deckLayer}
-									key={`treasures-${layer.id}`}
-									style={
-										{
-											'--layer-index': layer.index,
-										} as CSSProperties
-									}
-								/>
-							))}
-						</span>
-					</button>
-				</fieldset>
 				<div className={styles.rulesHelp} ref={rulesHelpRef}>
 					<button
 						aria-label="Сохранить игру"
@@ -1107,6 +1052,61 @@ const Field = ({ setIsModalOpen }: TFieldProps) => {
 								<MiniCard key={item.cardKey} setIsModalOpen={setIsModalOpen} {...item} />
 							))}
 					</div>
+					<fieldset className={styles.deckControls}>
+						<legend className={styles.visuallyHidden}>Колоды</legend>
+						<button
+							className={clsx(styles.deckButton, {
+								[styles.activeDeck]: phase === 'kickDoor',
+								[styles.shufflingDeck]: isShuffling,
+								[styles.emptyDeck]: getDeckLayers('adventures') === 0,
+							})}
+							type="button"
+							onClick={() => drawCard('adventures')}
+							disabled={isShuffling || phase !== 'kickDoor' || game.eventDeck.length === 0}
+						>
+							<span className={styles.deckTitle}>События</span>
+							<span className={styles.deckStack}>
+								{deckLayerSlots.slice(0, getDeckLayers('adventures')).map((layer) => (
+									<span
+										className={styles.deckLayer}
+										key={`adventures-${layer.id}`}
+										style={
+											{
+												'--layer-index': layer.index,
+											} as CSSProperties
+										}
+									/>
+								))}
+							</span>
+						</button>
+						<button
+							className={clsx(styles.deckButton, styles.treasureDeck, {
+								[styles.activeDeck]: treasureDrawsAvailable > 0,
+								[styles.shufflingDeck]: isShuffling,
+								[styles.emptyDeck]: getDeckLayers('treasures') === 0,
+							})}
+							type="button"
+							onClick={() => drawCard('treasures')}
+							disabled={
+								isShuffling || treasureDrawsAvailable <= 0 || game.rewardDeck.length === 0
+							}
+						>
+							<span className={styles.deckTitle}>Награды</span>
+							<span className={styles.deckStack}>
+								{deckLayerSlots.slice(0, getDeckLayers('treasures')).map((layer) => (
+									<span
+										className={styles.deckLayer}
+										key={`treasures-${layer.id}`}
+										style={
+											{
+												'--layer-index': layer.index,
+											} as CSSProperties
+										}
+									/>
+								))}
+							</span>
+						</button>
+					</fieldset>
 				</section>
 				<section className={styles.playerZone}>
 					<section className={clsx(styles.hand, styles.playerHand)}>

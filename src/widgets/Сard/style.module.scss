@@ -11,6 +11,7 @@ $card-offset: 5px;
 	overflow: hidden;
 	border-radius: $card-border-radius;
 	background: #080706;
+	transform-origin: bottom center;
 	transform-style: preserve-3d;
 	transition: transform 0.22s ease-out;
 	will-change: transform;
@@ -44,7 +45,7 @@ $card-offset: 5px;
 		z-index: 40;
 
 		.card{
-			transform: scale(1.55) translate(0, -42px);
+			transform: scale(2.05) translate(0, -6px);
 		}
 	}
 
