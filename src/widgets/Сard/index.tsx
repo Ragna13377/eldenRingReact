@@ -10,6 +10,7 @@ import { useCardDrag } from '@widgets/Сard/hooks';
 import type { TCardProps } from '@widgets/Сard/types';
 import clsx from 'clsx';
 import { memo, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useDispatch } from '@/app/store';
 import styles from './style.module.scss';
 
@@ -17,9 +18,10 @@ const Card = ({ card, cardKey, isActionable, onCardClick }: TCardProps) => {
 	const dispatch = useDispatch();
 	const { type, subtype, title, image } = card;
 	const cardRef = useRef<HTMLButtonElement>(null);
-	const { isDrag, smoothShift } = useCardDrag({
+	const { isDrag, dragClientOffset, smoothShift } = useCardDrag({
 		cardRef,
 		subtype,
+		cardKey,
 	});
 	//TODO вынести в onDragStart?
 	useEffect(() => {
@@ -28,41 +30,87 @@ const Card = ({ card, cardKey, isActionable, onCardClick }: TCardProps) => {
 			if (isDrag) dispatch(clearDraggableCard());
 		};
 	}, [isDrag, dispatch, card, cardKey]);
-	return (
-		<button
-			type="button"
-			id={cardKey}
-			className={clsx(styles.hoverEffect, {
-				[styles.actionable]: isActionable,
-			})}
-			ref={cardRef}
-			onClick={() => onCardClick?.({ card, cardKey })}
+	const cardContent = (
+		<article
+			className={styles.card}
 			style={{
-				translate: `${smoothShift.position.x}px ${smoothShift.position.y}px`,
-				transition: smoothShift.transition,
+				visibility: isDrag ? 'hidden' : 'visible',
 			}}
 		>
-			<article className={styles.card}>
-				<div className={styles.front}>
-					<CardLayout
-						image={image}
-						title={title}
-						layout={layout}
-						imageExtraClass={styles.image}
-					/>
-					<CardContent card={card} extraContentStyle={styles.content}>
-						<CardTitle title={title} />
-						<FlavourText card={card} />
-					</CardContent>
-				</div>
-				<div
-					className={styles.back}
-					style={{
-						backgroundImage: `url(${type === 'adventures' ? adventuresBackface : treasuresBackface})`,
-					}}
+			<div className={styles.front}>
+				<CardLayout
+					image={image}
+					title={title}
+					layout={layout}
+					imageExtraClass={styles.image}
 				/>
-			</article>
-		</button>
+				<CardContent card={card} extraContentStyle={styles.content}>
+					<CardTitle title={title} />
+					<FlavourText card={card} />
+				</CardContent>
+			</div>
+			<div
+				className={styles.back}
+				style={{
+					backgroundImage: `url(${type === 'adventures' ? adventuresBackface : treasuresBackface})`,
+				}}
+			/>
+		</article>
+	);
+	return (
+		<>
+			<button
+				type="button"
+				id={cardKey}
+				className={clsx(styles.hoverEffect, {
+					[styles.actionable]: isActionable,
+				})}
+				ref={cardRef}
+				onClick={() => onCardClick?.({ card, cardKey })}
+				style={{
+					translate: `${smoothShift.position.x}px ${smoothShift.position.y}px`,
+					transition: smoothShift.transition,
+				}}
+			>
+				{cardContent}
+			</button>
+			{isDrag &&
+				dragClientOffset &&
+				createPortal(
+					<div
+						style={{
+							position: 'fixed',
+							left: dragClientOffset.x,
+							top: dragClientOffset.y,
+							zIndex: 2147483647,
+							pointerEvents: 'none',
+							transform: 'translate(-50%, -50%)',
+						}}
+					>
+						<article className={styles.card}>
+							<div className={styles.front}>
+								<CardLayout
+									image={image}
+									title={title}
+									layout={layout}
+									imageExtraClass={styles.image}
+								/>
+								<CardContent card={card} extraContentStyle={styles.content}>
+									<CardTitle title={title} />
+									<FlavourText card={card} />
+								</CardContent>
+							</div>
+							<div
+								className={styles.back}
+								style={{
+									backgroundImage: `url(${type === 'adventures' ? adventuresBackface : treasuresBackface})`,
+								}}
+							/>
+						</article>
+					</div>,
+					document.body
+				)}
+		</>
 	);
 };
 

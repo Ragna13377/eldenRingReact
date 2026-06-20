@@ -1,15 +1,17 @@
 import { baseTransition } from '@widgets/Сard/constants';
 import type { TCardDragHookProps, TSmoothShift } from '@widgets/Сard/types';
-import { useState } from 'react';
-import { useDrag } from 'react-dnd';
+import { useEffect, useState } from 'react';
+import { useDrag, useDragLayer } from 'react-dnd';
+import { getEmptyImage } from 'react-dnd-html5-backend';
 
-export const useCardDrag = ({ cardRef, subtype }: TCardDragHookProps) => {
+export const useCardDrag = ({ cardRef, subtype, cardKey }: TCardDragHookProps) => {
 	const [smoothShift, setSmoothShift] = useState<TSmoothShift>({
 		transition: 'none',
 		position: { x: 0, y: 0 },
 	});
-	const [{ isDrag }, drag] = useDrag({
+	const [{ isDrag }, drag, preview] = useDrag({
 		type: subtype,
+		item: { cardKey },
 		collect: (monitor) => ({
 			isDrag: monitor.isDragging(),
 		}),
@@ -24,6 +26,8 @@ export const useCardDrag = ({ cardRef, subtype }: TCardDragHookProps) => {
 					y: differenceFromInitialOffset?.y || 0,
 				},
 			}));
+			if (monitor.didDrop()) return;
+
 			setTimeout(() => {
 				setSmoothShift((prev) => ({
 					...prev,
@@ -37,9 +41,20 @@ export const useCardDrag = ({ cardRef, subtype }: TCardDragHookProps) => {
 			}, 50);
 		},
 	});
+	const dragClientOffset = useDragLayer((monitor) => {
+		const item = monitor.getItem<{ cardKey: string }>();
+		if (!item || item.cardKey !== cardKey) return null;
+		return monitor.getClientOffset();
+	});
+
+	useEffect(() => {
+		preview(getEmptyImage(), { captureDraggingState: true });
+	}, [preview]);
+
 	drag(cardRef);
 	return {
 		isDrag,
+		dragClientOffset,
 		smoothShift,
 	};
 };

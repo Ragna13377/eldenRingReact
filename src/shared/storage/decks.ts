@@ -22,11 +22,19 @@ const withCardKeys = (cards: TCard[]): TCardWithParams[] =>
 		cardKey: uuidv4(),
 	}));
 
-const shuffle = <T>(items: T[]) =>
-	items
-		.map((item) => ({ item, order: Math.random() }))
-		.sort((left, right) => left.order - right.order)
-		.map(({ item }) => item);
+const shuffle = <T>(items: T[]) => {
+	const shuffledItems = [...items];
+
+	for (let index = shuffledItems.length - 1; index > 0; index -= 1) {
+		const randomIndex = Math.floor(Math.random() * (index + 1));
+		[shuffledItems[index], shuffledItems[randomIndex]] = [
+			shuffledItems[randomIndex],
+			shuffledItems[index],
+		];
+	}
+
+	return shuffledItems;
+};
 
 export const createDecks = (): TDeckState => ({
 	adventures: shuffle(withCardKeys([...creatures, ...spells])),

@@ -12,6 +12,7 @@ export type TCardProps = TCardWithParams & {
 export type TCardDragHookProps = {
 	cardRef: RefObject<HTMLElement | null>;
 	subtype: CardSubType;
+	cardKey: string;
 };
 export type TSmoothShift = {
 	transition: TTransition;
