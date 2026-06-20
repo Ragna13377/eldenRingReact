@@ -8,7 +8,7 @@ import type {
 import { initialAvailableCellState } from '@widgets/Inventory/constants';
 import type { TUseDropInventoryProps } from '@widgets/Inventory/types';
 import { optimizedSetAvailableCellHover } from '@widgets/Inventory/utils';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from '@/app/store';
 
 const getActiveClientOffset = (
@@ -42,7 +42,7 @@ export const useDropInventory = ({
 		},
 		disabled: !isDropEnabled,
 	});
-	const clientOffset = useMemo(() => getActiveClientOffset(active), [active]);
+	const clientOffset = getActiveClientOffset(active);
 
 	useEffect(
 		() =>
