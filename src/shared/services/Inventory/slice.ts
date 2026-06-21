@@ -29,6 +29,16 @@ const initialState: Record<TInventoryOwner, TInventory<TCardWithParams | null>> 
 	bot: createInitialInventory(),
 };
 
+const recalculateInventoryScore = (inventory: TInventory<TCardWithParams | null>) => {
+	const seen = new Set<string>();
+	inventory.score = Object.values(inventory.equipments).reduce((acc, el) => {
+		if (!el || seen.has(el.cardKey)) return acc;
+		seen.add(el.cardKey);
+		const { card } = el as { card: TEquipmentCard };
+		return acc + card.primaryStats.strength;
+	}, 0);
+};
+
 const InventorySlice = createSlice({
 	name: 'inventory',
 	initialState,
@@ -64,15 +74,7 @@ const InventorySlice = createSlice({
 					}
 				}
 			}
-			inventory.score = Object.values(equipments).reduce((acc, el) => {
-				if (!el) return acc;
-				const { card } = el as { card: TEquipmentCard };
-				return acc + card.primaryStats.strength;
-			}, 0);
-			if (isTwoHandedWeapon(equipments.rightWeapon)) {
-				const { card } = equipments.rightWeapon as { card: TWeaponCard };
-				inventory.score -= card.primaryStats.strength;
-			}
+			recalculateInventoryScore(inventory);
 		},
 		removeInventoryCard: (
 			state,
@@ -82,7 +84,17 @@ const InventorySlice = createSlice({
 			}>
 		) => {
 			const { ownerId = 'human', type } = action.payload;
-			state[ownerId].equipments[type] = null;
+			const inventory = state[ownerId];
+			const removedCard = inventory.equipments[type];
+
+			if (!removedCard) return;
+
+			Object.entries(inventory.equipments).forEach(([key, card]) => {
+				if (card?.cardKey === removedCard.cardKey) {
+					inventory.equipments[key as keyof TInventoryEquipment] = null;
+				}
+			});
+			recalculateInventoryScore(inventory);
 		},
 		setInventory: (
 			_state,

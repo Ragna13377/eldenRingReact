@@ -25,6 +25,7 @@ import {
 } from '@shared/game/utils';
 import {
 	getInventory,
+	removeInventoryCard,
 	resetInventory,
 	setInventory,
 } from '@shared/services/Inventory/slice';
@@ -38,6 +39,11 @@ import { clearDraggableCard } from '@shared/services/DraggableCard/slice';
 import { deckSizes } from '@shared/storage/decks';
 import { CardSubType } from '@shared/types/commonTypes';
 import type { TFieldProps } from '@pages/Field/types';
+import type {
+	TCardWithParams,
+	TInventoryEquipment,
+	TInventoryOwner,
+} from '@shared/types/utilityTypes';
 import MiniCard from '@widgets/MiniCard';
 import Card from '@widgets/Сard';
 import { clsx } from 'clsx';
@@ -459,6 +465,47 @@ const Field = ({ setIsModalOpen }: TFieldProps) => {
 			window.removeEventListener('inventory-card-equipped', handleInventoryCardEquipped);
 		};
 	}, []);
+
+	useEffect(() => {
+		const handleInventoryCardUnequipRequested = (event: Event) => {
+			const { ownerId, card, slot } = (
+				event as CustomEvent<{
+					card: TCardWithParams;
+					ownerId: TInventoryOwner;
+					slot: keyof TInventoryEquipment;
+				}>
+			).detail;
+
+			if (ownerId !== 'human') return;
+			if (game.phase === 'combat' || game.phase === 'combatIntervention') return;
+
+			dispatch(removeInventoryCard({ ownerId, type: slot }));
+			setGame((prev) =>
+				updatePlayer(prev, prev.humanPlayerId, (player) => {
+					if (player.hand.some((handCard) => handCard.cardKey === card.cardKey)) {
+						return player;
+					}
+
+					return {
+						...player,
+						hand: [...player.hand, card],
+					};
+				})
+			);
+		};
+
+		window.addEventListener(
+			'inventory-card-unequip-requested',
+			handleInventoryCardUnequipRequested
+		);
+
+		return () => {
+			window.removeEventListener(
+				'inventory-card-unequip-requested',
+				handleInventoryCardUnequipRequested
+			);
+		};
+	}, [dispatch, game.phase]);
 
 	useEffect(() => {
 		if (hintKind !== 'enemyRevealed' || game.phase !== 'combat') return;

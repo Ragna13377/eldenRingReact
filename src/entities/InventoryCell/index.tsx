@@ -7,6 +7,9 @@ const InventoryCell = ({
 	extraClass,
 	isAvailable,
 	data,
+	ownerId,
+	slot,
+	isPreviewSuppressed,
 	setIsModalOpen,
 	children,
 }: TInventoryCellProps) => (
@@ -15,10 +18,27 @@ const InventoryCell = ({
 			[styles.inventoryCellHover]: isAvailable,
 		})}
 		onMouseEnter={() => {
-			if (data) setIsModalOpen?.({ isOpen: true, hoveredCard: data });
+			if (data && !isPreviewSuppressed) {
+				setIsModalOpen?.({ isOpen: true, hoveredCard: data });
+			}
 		}}
 		onMouseLeave={() => {
 			if (data) setIsModalOpen?.({ isOpen: false, hoveredCard: null });
+		}}
+		onContextMenu={(event) => {
+			event.preventDefault();
+			if (!data || !ownerId || !slot) return;
+
+			setIsModalOpen?.({ isOpen: false, hoveredCard: null });
+			window.dispatchEvent(
+				new CustomEvent('inventory-card-unequip-requested', {
+					detail: {
+						card: data,
+						ownerId,
+						slot,
+					},
+				})
+			);
 		}}
 	>
 		{data && (
